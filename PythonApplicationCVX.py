@@ -1,7 +1,7 @@
 from numpy.random import randn, randint; from numpy.linalg import norm
 from numpy import arange, cos, kron, mat, r_ as rng, round, stack
 
-# Main function stuff                 # MATLAB
+# Main function stuff                 # MATLAB origins
 def m(X, A):                          # function Y = m(X, A)
     L = arange(A.size)                #   L  = length(A);
     Φ = cos(kron(X, L))               #   Φ = cos(kron(X, 1:L));
@@ -13,7 +13,7 @@ def m(X, A):                          # function Y = m(X, A)
 N  = 128
 X, Z = (randn(N, 1), randn(N, 1) * .25); Y = m(X, α) + Z
 ## Regressors matrix 
-L  = 256; Φ = cos(kron(X, arange(L))) # Φ = cos(kron(X, 1:L)); 
+L  = 512; Φ = cos(kron(X, arange(L))) # Φ = cos(kron(X, 1:L)); 
 
 from cvxpy import Problem, Minimize, Variable
 from cvxpy import norm as cvx_norm
