@@ -16,7 +16,9 @@ def Φ(x, f, λ):                     # lambda x: 3/4*(abs(x) < 1)*(1 - x**2)
 # An actual interpolation Φ: Fn ➞ Fx 
 def interpolate(fn, N, Λ = [Π, ψ, ϕ]):
     X = np.linspace(0, len(fn), N)
-    return [[Φ(x, fn, λ) for λ in Λ] for x in X]
+    return [[Φ(x, fn, λ) 
+            for λ in Λ] 
+            for x in X]
 
 ## Examples
 #  A staple one...
