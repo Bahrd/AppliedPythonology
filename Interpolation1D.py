@@ -25,7 +25,7 @@ def interpolate(fn, N, Λ = [Π, ψ, ϕ]):
 Fn = [0, 0, 1, 1, -1, -1, 0]; Fx = interpolate(N = 128, fn = Fn)
 plt.plot(Fx); plt.show()
 
-#  User-defined...
+#  ... and user-defined...
 while True:
     rawFn = input("Samples: ").split()
     if len(rawFn) > 1:
