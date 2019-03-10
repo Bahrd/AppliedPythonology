@@ -1,7 +1,7 @@
 from numpy.random import randn, randint; from numpy.linalg import norm
 from numpy import arange, cos, kron, mat, r_ as rng, round, stack
 
-# Main function stuff                 # MATLAB origins
+# Main function stuff                 # MATLAB's origins
 def m(X, A):                          # function Y = m(X, A)
     L = arange(A.size)                #   L  = length(A);
     Φ = cos(kron(X, L))               #   Φ = cos(kron(X, 1:L));
