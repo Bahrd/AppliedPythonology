@@ -15,6 +15,6 @@ A = mt([[complex(n, m) for n in lnsp(-2, 2, N)]
                        for m in lnsp(-1, 1, M)])
 # ... and show off!
 plt.imshow(julia(A), 
-           interpolation = 'gaussian', 
+           interpolation = 'lanczos', 
            cmap = 'Blues')
 plt.show()

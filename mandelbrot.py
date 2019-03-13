@@ -16,7 +16,7 @@ A = mt([[complex(n, m) for n in lnsp(-2, 1, N)]
                        for m in lnsp(-1, 1, M)])
 # ... and act!
 plt.imshow(mandelbrot(A), 
-           interpolation = 'lanczos', # uncomment if you fancy a colorful image
+           interpolation = 'bicubic', # uncomment if you fancy a colorful image
            cmap = 'Blues')
 plt.show()
 
