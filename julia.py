@@ -13,7 +13,7 @@ def julia(x, c = -.835 -.2321j, p = 2, n = 32):
 R = 2; N, M = R * 512, R * 256
 A = mt([[complex(n, m) for n in lnsp(-2, 2, N)] 
                        for m in lnsp(-1, 1, M)])
-# Show off!
+# ... and show off!
 plt.imshow(julia(A), 
            interpolation = 'gaussian', 
            cmap = 'Blues')
