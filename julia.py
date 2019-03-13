@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from numpy import linspace as lnsp, power as pwr, mat as mt
 
 # An approximate Julia set function 
-def julia(x, p = 2, n = 16):   # precision grows with n
+def julia(x, p = 2, n = 32):   # precision grows with n
     c = - .835 - .2321j # see e.g. https://en.wikipedia.org/wiki/Julia_set
     for _ in range(n):
         x = pwr(x, p) + c
