@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt;
 from numpy import linspace as lnsp, power as pwr, mat as mt, isnan, where, log10 as nlg
 
 # An approximate Julia set function (accuracy grows with n)
-# see e.g. https://en.wikipedia.org/wiki/Julia_set for nicer c's
+# see e.g. https://en.wikipedia.org/wiki/Julia_set for nicer c's (like -.8 + .156j)
 def julia(x, c = -.835 -.2321j, p = 2, n = 0x20):
     for _ in range(n):
         x = pwr(x, p) + c
