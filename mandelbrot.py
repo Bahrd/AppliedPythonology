@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from numpy import linspace as lnsp, power as pwr, mat as mt, isnan, isinf
+from numpy import linspace as lnsp, power as pwr, mat as mt, isnan
 
 ## An approximate Mandelbrot set function (accuracy grows with n)
 # see e.g. https://en.wikipedia.org/wiki/Mandelbrot_set
@@ -16,8 +16,6 @@ R = 0x10; N, M = R * 0x20, R * 0x20
 A = mt([[complex(n, m) for n in lnsp(X - eps, X + eps, N)] 
                        for m in lnsp(Y - eps, Y + eps, M)])
 # ... and act!
-M = mandelbrot(A); M[isnan(M) | isinf(M)] = 0xff
-plt.imshow(M,
-           #interpolation = 'gaussian', # uncomment if you fancy a colorful image
-           cmap = 'Blues')
+M = mandelbrot(A)
+plt.imshow(M, cmap = 'Blues')
 plt.show()
