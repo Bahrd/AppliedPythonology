@@ -11,7 +11,7 @@ def julia(x, c = -.835 -.2321j, p = 2, n = 0x20):
 
 ## Presentation
 # Unsettling settings
-R = 0x10; N, M = R * 0x40, R * 0x20
+R = 0x20; N, M = R * 0x40, R * 0x20
 A = mt([[complex(n, m) for n in lnsp(-2, 2, N)] 
                        for m in lnsp(-1, 1, M)])
 # ... and show off!
