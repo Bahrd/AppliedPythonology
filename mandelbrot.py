@@ -3,7 +3,7 @@ from numpy import linspace as lnsp, power as pwr, mat as mt
 
 ## An approximate Mandelbrot set function (accuracy grows with n)
 # see e.g. https://en.wikipedia.org/wiki/Mandelbrot_set
-def mandelbrot(c, n = 32): 
+def mandelbrot(c, n = 32):
     x = complex() 
     for _ in range(n):
         x = pwr(x, 2) + c
@@ -11,11 +11,12 @@ def mandelbrot(c, n = 32):
 
 ## Presentation
 # Rehearsal...
-R = 1; N, M = R * 768, R * 512 
-A = mt([[complex(n, m) for n in lnsp(-2, 1, N)] 
-                       for m in lnsp(-1, 1, M)])
+X, Y, eps = -3/2, 0, 2
+R = 1; N, M = R * 256, R * 256 
+A = mt([[complex(n, m) for n in lnsp(X - eps, X + eps, N)] 
+                       for m in lnsp(Y - eps, Y + eps, M)])
 # ... and act!
-plt.imshow(mandelbrot(A), 
+plt.imshow(mandelbrot(A),
            interpolation = 'bicubic', # uncomment if you fancy a colorful image
            cmap = 'Blues')
 plt.show()
@@ -28,3 +29,8 @@ plt.show()
 #           #interpolation = 'lanczos', # uncomment if you fancy a colorful image
 #           cmap = 'Blues')
 #plt.show()
+
+
+
+
+
