@@ -11,10 +11,10 @@ def mandelbrot(c, n = 0x40):
 
 ## Presentation
 # Rehearsal...
-X, Y, eps = -1/2, 0, 1
+X, Y, ε = -1/2, 0, 1
 R = 0x10; N, M = R * 0x20, R * 0x20 
-A = mt([[complex(n, m) for n in lnsp(X - eps, X + eps, N)] 
-                       for m in lnsp(Y - eps, Y + eps, M)])
+A = mt([[complex(n, m) for n in lnsp(X - ε, X + ε, N)] 
+                       for m in lnsp(Y - ε, Y + ε, M)])
 # ... and act!
 M = mandelbrot(A)
 plt.imshow(M, cmap = 'Blues')
