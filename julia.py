@@ -1,4 +1,4 @@
-import matplotlib; import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from numpy import linspace as lnsp, power as pwr, mat as mt, isnan
 
 ## An approximate Julia set function (accuracy grows with n)
@@ -11,11 +11,11 @@ def julia(ω, c = -.8 + .156j, p = 2, n = 0x40):
                         # but looks somehow fancier..
 ## Presentation
 # Unsettling settings
-ρ = 0x10; N, M = ρ * 0x40, ρ * 0x20
-Ω = mt([[complex(n, m) for n in lnsp(-2, 2, N)] 
-                       for m in lnsp(-1, 1, M)])
+zoom = 0x5; ρ = 0x10; N, M = ρ * 0x40, ρ * 0x20
+Ω = mt([[complex(n, m) for n in lnsp(-2/zoom, 2/zoom, N)] 
+                       for m in lnsp(-1/zoom, 1/zoom, M)])
 # ... and a show off!
-J = julia(Ω)
+J = julia(Ω, n = 0x30 * zoom)
 J[isnan(J) | (J > 0xff)] = 0xff
 
 plt.imshow(J, cmap = 'Blues')
