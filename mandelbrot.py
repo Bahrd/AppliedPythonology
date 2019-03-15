@@ -2,20 +2,21 @@ import matplotlib.pyplot as plt
 from numpy import linspace as lnsp, power as pwr, mat as mt, isnan
 
 ## An approximate Mandelbrot set function (accuracy grows with n)
+#       M = {ω: mandelbrot(ω, ∞) < 2}
 # see e.g. https://en.wikipedia.org/wiki/Mandelbrot_set
 def mandelbrot(c, n = 0x40):
-    x = complex() 
+    ω = complex() 
     for _ in range(n):
-        x = pwr(x, 2) + c
-    return abs(x) < 2       # x ∈ M if |x| < 2
+        ω = pwr(ω, 2) + c
+    return abs(ω) < 2       
 
 ## Presentation
 # Rehearsal...
-X, Y, ε = -1/2, 0, 1
-R = 0x10; N, M = R * 0x20, R * 0x20 
-A = mt([[complex(n, m) for n in lnsp(X - ε, X + ε, N)] 
+X, Y, ε = -1/2, 0, 3/2
+ρ = 0x10; N, M = ρ * 0x20, ρ * 0x20 
+Ω = mt([[complex(n, m) for n in lnsp(X - ε, X + ε, N)] 
                        for m in lnsp(Y - ε, Y + ε, M)])
 # ... and act!
-M = mandelbrot(A)
+M = mandelbrot(Ω)
 plt.imshow(M, cmap = 'Blues')
 plt.show()
