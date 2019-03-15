@@ -1,4 +1,4 @@
-import matplotlib; import matplotlib.pyplot as plt;
+import matplotlib; import matplotlib.pyplot as plt
 from numpy import linspace as lnsp, power as pwr, mat as mt, isnan
 
 ## An approximate Julia set function (accuracy grows with n)
