@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 from numpy import linspace as lnsp, power as pwr, mat as mt, isnan
 
-## An approximate Mandelbrot set function (accuracy grows with n)
+## An approximate Mandelbrot set function (accuracy grows with ν)
 #       M = {ω: mandelbrot(ω, ∞) < 2}
 # see e.g. https://en.wikipedia.org/wiki/Mandelbrot_set
-def mandelbrot(c, n = 0x40):
+def mandelbrot(c, ν = 0x40):
     ω = complex() 
-    for _ in range(n):
+    for _ in range(ν):
         ω = pwr(ω, 2) + c
     return abs(ω) < 2       
 
