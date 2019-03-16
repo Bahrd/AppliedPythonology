@@ -12,8 +12,9 @@ def mandelbrot(c, ν = 0x40):
 
 ## Presentation
 # Rehearsal...
-X, Y, ε = -1/2, 0, 3/2
-ρ = 0x10; N, M = ρ * 0x20, ρ * 0x20 
+X, Y = -1/2, 0 
+ε, ρ = 3/2, 0x10
+N, M = ρ * 0x20, ρ * 0x20 
 Ω = mt([[complex(n, m) for n in lnsp(X - ε, X + ε, N)] 
                        for m in lnsp(Y - ε, Y + ε, M)])
 # ... and act!

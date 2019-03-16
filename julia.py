@@ -11,12 +11,13 @@ def julia(ω, c = -.8 + .156j, p = 2, ν = 0x40):
                             # but looks somehow fancier..
 ## Presentation
 # Unsettling settings (ζ - zoom factor, ρ - resolution)
-ζ = 0x1; ρ = 0x10; N, M = ρ * 0x40, ρ * 0x20
+ζ, ρ = 0x1, 0x10
+N, M = ρ * 0x40, ρ * 0x20
+n = int(0x40 * pwr(ζ, 1/3)) # Accuracy n should grow with a zoom factor ζ
+                            # A cube root makes it nicer for ζ = 1,...,100
 Ω = mt([[complex(n, m) 
          for n in lsp(-2/ζ, 2/ζ, N)] 
          for m in lsp(-1/ζ, 1/ζ, M)])
-n = int(0x40 * pwr(ζ, 1/3)) # Accuracy grows with a zoom factor ζ
-                            # A cube root makes it nicer for ζ = 1,...,100
 # ... and a show off!
 J = julia(Ω, ν = n)
 J[isnan(J) | (J > 0xff)] = 0xff # Handling the "NaNs'n'Infs"
