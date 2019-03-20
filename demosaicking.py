@@ -2,7 +2,7 @@ import cv2; import numpy as np; import matplotlib.pyplot as plt
 
 ## Auxiliary functions
 # CFA filter mask
-def CFA(X, masks):
+def CFA(masks, X):
     return np.dstack(np.tile(mask, X) for mask in masks)
 # Channels presentation
 def displayChannels(image, positions, colors, sizeX = 2, sizeY = 2):
@@ -10,9 +10,9 @@ def displayChannels(image, positions, colors, sizeX = 2, sizeY = 2):
         plt.subplot(sizeX, sizeY, p + 1)
         plt.imshow(image[..., p], c)
 # Bayer CFA mask segment definition
-BayerMask = [[[0, 1], [0, 0]],  #B
-             [[1, 0], [0, 1]],  #G
-             [[0, 0], [1, 0]]]  #R
+BayerMask = np.array([[[0, 1], [0, 0]],             #B
+                      [[1, 0], [0, 1]],             #G
+                      [[0, 0], [1, 0]]], np.uint8)  #R uint8 required by OpenCV
 # deBayer filter definition
 deBayerMask = np.ones((2, 2)); 
 
@@ -22,7 +22,7 @@ img = cv2.imread("Grasshopper.PNG"); N = img.shape[0]; X = [int(N/2), int(N/2)]
 
 ## Mosaicking (simulating the RAW sensor capture)
 # The Bayer color filter array
-BayerFilter = np.array(CFA(X, BayerMask), dtype = np.uint8)
+BayerFilter = np.array(CFA(BayerMask, X))
 # Processing
 img = img * BayerFilter
 
@@ -45,11 +45,3 @@ displayChannels(bgr, range(3), colors)
 rgb = np.dstack((R, G, B))
 plt.subplot(2, 2, 4); plt.imshow(rgb)
 plt.show()
-
-## Outtakes
-# Channels presentation
-#def displayChannels(image, position, color, sizeX = 2, sizeY = 2):
-#    plt.subplot(sizeX, sizeY, position + 1)
-#    plt.imshow(image[..., position], color)
-#colors = ["Blues_r", "Greens_r", "Reds_r"] 
-#[displayChannels(img, p, c) for p, c in zip(range(3), colors)]
