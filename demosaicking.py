@@ -15,16 +15,17 @@ def displayChannels(image, positions, colors, sizeX = 1, sizeY = 4):
     plt.imshow(image)
     plt.show()
 
-# Bayer CFA mask segment definition (type 'uint8' required by OpenCV's filters)
+## Bayer CFA (Bryce E. Bayer@Eastman Kodak, 1976)
+# A segment mask definition (type 'uint8' required by OpenCV's filters)
 BayerMask = np.array([[[0, 1], [0, 0]],             #R
                       [[1, 0], [0, 1]],             #G
                       [[0, 0], [1, 0]]], np.uint8)  #B
-# deBayer filter definition
+# deBayer filter definition (an example)
 deBayerMask = np.ones((2, 2))
 
 ## Image 'capturing'
 # Note - the example works for the square images of even size only
-raw = cv2.imread("Grasshopper.PNG"); N = raw.shape[0]; X = [int(N/2), int(N/2)]
+raw = cv2.imread("GrassHopper.PNG"); N = raw.shape[0]; X = [int(N/2), int(N/2)]
 raw = cv2.cvtColor(raw, cv2.COLOR_BGR2RGB) 
 
 ## Mosaicking (simulating the RAW sensor capture)
