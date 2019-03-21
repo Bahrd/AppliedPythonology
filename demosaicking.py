@@ -24,14 +24,14 @@ deBayerMask = np.ones((2, 2))
 
 ## Image 'capturing'
 # Note - the example works for the square images of even size only
-img = cv2.imread("Grasshopper.PNG"); N = img.shape[0]; X = [int(N/2), int(N/2)]
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+image = cv2.imread("Grasshopper.PNG"); N = image.shape[0]; X = [int(N/2), int(N/2)]
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) 
 
 ## Mosaicking (simulating the RAW sensor capture)
 # The Bayer color filter array
 BayerFilter = np.array(CFA(BayerMask, X))
 # Processing
-img = img * BayerFilter
+img = image * BayerFilter
 
 ## Demosaicking 
 # A simple averaging filter
@@ -47,3 +47,6 @@ displayChannels(img, range(3), colors)
 # A Bayer CFA de-mosaicked image (aka 'JPG/PNG')
 rgb = np.dstack((R, G, B))
 displayChannels(rgb, range(3), colors)
+# Input vs. output image
+plt.subplot(121); plt.imshow(image); plt.subplot(122); plt.imshow(rgb)
+plt.show()
