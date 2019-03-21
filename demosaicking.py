@@ -2,16 +2,16 @@ import cv2; import numpy as np; import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap as lscm
 
 ## Auxiliary functions
-# CFA filter mask
+# CFA filter mask (replication of a single CFA segment into a whole sensor mask)
 def CFA(masks, X):
     return np.dstack(np.tile(mask, X) for mask in masks)
-# Channels presentation
-def displayChannels(image, positions, colors, sizeX = 1, sizeY = 4):
+# Channels presentation (the channels and the aggregated image - all in a row)
+def displayChannels(image, positions, colors, rows = 1, cols = 4):
     for p, c in zip(positions, colors):
-        plt.subplot(sizeX, sizeY, p + 1)
+        plt.subplot(rows, cols, p + 1)
         cmp = lscm.from_list('cmp', ['black', c])
         plt.imshow(image[..., p], cmp)
-    plt.subplot(sizeX, sizeY, sizeX * sizeY)
+    plt.subplot(rows, cols, rows * cols)
     plt.imshow(image)
     plt.show()
 
