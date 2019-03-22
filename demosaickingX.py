@@ -16,26 +16,26 @@ def displayChannels(image, positions, colors, rows = 1, cols = 4):
     plt.imshow(image)
     plt.show()
 
-## X-Trans(Fuji, 2012)
+## X-Trans (Fuji, 2012)
 # A segment mask definition (type 'uint8' required by OpenCV's filters)
 XTransMask = np.array([[[0, 0, 0, 0, 1, 0], 
-                       [1, 0, 1, 0, 0, 0],
-                       [0, 0, 0, 0, 1, 0],
-                       [0, 1, 0, 0, 0, 0],
-                       [0, 0, 0, 1, 0, 1],
-                       [0, 1, 0, 0, 0, 0]], 
-                      [[1, 0, 1, 1, 0, 1],
-                       [0, 1, 0, 0, 1, 0],
-                       [1, 0, 1, 1, 0, 1],
-                       [1, 0, 1, 1, 0, 1],
-                       [0, 1, 0, 0, 1, 0],
-                       [1, 0, 1, 1, 0, 1]],
-                      [[0, 1, 0, 0, 0, 0], 
-                       [0, 0, 0, 1, 0, 1],
-                       [0, 1, 0, 0, 0, 0],
-                       [0, 0, 0, 0, 1, 0],
-                       [1, 0, 1, 0, 0, 0],
-                       [0, 0, 0, 0, 1, 0]]], np.uint8)
+                        [1, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 1, 0],
+                        [0, 1, 0, 0, 0, 0],
+                        [0, 0, 0, 1, 0, 1],
+                        [0, 1, 0, 0, 0, 0]], 
+                       [[1, 0, 1, 1, 0, 1],
+                        [0, 1, 0, 0, 1, 0],
+                        [1, 0, 1, 1, 0, 1],
+                        [1, 0, 1, 1, 0, 1],
+                        [0, 1, 0, 0, 1, 0],
+                        [1, 0, 1, 1, 0, 1]],
+                       [[0, 1, 0, 0, 0, 0], 
+                        [0, 0, 0, 1, 0, 1],
+                        [0, 1, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 1, 0],
+                        [1, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 1, 0]]], np.uint8)
 # deXTrans filter definition (an example)
 deXTransMask = np.array([[0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
                          [0.  , 0.25, 0.5 , 0.5 , 0.25, 0.  ],
@@ -62,10 +62,10 @@ R, G, B = [cv2.filter2D(raw[..., n], -1, deXTransFilter[n]) for n in range(3)]
 rgb = np.dstack((R, G, B))
 
 ## Presentation
-# An XTrans CFA mosaic (aka 'RAW')
+# An X-Trans CFA mosaic (aka 'RAW')
 colors = ["red", "green", "blue"] 
 displayChannels(raw, range(3), colors)
-# An XTrans CFA de-mosaicked image (aka 'JPG' - I know, I know... )
+# An X-Trans CFA de-mosaicked image (aka 'JPG' - I know, I know... )
 displayChannels(rgb, range(3), colors)
 # Input vs. output image
 plt.subplot(131); plt.imshow(img); plt.subplot(132); plt.imshow(rgb)
