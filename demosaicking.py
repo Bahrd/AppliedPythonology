@@ -38,20 +38,17 @@ raw = img * BayerFilter
 ## Demosaicking 
 # A simple averaging filter
 deBayerFilter = [deBayerMask * w for w in [1, 1/2, 1]]
-# Processing
+# Evaluating the lacking pixels 
 R, G, B = [cv2.filter2D(raw[..., n], -1, deBayerFilter[n]) for n in range(3)]
-
-rawR = raw[..., 0]
-BayerR = BayerFilter[..., 0]
-
-R[BayerR != 0] = rawR[BayerR != 0]
-
+rgb = np.dstack((R, G, B))
+## Restoring the values of raw pixels (optional - demonstrates the difficulty)
+#for n in range(3):
+#    rgb[BayerFilter[..., n] != 0, n] = raw[BayerFilter[..., n] != 0, n]
 ## Presentation
 # A Bayer CFA mosaic (aka 'RAW')
 colors = ["red", "green", "blue"] 
 displayChannels(raw, range(3), colors)
 # A Bayer CFA de-mosaicked image (aka 'JPG' - I know, I know... )
-rgb = np.dstack((R, G, B))
 displayChannels(rgb, range(3), colors)
 # Input vs. output image
 plt.subplot(131); plt.imshow(img); plt.subplot(132); plt.imshow(rgb)
