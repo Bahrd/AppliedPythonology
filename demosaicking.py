@@ -5,7 +5,8 @@ from matplotlib.colors import LinearSegmentedColormap as lscm
 # CFA filter mask (replication of a single CFA segment into a whole sensor mask)
 def CFA(masks, X):
     return np.dstack(np.tile(mask, X) for mask in masks)
-# Channels presentation (the channels and the aggregated image - all in a row)
+
+# Image presentation (the channels and the aggregated image - all in a row)
 def displayChannels(image, positions, colors, rows = 1, cols = 4):
     for p, c in zip(positions, colors):
         plt.subplot(rows, cols, p + 1)
@@ -24,31 +25,29 @@ BayerMask = np.array([[[0, 1], [0, 0]],             #R
 deBayerMask = np.ones((2, 2))
 
 ## Image 'capturing'
-# Note - the example works for the square images of even size only
-raw = cv2.imread("GrassHopper.PNG"); N = raw.shape[0]; X = [int(N/2), int(N/2)]
-raw = cv2.cvtColor(raw, cv2.COLOR_BGR2RGB) 
+# Note - the example works only for square images (N x N, and where N is even)
+img = cv2.imread("GrassHopper.PNG"); N = img.shape[0]; X = [int(N/2), int(N/2)]
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
 
-## Mosaicking (simulating the RAW sensor capture)
+## Mosaicking (capturing an image with a CFA sensor)
 # The Bayer color filter array
-BayerFilter = np.array(CFA(BayerMask, X))
+BayerFilter = CFA(BayerMask, X)
 # Processing
-img = raw * BayerFilter
+raw = img * BayerFilter
 
 ## Demosaicking 
 # A simple averaging filter
 deBayerFilter = [deBayerMask * w for w in [1, 1/2, 1]]
 # Processing
-R, G, B = [cv2.filter2D(img[..., n], -1, deBayerFilter[n]) for n in range(3)]
-
+R, G, B = [cv2.filter2D(raw[..., n], -1, deBayerFilter[n]) for n in range(3)]
 
 ## Presentation
 # A Bayer CFA mosaic (aka 'RAW')
 colors = ["red", "green", "blue"] 
-displayChannels(img, range(3), colors)
+displayChannels(raw, range(3), colors)
 # A Bayer CFA de-mosaicked image (aka 'JPG' - I know, I know... )
 rgb = np.dstack((R, G, B))
 displayChannels(rgb, range(3), colors)
 # Input vs. output image
-plt.subplot(131); plt.imshow(raw); plt.subplot(132); plt.imshow(rgb)
-plt.subplot(133); plt.imshow(raw - rgb)
-plt.show()
+plt.subplot(131); plt.imshow(img); plt.subplot(132); plt.imshow(rgb)
+plt.subplot(133); plt.imshow(img - rgb); plt.show()
