@@ -7,8 +7,7 @@ def displayImages(images, titles):
     number = len(images)
     for p, image, title in zip(range(number), images, titles):
         plt.subplot(1, number, p + 1)
-        plt.imshow(image)
-        plt.title(title)
+        plt.title(title); plt.imshow(image)
     plt.show()
 # Image dissection presentation (the channels and the aggregated images)
 def displayChannels(images, channels, positions, rows = 1, cols = 4):
@@ -16,11 +15,9 @@ def displayChannels(images, channels, positions, rows = 1, cols = 4):
         for p, c in zip(positions, channels):
             plt.subplot(rows, cols, p + 1)
             cmp = lscm.from_list("_", ["black", c])
-            plt.imshow(image[..., p], cmp)
-            plt.title(c)
+            plt.title(c); plt.imshow(image[..., p], cmp)
         plt.subplot(rows, cols, rows * cols)
-        plt.imshow(image)
-        plt.title("RGB")
+        plt.title("RGB"); plt.imshow(image)
         plt.show()
 
 # CFA filter mask (replication of a single CFA segment into a whole sensor mask)
