@@ -27,7 +27,7 @@ def CFA(masks, X):
 #### Image 'framing'
 # Note - the example works only for square images (N x N) and 
 # for 6 x 6 filter segments (and hence for N such that N % 6 = 0
-img = cv2.imread("GrassHopperX.PNG"); img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+img = cv2.cvtColor(cv2.imread("GrassHopperX.PNG"), cv2.COLOR_BGR2RGB) 
 N = img.shape[0]; X = [int(N/6)]; X *= 2
 
 
