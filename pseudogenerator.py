@@ -9,7 +9,7 @@ def p(x, z, m = 1.0):
 N, Z, X = 1023, 31415, [1.0/np.pi]; #Quantity, Teeth number, Initial value
 
 # Sequence generation
-for i in range(N):
+for _ in range(N):
     x  = X.pop();      # Note:   'pop()' removes 'x' from 'X'!
     X += x, p(x, Z)    # Equiv.: X.append(x); X.append(p(x, Z))
 

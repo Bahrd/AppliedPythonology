@@ -3,10 +3,12 @@ from matplotlib.colors import LinearSegmentedColormap as lscm
 
 ## Auxiliary functions
 #Images presentation
-def displayImages(images):
-    for index in range(len(images)):
-        plt.subplot(1, len(images), index + 1)
-        plt.imshow(images[index])
+def displayImages(images, titles):
+    number = len(images)
+    for p, image, title in zip(range(number), images, titles):
+        plt.subplot(1, number, p + 1)
+        plt.imshow(image)
+        plt.title(title)
     plt.show()
 
 # Image dissection presentation (the channels and the aggregated images)
@@ -14,10 +16,12 @@ def displayChannels(images, channels, positions, rows = 1, cols = 4):
     for image in images:
         for p, c in zip(positions, channels):
             plt.subplot(rows, cols, p + 1)
-            cmp = lscm.from_list('_', ['black', c])
+            cmp = lscm.from_list("_", ["black", c])
             plt.imshow(image[..., p], cmp)
+            plt.title(c)
         plt.subplot(rows, cols, rows * cols)
         plt.imshow(image)
+        plt.title("RGB")
         plt.show()
 
 # CFA filter mask (replication of a single CFA segment into a whole sensor mask)
@@ -27,7 +31,7 @@ def CFA(masks, X):
 #### Image 'framing'
 # Note - the example works only for square images (N x N) and for even N 
 # (the filter segments are 2 x 2)
-img = cv2.imread("GrassHopper.PNG"); img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2RGB) 
 N = img.shape[0]; X = [N >> 1]; X *= 2 
 
 
@@ -59,4 +63,4 @@ channels = ("red", "green", "blue")
 displayChannels((raw, rgb), channels, range(len(channels)))
 
 # Input vs. output image
-displayImages((img, rgb, img - rgb))
+displayImages((img, rgb, img - rgb), ("scene", "image", "diff"))
