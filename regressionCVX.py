@@ -10,8 +10,7 @@ def m(X, A):                          # function Y = m(X, A)
 ## Measurements (note N << L - the one way around...)
 α = randint(-2, 3, (6, 1))            # α = randi([-2, 3], 6, 1);
 ρ = norm(α, 1)
-N  = 128
-X, Z = (randn(N, 1), randn(N, 1) * .125); Y = m(X, α) + Z
+N  = 128; X, Z = (randn(N, 1), randn(N, 1) * .125); Y = m(X, α) + Z
 ## Regressors matrix (note L >> N - the other way around...) 
 L  = 512; Φ = cos(kron(X, arange(L))) # Φ = cos(kron(X, 1:L)); 
 
