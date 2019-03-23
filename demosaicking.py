@@ -16,28 +16,32 @@ def displayChannels(image, positions, colors, rows = 1, cols = 4):
     plt.imshow(image)
     plt.show()
 
-## Bayer CFA (Bryce E. Bayer@Eastman Kodak, 1976)
-# A segment mask definition (type 'uint8' required by OpenCV's filters)
-BayerMask = np.array([[[0, 1], [0, 0]],             #R
-                      [[1, 0], [0, 1]],             #G
-                      [[0, 0], [1, 0]]], np.uint8)  #B
-# deBayer filter definition (an example)
-deBayerMask = np.ones((2, 2))
 
-## Image 'capturing'
+#### Image 'capturing'
 # Note - the example works only for square images (N x N), for even N, 
 # and for 2 x 2 filter segments
 img = cv2.imread("GrassHopper.PNG"); img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
 N = img.shape[0]; X = [N >> 1]; X *= 2 
 
-## Capturing an image with a CFA sensor
+
+## Bayer CFA (Bryce E. Bayer@Eastman Kodak, 1976)
+# A segment mask definition (type 'uint8' required by OpenCV's filters)
+BayerMask = np.array([[[0, 1], [0, 0]],             #R
+                      [[1, 0], [0, 1]],             #G
+                      [[0, 0], [1, 0]]], np.uint8)  #B
 #  Making a CFA
 BayerFilter = CFA(BayerMask, X)
-# Mosaicking, i.e. filtering the image through the CFA
-raw = img * BayerFilter
 
 ## Demosaicking 
+# deBayer filter definition (an example)
+deBayerMask = np.ones((2, 2))
 deBayerFilter = [deBayerMask * w for w in [1, 1/2, 1]]
+
+
+## Capturing an image with a CFA sensor
+#  Mosaicking, i.e. filtering the image through the CFA
+raw = img * BayerFilter
+
 # Evaluating the lacking pixels 
 R, G, B = [cv2.filter2D(raw[..., n], -1, deBayerFilter[n]) for n in range(3)]
 rgb = np.dstack((R, G, B))
