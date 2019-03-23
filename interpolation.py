@@ -1,6 +1,6 @@
 import numpy as np; import matplotlib.pyplot as plt
-## Some interpolating functions, Π(x), ψ(x) and ϕ(x) or whatchamacallit this thingamajig..
-
+## Some interpolating functions, Π(x), ψ(x) and ϕ(x) or... 
+#  whatchamacallit this thingamajig...
 def Π(x, l = -1/2, r = 1/2):    # The window/rectangular function
     return (x >= l) * (x < r)
 def ψ(x):                       # The hat/tent/triangular function
@@ -9,8 +9,8 @@ def ϕ(x):                       # The Keys' cubic interpolating function
     return ((    4/3 * abs(x**3) - 7/3 * x**2 + 1)                                         * Π(x, -1, 1)
             + (-7/12 * abs(x**3) +   3 * x**2 - 59/12 * abs(x) + 15/6) * (1 - Π(x, -1, 1)) * Π(x, -2, 2)  
             + ( 1/12 * abs(x**3) - 2/3 * x**2 + 21/12 * abs(x) -  3/2) * (1 - Π(x, -2, 2)) * Π(x, -3, 3)) 
-# An interpolation routine Λ: f(n) ➞ f(x) using ϕ, ψ or Π, or an "ad hoc"
-def Φ(x, f, λ):                     # lambda x: 3/4*(abs(x) < 1)*(1 - x**2)
+# An interpolation routine Λ: f(n) ➞ f(x) using ϕ, ψ or Π, or an "ad hoc" lambda function
+def Φ(x, f, λ):
     n = np.arange(len(f))
     Λ = λ(x - n)                         
     return Λ @ f                       

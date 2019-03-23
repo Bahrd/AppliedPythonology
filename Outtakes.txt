@@ -1,3 +1,7 @@
 ## Restoring the values of raw pixels (highlights demosaicking pitfalls)
 #for n in range(3):
 #    rgb[BayerFilter[..., n] != 0, n] = raw[BayerFilter[..., n] != 0, n]
+
+
+# An interpolation routine Λ: f(n) ➞ f(x) using ϕ, ψ or Π, or an "ad hoc"
+#									 lambda x: 3/4*(abs(x) < 1)*(1 - x**2)
