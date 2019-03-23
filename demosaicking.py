@@ -10,7 +10,6 @@ def displayImages(images, titles):
         plt.imshow(image)
         plt.title(title)
     plt.show()
-
 # Image dissection presentation (the channels and the aggregated images)
 def displayChannels(images, channels, positions, rows = 1, cols = 4):
     for image in images:

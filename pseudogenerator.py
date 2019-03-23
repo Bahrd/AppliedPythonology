@@ -6,14 +6,14 @@ def p(x, z, m = 1.0):
     return m * y
 
 # Pseudo-random sequence parameters (quite random already)
-N, Z, X = 1023, 31415, [1.0/np.pi]; #Quantity, Teeth number, Initial value
+N, Z, X = 1023, 31415, [1.0/np.pi]; #Quantity - 1, Teeth number, Initial value
 
 # Sequence generation
 for _ in range(N):
     x  = X.pop();      # Note:   'pop()' removes 'x' from 'X'!
     X += x, p(x, Z)    # Equiv.: X.append(x); X.append(p(x, Z))
 
-# Presentations (look'n'feel randomness checks)
+## Presentations (look'n'feel randomness checks)
 # Histogram...
 plt.hist(X, bins = 'auto', density = True) 
 plt.title("{0} pseudorandom samples for a {1} tooth pseudogenerator"
