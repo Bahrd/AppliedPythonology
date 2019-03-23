@@ -20,6 +20,7 @@ def displayChannels(images, channels, positions, rows = 1, cols = 4):
         plt.title("RGB"); plt.imshow(image)
         plt.show()
 
+
 # CFA filter mask (replication of a single CFA segment into a whole sensor mask)
 def CFA(masks, X):
     return np.dstack(np.tile(mask, X) for mask in masks)
