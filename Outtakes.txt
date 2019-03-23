@@ -1,0 +1,3 @@
+## Restoring the values of raw pixels (highlights demosaicking pitfalls)
+#for n in range(3):
+#    rgb[BayerFilter[..., n] != 0, n] = raw[BayerFilter[..., n] != 0, n]
