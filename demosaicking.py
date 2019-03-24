@@ -37,7 +37,7 @@ N = img.shape[0]; X = [N >> 1]; X *= 2
 BayerMask = np.array([[[0, 1], [0, 0]],             #R
                       [[1, 0], [0, 1]],             #G
                       [[0, 0], [1, 0]]], np.uint8)  #B
-#  Making a CFA
+#  Making an image size CFA
 BayerFilter = CFA(BayerMask, X)
 
 # deBayer filter definition (an example)
@@ -50,7 +50,7 @@ deBayerFilter = [deBayerMask * w for w in [1, 1/2, 1]]
 raw = img * BayerFilter
 
 ## Demosaicking 
-# Evaluating the lacking pixels 
+# Evaluating the lacking pixels (in a straightforward/naïve approach)
 R, G, B = [cv2.filter2D(raw[..., n], -1, deBayerFilter[n]) for n in range(3)]
 rgb = np.dstack((R, G, B))
 
@@ -58,6 +58,5 @@ rgb = np.dstack((R, G, B))
 channels = ("red", "green", "blue")
 # The Bayer CFA mosaic (aka 'RAW') and the de-mosaicked image
 displayChannels((raw, rgb), channels, range(len(channels)))
-
 # Input vs. output image
 displayImages((img, rgb, img - rgb), ("scene", "image", "diff"))

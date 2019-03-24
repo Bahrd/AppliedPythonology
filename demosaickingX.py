@@ -39,19 +39,19 @@ XTransMask = np.array([[[0, 0, 0, 0, 1, 0],
                         [0, 0, 0, 0, 1, 0],
                         [0, 1, 0, 0, 0, 0],
                         [0, 0, 0, 1, 0, 1],
-                        [0, 1, 0, 0, 0, 0]], 
+                        [0, 1, 0, 0, 0, 0]],            #R
                        [[1, 0, 1, 1, 0, 1],
                         [0, 1, 0, 0, 1, 0],
                         [1, 0, 1, 1, 0, 1],
                         [1, 0, 1, 1, 0, 1],
                         [0, 1, 0, 0, 1, 0],
-                        [1, 0, 1, 1, 0, 1]],
+                        [1, 0, 1, 1, 0, 1]],            #G
                        [[0, 1, 0, 0, 0, 0], 
                         [0, 0, 0, 1, 0, 1],
                         [0, 1, 0, 0, 0, 0],
                         [0, 0, 0, 0, 1, 0],
                         [1, 0, 1, 0, 0, 0],
-                        [0, 0, 0, 0, 1, 0]]], np.uint8)
+                        [0, 0, 0, 0, 1, 0]]], np.uint8) #B
 # Making an image size CFA
 XTransFilter = CFA(XTransMask, X)
 
@@ -71,8 +71,8 @@ deXTransFilter = np.array([deXTransMask * w for w in [1/8, 1/20, 1/8]]) * 36
 #  Mosaicking, i.e. filtering the image through the CFA
 raw = img * XTransFilter
 
-## Demosaicking (a very naive approach)
-# Evaluating the lacking pixels 
+## Demosaicking
+# Evaluating the lacking pixels (an utterly naive approach)
 R, G, B = [cv2.filter2D(raw[..., n], -1, deXTransFilter[n]) for n in range(3)]
 rgb = np.dstack((R, G, B))
 
@@ -80,6 +80,5 @@ rgb = np.dstack((R, G, B))
 channels = ("red", "green", "blue")
 # An X-Trans CFA mosaic (aka 'RAW') and the de-mosaicked image (aka 'JPG')
 displayChannels((raw, rgb), channels, range(len(channels)))
-
 # Input vs. output image
 displayImages((img, rgb, img - rgb), ("scene", "image", "diff"))
