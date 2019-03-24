@@ -11,10 +11,11 @@
 - [ ] other simple image processing algorithms 
 	- [ ] orthogonal series approximations
 	- [ ] JPG/H.264/5-like compression schemes
+	- [ ] contrast and phase-detection AF algorithms
 - [ ] other system identification algorithms
 	- [ ] dedicated algorithms for Wiener and Hammerstein systems
 	- [ ] Volterra and Wiener series based algorithms for more general structures (LNL, NLN, etc.)
 - [ ] other modeling algorithms
 	- [ ] Hidden Markov Model-based avatar behavior
-	- [ ] Video segmentation and anonimization
-	- [ ] Fatigue-controlled virtual window
+	- [ ] video segmentation and anonimization
+	- [ ] fatigue-controlled virtual window
