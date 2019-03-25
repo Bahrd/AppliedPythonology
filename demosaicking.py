@@ -1,29 +1,4 @@
-import cv2; import numpy as np; import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap as lscm
-
-## Auxiliary functions
-#Images presentation
-def displayImages(images, titles):
-    number = len(images)
-    for p, image, title in zip(range(number), images, titles):
-        plt.subplot(1, number, p + 1)
-        plt.title(title); plt.imshow(image)
-    plt.show()
-# Image dissection presentation (the channels and the aggregated images)
-def displayChannels(images, channels, positions, rows = 1, cols = 4):
-    for image in images:
-        for p, c in zip(positions, channels):
-            plt.subplot(rows, cols, p + 1)
-            cmp = lscm.from_list("_", ["black", c])
-            plt.title(c); plt.imshow(image[..., p], cmp)
-        plt.subplot(rows, cols, rows * cols)
-        plt.title("RGB"); plt.imshow(image)
-        plt.show()
-
-
-# CFA filter mask (replication of a single CFA segment into a whole sensor mask)
-def CFA(masks, X):
-    return np.dstack(np.tile(mask, X) for mask in masks)
+import cv2; import numpy as np; import auxiliary as aux
 
 #### Image 'framing'
 # Note - the example works only for square images (N x N) and for even N 
@@ -38,7 +13,7 @@ BayerMask = np.array([[[0, 1], [0, 0]],             #R
                       [[1, 0], [0, 1]],             #G
                       [[0, 0], [1, 0]]], np.uint8)  #B
 #  Making an image size CFA
-BayerFilter = CFA(BayerMask, X)
+BayerFilter = aux.CFA(BayerMask, X)
 
 # deBayer filter definition (an example)
 deBayerMask = np.ones((2, 2))
@@ -57,6 +32,6 @@ rgb = np.dstack((R, G, B))
 ## Presentation
 channels = ("red", "green", "blue")
 # The Bayer CFA mosaic (aka 'RAW') and the de-mosaicked image
-displayChannels((raw, rgb), channels, range(len(channels)))
+aux.displayChannels((raw, rgb), channels, range(len(channels)))
 # Input vs. output image
-displayImages((img, rgb, img - rgb), ("scene", "image", "diff"))
+aux.displayImages((img, rgb, img - rgb), ("scene", "image", "diff"))

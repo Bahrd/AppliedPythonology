@@ -9,13 +9,13 @@
 - basic function regression estimation with L1 constraints: [regressionCVX.py](./regressionCVX.py)
 ### Todo(s)
 - [ ] other simple image processing algorithms 
-	- [ ] orthogonal series approximations
+	- [ ] orthogonal series approximations and denoising
 	- [ ] JPG/H.264/5-like compression schemes
-	- [ ] contrast and phase-detection AF algorithms
+	- [ ] contrast and phase-detection autofocusing
 - [ ] other system identification algorithms
 	- [ ] dedicated algorithms for Wiener and Hammerstein systems
 	- [ ] Volterra and Wiener series based algorithms for more general structures (LNL, NLN, etc.)
 - [ ] other modeling algorithms
 	- [ ] Hidden Markov Model-based avatar behavior
-	- [ ] video segmentation and anonimization
+	- [ ] video anonimization and semantic segmentation
 	- [ ] fatigue-controlled virtual window
