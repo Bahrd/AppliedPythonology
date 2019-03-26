@@ -1,4 +1,4 @@
-## Auxiliary functions for image processing algorithms
+## Auxiliary routines for image processing algorithms
 import numpy as np; import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap as lscm
 

@@ -38,8 +38,8 @@ deXTransMask = np.array([[0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
                          [0.  , 0.5 , 1.  , 1.  , 0.5 , 0.  ],
                          [0.  , 0.5 , 1.  , 1.  , 0.5 , 0.  ],
                          [0.  , 0.25, 0.5 , 0.5 , 0.25, 0.  ],
-                         [0.  , 0.  , 0.  , 0.  , 0.  , 0.  ]])/9
-deXTransFilter = np.array([deXTransMask * w for w in [1/8, 1/20, 1/8]]) * 36
+                         [0.  , 0.  , 0.  , 0.  , 0.  , 0.  ]])
+deXTransFilter = np.array([deXTransMask * w for w in [1/2, 1/5, 1/2]])
 
 
 ## Capturing an image with a CFA sensor
