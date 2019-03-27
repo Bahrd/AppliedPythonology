@@ -4,11 +4,13 @@ import numpy as np; import matplotlib.pyplot as plt
 def Π(x, l = -1/2, r = 1/2):    # The window/rectangular function
     return (x >= l) * (x < r)
 def ψ(x):                       # The hat/tent/triangular function
-    return (1 - abs(x)) * (abs(x) < 1)
+    x = abs(x)
+    return (1 - x) * (x < 1)
 def ϕ(x):                       # The Keys' cubic interpolating function
-    return ((    4/3 * abs(x**3) - 7/3 * x**2 + 1)                                         * Π(x, -1, 1)
-            + (-7/12 * abs(x**3) +   3 * x**2 - 59/12 * abs(x) + 15/6) * (1 - Π(x, -1, 1)) * Π(x, -2, 2)  
-            + ( 1/12 * abs(x**3) - 2/3 * x**2 + 21/12 * abs(x) -  3/2) * (1 - Π(x, -2, 2)) * Π(x, -3, 3)) 
+    x, a = abs(x), -0.5
+    return (((a + 2) * x**3 - (a + 3) * x**2 + 1)             * Π(x, 0, 1) 
+           + (     a * x**3 -     5*a * x**2 + 8*a * x - 4*a) * Π(x, 0, 2) * (1 - Π(x, 0, 1)))
+
 # An interpolation routine Λ: f(n) ➞ f(x) using ϕ, ψ or Π, or an "ad hoc" lambda function
 def Φ(x, f, λ):
     n = np.arange(len(f))
