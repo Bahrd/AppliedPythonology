@@ -31,7 +31,7 @@ def quantize(img, Q = 1):
 ## Image loading
 img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY); org = img
 N = 512; img, org = cv2.resize(img, (N, N)), cv2.resize(org, (N, N))
-B = 32;  blocks, tiles = range(int(N/B)), range(0, N, B)
+B = 16;  blocks, tiles = range(int(N/B)), range(0, N, B)
 
 # Compression quality ('Q = 1' no quantization or standard JPG quatization)
 Q = 1
@@ -40,15 +40,14 @@ Q = 1
 trns = [[dct2(img[n:n + B, m:m + B]) for m in tiles] 
                                      for n in tiles]
 ## Coefficients quantization
-trns = [[quantize(trns[n][m], Q) for m in blocks] 
+qtzd = [[quantize(trns[n][m], Q) for m in blocks] 
                                  for n in blocks]
-## Inverse tile transformation of quantized coefficients
-img  = [[idct2(trns[n][m]) for m in blocks] 
+## Inverse transformation of quantized coefficients
+img  = [[idct2(qtzd[n][m]) for m in blocks] 
                            for n in blocks]
 ## Presentation
-img = np.block(img).astype(np.int); trns = np.block(trns); diff = img - org
-aux.displayImages([org, trns, img, org - img], 
-                  ['original', 
-                   'DCT 2D', 
-                   'Q = {0}'.format(Q),
-                   'Max diff {0}'.format(max(diff.flat))])
+img = np.block(img).astype(np.int); qtzd = np.block(qtzd)
+zeros = sum((qtzd == 0).flat)
+aux.displayImages([org, qtzd, img, org - img], 
+                  ['original', 'DCT 2D', 
+                   'Q = {0}'.format(Q), 'zeros = {0}'.format(zeros)])
