@@ -7,8 +7,11 @@ img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2RGB)
 N = img.shape[0]; X = [N >> 1]; X *= 2 
 
 
-## Bayer CFA (Bryce E. Bayer@Eastman Kodak, 1976)
-# A segment mask definition (type 'uint8' required by OpenCV's filters)
+## Bayer CFA (Kodak Research Laboratory)
+#  Peter Dillon and albert Brault, 1974
+#  Bryce E. Bayer, 1976
+#  http://image-sensors-world.blogspot.com/2019/03/technology-emmy-awards-for-color-filter.html
+#  A segment mask definition (type 'uint8' required by OpenCV's filters)
 BayerMask = np.array([[[0, 1], [0, 0]],             #R
                       [[1, 0], [0, 1]],             #G
                       [[0, 0], [1, 0]]], np.uint8)  #B
