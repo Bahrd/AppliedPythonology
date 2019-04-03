@@ -1,6 +1,4 @@
-import cv2
-import numpy as np
-import auxiliary as aux
+import cv2; import numpy as np; import auxiliary as aux; 
 import matplotlib.pyplot as plt
 
 ## JPG Lite - a (pretty much) simplified version of the standard 
@@ -30,29 +28,25 @@ def quantize(img, Q = 1):
         img = (img / Q).astype(np.int)
     return img
 
-img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY) 
-org = img
-N = 512; img = cv2.resize(img, (N, N))
-bn = 8
-Q = .1
+## Image loading
+img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY); org = img
+N = 512; img, org = cv2.resize(img, (N, N)), cv2.resize(org, (N, N))
+B = 32;  blocks, tiles = range(int(N/B)), range(0, N, B)
 
-## Transforming each tile using DCT 2D
-trns = [[dct2(img[n:n + bn, m:m + bn]) for m in range(0, N, bn)] 
-                                       for n in range(0, N, bn)]
-trns = np.block(trns)
+# Compression quality ('Q = 1' no quantization or standard JPG quatization)
+Q = 1
 
-## DCT 2D coefficients quantization
-trns = [[quantize(trns[n:n + bn, m:m + bn], Q) for m in range(0, N, bn)] 
-                                               for n in range(0, N, bn)]
-trns = np.block(trns)
-
-## Inverse DCT 2D transform
-img = [[idct2(trns[n:n + bn, m:m + bn]) for m in range(0, N, bn)] 
-                                        for n in range(0, N, bn)]
-img = np.block(img).astype(np.int)
-
+## Transforming each tile/block using DCT 2D
+trns = [[dct2(img[n:n + B, m:m + B]) for m in tiles] 
+                                     for n in tiles]
+## Coefficients quantization
+trns = [[quantize(trns[n][m], Q) for m in blocks] 
+                                 for n in blocks]
+## Inverse tile transformation of quantized coefficients
+img  = [[idct2(trns[n][m]) for m in blocks] 
+                           for n in blocks]
 ## Presentation
-diff = img - org
+img = np.block(img).astype(np.int); trns = np.block(trns); diff = img - org
 aux.displayImages([org, trns, img, org - img], 
                   ['original', 
                    'DCT 2D', 
