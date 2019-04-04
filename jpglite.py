@@ -1,23 +1,23 @@
 import cv2; import numpy as np; import auxiliary as aux; 
 import matplotlib.pyplot as plt
 
-## JPG Lite - a (pretty much) simplified version of the standard 
-#  still image transform coding compression algorithm
+### JPG Lite - a (pretty much) simplified version of the standard 
+#   still image transform coding compression algorithm
 
-## Tile DCT 2D transform
+## Useful routines
+# Tile DCT 2D transform
 def dct2(img, nrm = 'ortho'):
     from scipy.fftpack import dct
     return dct(dct(img.T, norm = nrm).T, norm = nrm) 
-
-## Tile Inverse DCT 2D transform
+# Tile Inverse DCT 2D transform
 def idct2(img, nrm = 'ortho'):
     from scipy.fftpack import idct
     return idct(idct(img.T, norm = nrm).T, norm = nrm) 
-
-## Quantization of the DCT 2D coefficients 
-#  When 'block_size = 8' the standard JPG quantization is applied with Q 
-#  being a quality factor (the larger Q the better quality)
-#  Otherwise the scalar quantization: '⌊Q⋅x + .5⌋/Q' is performed
+# Quantization of the DCT 2D coefficients 
+#  When 'block_size == 8' the standard JPG luminance channel quantization 
+#  matrix is applied with Q being a 'quality factor' (the larger Q 
+#  the better quality). 
+#  Otherwise, the scalar quantization: '⌊Q⋅x + .5⌋/Q' is performed
 def quantize(img, Q = 1):
     if img.shape[0] == 8:
         QT = np.array(aux.JPG_QT_Y)
@@ -31,23 +31,23 @@ def quantize(img, Q = 1):
 ## Image loading
 img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY); org = img
 N = 512; img, org = cv2.resize(img, (N, N)), cv2.resize(org, (N, N))
-B = 16;  blocks, tiles = range(int(N/B)), range(0, N, B)
+B = 16;  tiles, blocks = range(0, N, B), range(int(N/B))
 
-# Compression quality ('Q = 1' no quantization or standard JPG quatization)
-Q = 1
+# Compression quality ('Q == 1' means no scalar quantization (other 
+# than 'int' conversion) or a standard JPG quatization matrix application)
+Q = .1 # Q == 0.1 results in a poor quality image
 
 ## Transforming each tile/block using DCT 2D
-trns = [[dct2(img[n:n + B, m:m + B]) for m in tiles] 
-                                     for n in tiles]
-## Coefficients quantization
-qtzd = [[quantize(trns[n][m], Q) for m in blocks] 
-                                 for n in blocks]
-## Inverse transformation of quantized coefficients
-img  = [[idct2(qtzd[n][m]) for m in blocks] 
-                           for n in blocks]
+trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
+
+## Coefficients quantization and inverse transformation
+qntz = [[quantize(trns[n][m], Q) for m in blocks] for n in blocks]
+img  = [[   idct2(qntz[n][m])    for m in blocks] for n in blocks]
+
 ## Presentation
-img = np.block(img).astype(np.int); qtzd = np.block(qtzd)
-zeros = sum((qtzd == 0).flat)
-aux.displayImages([org, qtzd, img, org - img], 
+img, qntz = np.block(img).astype(np.int), np.block(qntz)
+nonzeros = sum((qntz != 0).flat)
+
+aux.displayImages([org, qntz, img, org - img], 
                   ['original', 'DCT 2D', 
-                   'Q = {0}'.format(Q), 'zeros = {0}'.format(zeros)])
+                   'Q = {}'.format(Q), '{} non-zeros'.format(nonzeros)])
