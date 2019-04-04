@@ -35,14 +35,15 @@ B = 16;  tiles, blocks = range(0, N, B), range(int(N/B))
 
 # Compression quality ('Q == 1' means no scalar quantization (other 
 # than 'int' conversion) or a standard JPG quatization matrix application)
-Q = .1 # Q == 0.1 results in a poor quality image
+# For instance, 'Q == 0.1' usually results in a poor quality image while
+# For a JPG, 'Q == 10' yields a visually indistinguishable image
 
 ## Transforming each tile/block using DCT 2D
 trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
 
 ## Coefficients quantization and inverse transformation
-qntz = [[quantize(trns[n][m], Q) for m in blocks] for n in blocks]
-img  = [[   idct2(qntz[n][m])    for m in blocks] for n in blocks]
+qntz = [[quantize(trns[n][m]) for n in blocks] for m in blocks]
+img  = [[   idct2(qntz[n][m]) for n in blocks] for m in blocks]
 
 ## Presentation
 img, qntz = np.block(img).astype(np.int), np.block(qntz)
