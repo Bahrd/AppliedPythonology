@@ -1,5 +1,5 @@
-![Laocoön and His Sons](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg/250px-Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg)
 # Applied Pythonology
+![Laocoön and His Sons](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg/250px-Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg)
 ## System identification and image processing algorithms
 ### Low-level image processing
 - basic interpolation algorithm: [interpolation.py](./interpolation.py)
@@ -11,11 +11,12 @@
 - basic function regression estimation with Lq constraints: [regressionCVX.py](./regressionCVX.py)
 ### Todo(s)
 - [ ] other simple image processing algorithms 
+	- [ ] bilateral convolution filters
 	- [ ] orthogonal series approximations and denoising
 	- [ ] JPEG 2000 and H.265-like compression schemes
 	- [ ] contrast and phase-detection autofocusing
 - [ ] other system identification algorithms
-	- [ ] dedicated algorithms for Wiener and Hammerstein systems
+	- [ ] dedicated routines for Wiener and Hammerstein systems
 	- [ ] Volterra and Wiener series based algorithms for more general structures (LNL, NLN, etc.)
 - [ ] other modeling algorithms
 	- [ ] Hidden Markov Model-based avatar behavior
