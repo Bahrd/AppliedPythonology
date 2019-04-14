@@ -11,7 +11,8 @@ def ϕ(x):                       # The Keys' cubic interpolating function
     return (((a + 2) * x**3 - (a + 3) * x**2 + 1)             * Π(x, 0, 1) 
            + (     a * x**3 -     5*a * x**2 + 8*a * x - 4*a) * Π(x, 0, 2) * (1 - Π(x, 0, 1)))
 
-# An interpolation routine Λ: f(n) ➞ f(x) using ϕ, ψ or Π, or an "ad hoc" lambda function
+# An interpolation routine Λ: f(n) ➞ f(x) using ϕ, ψ or Π, 
+# or an 'ad hoc/inline' function 'lambda x: f(x)'
 def Φ(x, f, λ):
     n = np.arange(len(f))
     Λ = λ(x - n)                         

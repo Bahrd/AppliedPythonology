@@ -40,7 +40,6 @@ trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
 #  For instance, 'Q == 0.1' usually results in a poor quality image while
 #  for a JPG, 'Q == 10' yields a visually indistinguishable image
 Q = 1
-
 ## Coefficients quantization and inverse transformation
 #  Note that the 'trns' parameter is not deep-copied when passed to 
 #  'quantization' function and thus is modified there!
