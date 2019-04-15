@@ -28,8 +28,8 @@ def quantize(X, Q = 1):
 
 ## Image loading (if 'B == 8' then by default a JPG quantization scheme is 
 #  applied
-img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY); org = img
-N = 512; img, org = cv2.resize(img, (N, N)), cv2.resize(org, (N, N))
+org = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY)
+N = 512; org = cv2.resize(org, (N, N))
 B = 8;  tiles, blocks = range(0, N, B), range(int(N/B))
 
 ## Transforming each tile/block using DCT 2D
