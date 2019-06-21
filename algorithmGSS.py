@@ -5,78 +5,78 @@
 # find an interval [x - ε, x + ε] in the smallest number of steps.
 
 import math
-φ  = (math.sqrt(5) - 1) / 2     # Since 1/φ == φ - 1 
 ## Wikipedia's implementation
 def gss(f, a, b, ε = 1e-5, h = None,  c = None, d = None,
                              fc = None, fd = None):
     (a, b) = (min(a, b), max(a, b))
-    
+    ιφ  = (math.sqrt(5) - 1) / 2     # Since 1/φ == φ - 1 
+
     # Log: print('[{:.4f}, {:.4f}]'.format(a, b))
     # Interval width
     if h == None: h = b - a
     if h <= ε: return (a, b)
 
     # Interval bounds
-    if c == None: c = a + φ * φ * h
-    if d == None: d = a +  φ * h
+    if c == None: c = a + ιφ * ιφ * h
+    if d == None: d = a +  ιφ * h
     if fc == None: fc = f(c)
     if fd == None: fd = f(d)
     
     if fc > fd:
-        return gss(f, a, d, ε, h * φ, 
+        return gss(f, a, d, ε, h * ιφ, 
                       c = None, fc = None, d = c, fd = fc)
     else:
-        return gss(f, c, b, ε, h * φ, 
+        return gss(f, c, b, ε, h * ιφ, 
                       c = d, fc = fd, d = None, fd = None)
 
 ## Our take:
 # A recursive implementation... 
 def gssl(f, ε, l, r):
-    φ  = (math.sqrt(5) - 1)/2   # Note: φ - 1 == 1/φ
-    n, m = l + (r - l) * φ, r - (r - l) * φ
+    ιφ  = (math.sqrt(5) - 1)/2   # Note: φ - 1 == 1/φ
+    n, m = l + (r - l) * ιφ, r - (r - l) * ιφ
     def gsslk(f, ε, l, r, n , m):
         if r - l <= ε: return (l, r)
         if f(m) > f(n):
             r, n = n, m
-            m = r - (r - l) * φ
+            m = r - (r - l) * ιφ
             return gsslk(f, ε, l, r, n, m)
         else:
             l, m = m, n  
-            n = l + (r - l) * φ
+            n = l + (r - l) * ιφ
             return gsslk(f, ε, l, r, n, m)
     
     return gsslk(f, ε, l, r, n , m)
 
 # ... disguised in an OO interface
 class GSS:
-    def __init__(s, f, ε, l, r):
-        s.f, s.ε = f, ε 
-        s.l, s.r = l, r
-        s.φ = (math.sqrt(5) - 1)/2 # Note: φ - 1 == 1/φ
+    def __init__(λ, f, ε, l, r): # 'λ' stands for 'λογιστικόν' (a part of soul
+        λ.f, λ.ε = f, ε          # associated with logic - according to Plato)
+        λ.l, λ.r = l, r          # or a usual 'self' in a Python OO approach
+        λ.ιφ = (math.sqrt(5) - 1)/2 # Note: φ - 1 == 1/φ
     # The recursive search
-    def search(s, l, r, n, m):
-        if r - l <= s.ε: return (l, r)
-
-        if s.f(m) > s.f(n):
+    def search(λ, l, r, n, m):
+        if r - l <= λ.ε: return (l, r)
+        ιφ = λ.ιφ
+        if λ.f(m) > λ.f(n):
             r, n = n, m
-            m = r - (r - l) * φ
-            return s.search(l, r, n, m)
+            m = r - (r - l) * ιφ
+            return λ.search(l, r, n, m)
         else:
             l, m = m, n  
-            n = l + (r - l) * φ
-            return s.search(l, r, n, m)
+            n = l + (r - l) * ιφ
+            return λ.search(l, r, n, m)
     # The interface...
-    def find(s):
-        l, r, φ = s.l, s.r, s.φ
-        n, m = l + (r - l) * φ, r - (r - l) * φ
+    def find(λ):
+        l, r, ιφ = λ.l, λ.r, λ.ιφ
+        n, m = l + (r - l) * ιφ, r - (r - l) * ιφ
 
-        return s.search(l, r, n, m)
+        return λ.search(l, r, n, m)
 
 ## Tests...
-f = lambda x: -abs(x - 1/φ)
-
+φ  = (math.sqrt(5) + 1) / 2     # Since 1/φ == φ - 1 
+f = lambda x: -abs(x - φ)
 # Wiki's...
-l, r, ε = 0, 2/φ, 1e-3
+l, r, ε = 0, 2 * φ, 1e-3
 (c,d) = gss(f, l, r, ε)
 print('\n[{:.6f}, {:.6f}]'.format(c, d))
 
