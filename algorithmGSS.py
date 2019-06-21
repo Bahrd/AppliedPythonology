@@ -7,7 +7,7 @@
 import math
 ## Wikipedia's implementation
 def gss(f, a, b, ε = 1e-5, h = None,  c = None, d = None,
-                             fc = None, fd = None):
+                          fc = None, fd = None):
     (a, b) = (min(a, b), max(a, b))
     ιφ  = (math.sqrt(5) - 1) / 2     # Since 1/φ == φ - 1 
 
@@ -52,7 +52,7 @@ class GSS:
     def __init__(λ, f, ε, l, r): # 'λ' stands for 'λογιστικόν' (a part of soul
         λ.f, λ.ε = f, ε          # associated with logic - according to Plato)
         λ.l, λ.r = l, r          # or a usual 'self' in a Python OO approach
-        λ.ιφ = (math.sqrt(5) - 1)/2 # Note: φ - 1 == 1/φ
+        λ.ιφ = (math.sqrt(5) - 1)/2 # Note again: φ - 1 == 1/φ
     # The recursive search
     def search(λ, l, r, n, m):
         if r - l <= λ.ε: return (l, r)
@@ -73,10 +73,11 @@ class GSS:
         return λ.search(l, r, n, m)
 
 ## Tests...
-φ  = (math.sqrt(5) + 1) / 2     # Since 1/φ == φ - 1 
+φ  = (math.sqrt(5) + 1)/2
 f = lambda x: -abs(x - φ)
+l, r, ε = 0, 2*φ, 1e-3
+
 # Wiki's...
-l, r, ε = 0, 2 * φ, 1e-3
 (c,d) = gss(f, l, r, ε)
 print('\n[{:.6f}, {:.6f}]'.format(c, d))
 
