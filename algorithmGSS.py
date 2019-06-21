@@ -47,30 +47,30 @@ def gssl(f, ε, l, r):
     
     return gsslk(f, ε, l, r, n , m)
 
-# ... wrapped in an OO interface
+# ... disguised in an OO interface
 class GSS:
-    def __init__(self, f, ε, l, r):
-        self.f, self.ε = f, ε 
-        self.l, self.r = l, r
-        self.φ = (math.sqrt(5) - 1)/2 # Note: φ - 1 == 1/φ
-    
-    def search(self, l, r, n, m):
-        if r - l <= self.ε: return (l, r)
+    def __init__(s, f, ε, l, r):
+        s.f, s.ε = f, ε 
+        s.l, s.r = l, r
+        s.φ = (math.sqrt(5) - 1)/2 # Note: φ - 1 == 1/φ
+    # The recursive search
+    def search(s, l, r, n, m):
+        if r - l <= s.ε: return (l, r)
 
-        if self.f(m) > self.f(n):
+        if s.f(m) > s.f(n):
             r, n = n, m
             m = r - (r - l) * φ
-            return self.search(l, r, n, m)
+            return s.search(l, r, n, m)
         else:
             l, m = m, n  
             n = l + (r - l) * φ
-            return self.search(l, r, n, m)
-
-    def find(self):
-        l, r, φ = self.l, self.r, self.φ
+            return s.search(l, r, n, m)
+    # The interface...
+    def find(s):
+        l, r, φ = s.l, s.r, s.φ
         n, m = l + (r - l) * φ, r - (r - l) * φ
 
-        return self.search(self.l, self.r, n, m)
+        return s.search(l, r, n, m)
 
 ## Tests...
 f = lambda x: -abs(x - 1/φ)
