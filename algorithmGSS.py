@@ -31,7 +31,7 @@ def gss(f, a, b, ε = 1e-5, h = None,  c = None, d = None,
 
 ## Our take:
 # A recursive implementation... 
-def gssl(f, ε, l, r):
+def gsl(f, ε, l, r):
     ιφ  = (math.sqrt(5) - 1)/2   # Note: φ - 1 == 1/φ
     n, m = l + (r - l) * ιφ, r - (r - l) * ιφ
     def gsslk(f, ε, l, r, n , m):
@@ -44,10 +44,10 @@ def gssl(f, ε, l, r):
             l, m = m, n  
             n = l + (r - l) * ιφ
             return gsslk(f, ε, l, r, n, m)
-    
+
     return gsslk(f, ε, l, r, n , m)
 
-# ... disguised in an OO interface
+# ... also available in an OO disguise
 class GSS:
     def __init__(λ, f, ε, l, r): # 'λ' stands for 'λογιστικόν' (a part of soul
         λ.f, λ.ε = f, ε          # associated with logic - according to Plato)
@@ -69,22 +69,15 @@ class GSS:
     def find(λ):
         l, r, ιφ = λ.l, λ.r, λ.ιφ
         n, m = l + (r - l) * ιφ, r - (r - l) * ιφ
-
         return λ.search(l, r, n, m)
 
 ## Tests...
 φ  = (math.sqrt(5) + 1)/2
 f = lambda x: -abs(x - φ)
 l, r, ε = 0, 2*φ, 1e-3
+txt = '[{:.6f}, {:.6f}]\n'
 
-# Wiki's...
-(c,d) = gss(f, l, r, ε)
-print('\n[{:.6f}, {:.6f}]'.format(c, d))
-
-# ... and ours
-(c,d) = gssl(f, ε, l, r)
-print('\n[{:.6f}, {:.6f}]'.format(c, d))
-
-gs = GSS(f, ε, l, r)
-(c,d) = gs.find()
-print('\n[{:.6f}, {:.6f}]'.format(c, d))
+# Wiki's... and ours!
+print((3 * txt).format(*gss(f, l, r, ε),
+                       *gsl(f, ε, l, r),
+                       *GSS(f, ε, l, r).find()))
