@@ -34,18 +34,18 @@ def gss(f, a, b, ε = 1e-5, h = None,  c = None, d = None,
 def gsl(f, ε, l, r):
     ιφ  = (math.sqrt(5) - 1)/2   # Note: φ - 1 == 1/φ
     n, m = l + (r - l) * ιφ, r - (r - l) * ιφ
-    def gsslk(f, ε, l, r, n , m):
+    def search(f, ε, l, r, n , m):
         if r - l <= ε: return (l, r)
         if f(m) > f(n):
             r, n = n, m
             m = r - (r - l) * ιφ
-            return gsslk(f, ε, l, r, n, m)
+            return search(f, ε, l, r, n, m)
         else:
             l, m = m, n  
             n = l + (r - l) * ιφ
-            return gsslk(f, ε, l, r, n, m)
+            return search(f, ε, l, r, n, m)
 
-    return gsslk(f, ε, l, r, n , m)
+    return search(f, ε, l, r, n , m)
 
 # ... also available in an OO disguise
 class GSS:
