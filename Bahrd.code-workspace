@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"terminal.integrated.fontSize": 20,
+		"files.autoSave": "afterDelay"
+	}
+}
