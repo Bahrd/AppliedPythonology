@@ -18,7 +18,7 @@ from cvxpy import Problem, Minimize, Variable
 from cvxpy import norm as cvx_norm
 #Python CVX                           # MATLAB CVX
                                       # cvx_begin quiet
-A = Variable(L)                       #  variable A(L) 
+A = Variable((L, 1))                  #  variable A(L) 
 o = Minimize(cvx_norm(Φ @ A - Y, 2))  #  minimize(norm(Φ * A - Y, 2)) 
 c = [cvx_norm(A, 1) <= ρ]             #  subject to norm(A, 1) <= ρ
 p = Problem(o, c); p.solve()          # cvx_end

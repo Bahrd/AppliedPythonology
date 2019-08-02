@@ -10,6 +10,13 @@ def displayImages(images, titles, cmp = 'gray'):
         plt.title(title); plt.imshow(image, cmap = cmp)
     plt.show()
 
+def displayPlots(plots, titles):
+    number = len(plots)
+    for p, pl, title in zip(range(number), plots, titles):
+        plt.subplot(1, number, p + 1)
+        plt.title(title); plt.plot(pl)
+    plt.show()
+
 # Image dissection presentation (the channels and the resulting image)
 def displayChannels(images, channels, positions, rows = 1, cols = 4):
     for image in images:
