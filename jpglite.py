@@ -30,7 +30,7 @@ def quantize(X, Q = 1):
 #   applied
 org = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY)
 N = 512; org = cv2.resize(org, (N, N))
-B = 8;  tiles, blocks = range(0, N, B), range(int(N/B))
+B = 32;  tiles, blocks = range(0, N, B), range(int(N/B))
 
 ## Transforming each tile/block using DCT 2D
 trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]

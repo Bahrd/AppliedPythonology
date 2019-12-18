@@ -5,3 +5,5 @@
 *.json
 *.sce
 *.pyc
+/no-people.png
+/People.png

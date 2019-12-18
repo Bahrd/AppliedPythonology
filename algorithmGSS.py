@@ -9,7 +9,7 @@ import math
 def gss(f, a, b, ε = 1e-5, h = None,  c = None, d = None,
                           fc = None, fd = None):
     (a, b) = (min(a, b), max(a, b))
-    ιφ  = (math.sqrt(5) - 1) / 2     # Since 1/φ == φ - 1 
+    ιφ  = (math.sqrt(5) - 1) / 2     # Since φ⁻¹ == φ-1 
 
     # Log: print('[{:.4f}, {:.4f}]'.format(a, b))
     # Interval width
@@ -32,7 +32,7 @@ def gss(f, a, b, ε = 1e-5, h = None,  c = None, d = None,
 ## Our take:
 # A recursive implementation... 
 def gsl(f, ε, l, r):
-    ιφ  = (math.sqrt(5) - 1)/2   # Note: φ - 1 == 1/φ
+    ιφ  = (math.sqrt(5) - 1)/2   # Note: φ-1 == φ⁻¹
     n, m = l + (r - l) * ιφ, r - (r - l) * ιφ
     def search(f, ε, l, r, n , m):
         if r - l <= ε: return (l, r)
@@ -52,7 +52,7 @@ class GSS:
     def __init__(λ, f, ε, l, r): # 'λ' stands for 'λογιστικόν' (a part of soul
         λ.f, λ.ε = f, ε          # associated with logic - according to Plato)
         λ.l, λ.r = l, r          # or a usual 'self' in a Python OO approach
-        λ.ιφ = (math.sqrt(5) - 1)/2 # Note again: φ - 1 == 1/φ
+        λ.ιφ = (math.sqrt(5) - 1)/2 # Note again: φ-1 == φ⁻¹
     # The recursive search
     def search(λ, l, r, n, m):
         if r - l <= λ.ε: return (l, r)
@@ -71,6 +71,9 @@ class GSS:
         n, m = l + (r - l) * ιφ, r - (r - l) * ιφ
         return λ.search(l, r, n, m)
 
+    def __add__(λ, o): 
+        return (λ.l + o.l, λ.r + o.r)  
+
 ## Tests...
 φ  = (math.sqrt(5) + 1)/2
 f = lambda x: -abs(x - φ)
@@ -81,3 +84,11 @@ txt = '[{:.6f}, {:.6f}]\n'
 print((3 * txt).format(*gss(f, l, r, ε),
                        *gsl(f, ε, l, r),
                        *GSS(f, ε, l, r).find()))
+
+one = GSS(f, ε, l - 1, r - 1)
+two = GSS(f, ε, l + 1, r + 1)
+one.find()
+two.find()
+
+print(one + two)
+
