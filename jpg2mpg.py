@@ -14,6 +14,7 @@ pattern = compile(ext)
 files = [f for f in listdir(pathIn) 
            if isfile(join(pathIn, f)) and pattern.search(f.lower())]
 
+
 #Sort the filenames (ignoring extension)
 files.sort(key = lambda x: x[0: -len(ext)])
 
@@ -21,7 +22,7 @@ files.sort(key = lambda x: x[0: -len(ext)])
 fps, fourcc = 25, cv2.VideoWriter_fourcc(*'DIVX')
 # Take a video size from the first frame 
 frame = cv2.imread(join(pathIn, files[0]))
-size = frame.shape[: 2]          # Ignore the 'layers' parameter             
+size = frame.shape[: 2]                                  # Ignore the 'layers' parameter             
 out = cv2.VideoWriter(pathOut, fourcc, fps, size[:: -1]) # Swap rows/cols
 
 print(size[:: -1])
