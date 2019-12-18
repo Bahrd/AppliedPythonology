@@ -1,11 +1,12 @@
 # Applied Pythonology
-![Laocoön and His Sons](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg/250px-Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg)
+![LaocoÃ¶n and His Sons](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg/250px-Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg)
 ## System identification and image processing algorithms
 ### Low-level image processing
 - basic interpolation algorithm: [interpolation.py](./interpolation.py)
 - basic demosaicking (for Bayer and X-Trans CFAs) algorithms: [demosaicking.py](./demosaicking.py) and [demosaickingX.py](./demosaickingX.py)
 - JPG 'lite" compression scheme: [jpglite.py](./jpglite.py)
 - Julia and Mandelbrot fractals visualisations: [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
+- Duda ANS compression scheme: [ans.py](./ans.py)
 ### Modeling and identification
 - basic pseudo-random number generator: [pseudogenerator.py](./pseudogenerator.py)
 - basic function regression estimation with Lq constraints: [regressionCVX.py](./regressionCVX.py)
