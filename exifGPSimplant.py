@@ -45,3 +45,4 @@ with open(recipient, 'wb') as image_file:
 # Route 66 (AZ): 35°14'15.5"N 113°12'22.6"W
 # Las Vegas' Replica of the Statue of Liberty 36°6'3.58"N 115°10'23.029"W
 # The Tepees in Petrified Forest 34°56'43.386"N 109°46'32.447"W
+# Golden gate & Alcatraz: 37.7764931, 122.5042172

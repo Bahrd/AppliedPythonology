@@ -12,7 +12,7 @@ for i in y:
 print(x)
 
 # Decoding
-for i in range(len(y)):
+for _ in range(len(y)):
     z = ceil((x + 1) * p) - ceil(x * p) 
     #print(z)
     if z == 0:

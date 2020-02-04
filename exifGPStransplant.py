@@ -15,3 +15,4 @@ for recipient in recipients:
     exif = pxf.load(recipient)
     exif['GPS'] = gps
     pxf.insert(pxf.dump(exif), recipient)
+    print(recipient)
