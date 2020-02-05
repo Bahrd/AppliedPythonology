@@ -1,5 +1,5 @@
 ﻿from math import floor, ceil, log2;
-x = 1; p = 1/11; y = '1000000000000000000000001000000000' # p = P(Y = 1)
+x = 1; p = 1/11; y = '100000000000000000000000000000000000001000000000011' # p = P(Y = 1)
 
 ## J. Duda 2007 ANS/ABC (see: http://mattmahoney.net/dc/dce.html#Section_33)
 # Encoding
