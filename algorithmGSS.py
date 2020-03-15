@@ -90,5 +90,4 @@ two = GSS(f, ε, l + 1, r + 1)
 one.find()
 two.find()
 
-print(one + two)
-
+## One should consider an averaging version too...

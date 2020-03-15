@@ -10,6 +10,8 @@
 ### Modeling and identification
 - basic pseudo-random number generator: [pseudogenerator.py](./pseudogenerator.py)
 - basic function regression estimation with Lq constraints: [regressionCVX.py](./regressionCVX.py)
+- Julia and Mandelbrot fractals (yes, again bu here as the nonlinear dynamic phenomena): [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
+- Collatz conjecture visualization: [collatz.py](./collatz.py)
 ### Todo(s)
 - [ ] other simple image processing algorithms 
 	- [ ] bilateral convolution filters
@@ -21,5 +23,3 @@
 	- [ ] Volterra and Wiener series based algorithms for more general structures (LNL, NLN, etc.)
 - [ ] other modeling algorithms
 	- [ ] Hidden Markov Model-based avatar behavior
-	- [ ] video anonimization and semantic segmentation
-	- [ ] fatigue-controlled virtual window
