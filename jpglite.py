@@ -26,8 +26,8 @@ def quantize(X, Q = 1):
         X = np.floor(Q*X + .5)/Q
     return X
 
-#%% Image loading (if 'B == 8' then by default a JPG quantization scheme is 
-#   applied
+## Image loading (if 'B == 8' then by default a JPG quantization scheme is 
+#   applied (note we assume for simplicity the fixed image size [being a power of two])
 org = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY)
 N = 512; org = cv2.resize(org, (N, N))
 B = 32;  tiles, blocks = range(0, N, B), range(int(N/B))
