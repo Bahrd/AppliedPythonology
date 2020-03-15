@@ -9,7 +9,7 @@ from os import listdir
 from re import search, compile
 
 ## Collect JP(E)G filenames
-pathIn, pathOut, ext = '../images/jpgs/', '../images/jpgs/video.mp4', 'jpe?g'
+pathIn, pathOut, ext = '../images/jpgs/', '../images/jpgs/video.avi', 'jpe?g'
 pattern = compile(ext)
 files = [f for f in listdir(pathIn) 
            if isfile(join(pathIn, f)) and pattern.search(f.lower())]
