@@ -19,4 +19,4 @@ def Φ(x, f, λ):
 # An actual interpolation Φ: Fn ➞ Fx 
 def interpolate(fn, N, Λ = [Π, ψ, ϕ]):
     X = np.linspace(0, len(fn), N)
-    return [[Φ(x, fn, λ) for λ in Λ] for x in X] 
+    return [[Φ(x, fn, λ) for λ in Λ] for x in X]

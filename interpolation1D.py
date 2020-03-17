@@ -6,16 +6,19 @@ from interpolation import Π, ψ, ϕ, interpolate
 
 ## 1D Examples 
 #  A staple one...
-Fn = [0, 0, 0, 1, 0, 0, 0, 0]; Fx = ξ(N = 1024, fn = Fn, Λ = Λ)
-plt.plot(Fx); plt.show()
+Fn = [0, 0, 0, 1, 0, 0, 0]
+for Fx in zip(*ξ(N = 1024, fn = Fn, Λ = Λ)):
+    plt.plot(Fx) 
+plt.show()
 #  User-defined...
 while True:
     rawFn = input("Samples: ").split()
     if len(rawFn) > 1:
         N = int(input("Output size (N): ")) 
-        Fn = [float(n) for n in rawFn]; Fx = interpolate(Fn, N)
+        Fn = [float(n) for n in rawFn]
         # Presentation 
-        plt.plot(Fx)
+        for Fx in zip(*ξ(Fn, N)):
+            plt.plot(Fx)
         plt.title("Interpolations from {0} to {1} samples".format(len(Fn), len(Fx)))
         plt.show()
     else:
