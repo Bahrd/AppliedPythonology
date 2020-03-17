@@ -2,7 +2,7 @@ import numpy as np; import matplotlib.pyplot as plt
 from interpolation import Π, ψ, ϕ, interpolate
 
 #Some shortcuts...
-ξ, Λ = interpolate, [ϕ] #ψ, ϕ, Π
+ξ, Λ = interpolate, [ψ, ϕ, Π] #[ϕ] #
 
 ## 1D Examples 
 #  A staple one...
@@ -20,3 +20,5 @@ while True:
         plt.show()
     else:
         break
+
+# cd C:\Users\Przem\source\repos\Bahrd\AppliedPythonology; python .\interpolation1D.py

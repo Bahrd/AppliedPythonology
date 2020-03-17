@@ -11,7 +11,7 @@ from random import randrange as RA
 ## If one wants a serious 2D: https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/
 
 # Some shortcuts...
-ξ, Λ = interpolate, [ψ] # Π, ψ, ϕ
+ξ, Λ = interpolate, [ϕ] # Π, ψ, ϕ
 # A source image... 
 s, g = (0x1, 0x0) if RA(2) else (0x0, 0x1)
 img = np.array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
@@ -36,3 +36,6 @@ for n in range(N):
 ## A pretty scary stuff... (interpolation errors)
 # out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
 displayImages((img, out), ('Original', 'Re-scaled'), cmp = 'copper')
+# Troughs and crests
+plt.plot(out[13, :]); plt.show()
+# cd C:\Users\Przem\source\repos\Bahrd\AppliedPythonology; python .\interpolation2D.py
