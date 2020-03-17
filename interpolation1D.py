@@ -24,4 +24,5 @@ while True:
     else:
         break
 
-# cd C:\Users\Przem\source\repos\Bahrd\AppliedPythonology; python .\interpolation1D.py
+# cd C:\Users\Przem\source\repos\Bahrd\AppliedPythonology
+# python .\interpolation1D.py
