@@ -11,7 +11,7 @@ from random import randrange as RA
 ## If one wants a serious 2D: https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/
 
 # Some shortcuts...
-ξ, Λ = interpolate, [ψ] #ψ, ϕ, Π
+ξ, Λ = interpolate, [ψ] # Π, ψ, ϕ
 # A source image... 
 s, g = (0x1, 0x0) if RA(2) else (0x0, 0x1)
 img = np.array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
@@ -23,8 +23,7 @@ img = np.array([[0, 0, 0, 1, 1, 1, 0, 0, 0],
                 [0, 0, 1, 0, 0, 0, 1, 0, 0], 
                 [0, 0, 1, g, g, g, 1, 0, 0], 
                 [0, 0, 0, 1, 1, 1, 0, 0, 0]])
-
-M = len(img); N = 2*M
+M = len(img); N = M << 1 #13 #
 
 # 2D interpolation - simple as that?! (only when M ≤ N...)
 ## A loop-by-loop version
@@ -34,4 +33,6 @@ for m in range(M):
 for n in range(N):
     out[:, n] = np.array(ξ(out[:M, n], N, Λ = Λ)).flat
 
+## A pretty scary stuff... (interpolation errors)
+# out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
 displayImages((img, out), ('Original', 'Re-scaled'), cmp = 'copper')
