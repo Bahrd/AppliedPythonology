@@ -11,22 +11,31 @@ import numpy as np; import matplotlib.pyplot as plt
 # Some shortcuts...
 ξ, Λ = interpolate, [ϕ] #ψ, ϕ, Π
 # A source image... 
-image = np.array([[0, 0, 0, 1, 1, 0, 0, 0], 
-                  [0, 0, 1, 1, 1, 1, 0, 0], 
-                  [0, 1, 0, 1, 1, 0, 1, 0], 
-                  [1, 1, 0, 1, 1, 0, 1, 1], 
-                  [1, 1, 1, 0, 0, 1, 1, 1], 
-                  [0, 1, 0, 0, 0, 0, 1, 0], 
-                  [0, 0, 1, 1, 1, 1, 0, 0], 
-                  [0, 0, 0, 1, 1, 0, 0, 0]])
+img = np.array([[0, 0, 0, 1, 1, 0, 0, 0], 
+                [0, 0, 1, 1, 1, 1, 0, 0], 
+                [0, 1, 0, 1, 1, 0, 1, 0], 
+                [1, 1, 0, 1, 1, 0, 1, 1], 
+                [1, 1, 1, 0, 0, 1, 1, 1], 
+                [0, 1, 0, 0, 0, 0, 1, 0], 
+                [0, 0, 1, 1, 1, 1, 0, 0], 
+                [0, 0, 0, 1, 1, 0, 0, 0]])
 
-M = len(image); N = 13
-scaled_image = np.zeros((N, N))
+M = len(img); N = 17
 
-# 2D interpolation - as simple as that?! (yes, only when M ≤ N)
+
+# 2D interpolation - simple as that?! (only when M ≤ N...)
+## A loop-by-loop version
+out = np.zeros((N, N))
 for m in range(M):
-    scaled_image[m, :] = np.array(ξ(image[m, :], N, Λ = Λ)).flat
+    out[m, :] = np.array(ξ(img[m, :], N, Λ = Λ)).flat
 for n in range(N):
-    scaled_image[:, n] = np.array(ξ(scaled_image[:M, n], N, Λ = Λ)).flat
+    out[:, n] = np.array(ξ(out[:M, n], N, Λ = Λ)).flat
 
-displayImages((image, scaled_image), ('Original', 'Scaled'))
+displayImages((img, out), ('Original', 'Re-scaled'), cmp = 'copper')
+
+## with or without transposition
+#out = np.block([np.array(ξ(img[ m, :], N, Λ = Λ)) for m in range(M)]).T
+#out = np.block([np.array(ξ(out[:M, n], N, Λ = Λ)) for n in range(N)])
+#
+#out = np.block([np.array(ξ(img[m, :], N, Λ = Λ)) for m in range(M)])
+#out = np.block([np.array(ξ(out[n,:M], N, Λ = Λ)) for n in range(N)])

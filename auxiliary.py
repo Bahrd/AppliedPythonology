@@ -22,7 +22,7 @@ def displayChannels(images, channels, positions, rows = 1, cols = 4):
     for image in images:
         for p, c in zip(positions, channels):
             plt.subplot(rows, cols, p + 1)
-            cmp = lscm.from_list("_", ["black", c])
+            cmp = lscm.from_list('_', ['black', c])
             plt.title(c); plt.imshow(image[..., p], cmp)
         plt.subplot(rows, cols, rows * cols)
         plt.title("RGB"); plt.imshow(image)
