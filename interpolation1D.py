@@ -2,12 +2,12 @@ import numpy as np; import matplotlib.pyplot as plt
 from interpolation import Π, ψ, ϕ, interpolate
 
 #Some shortcuts...
-ξ, Λ = interpolate, [ψ, ϕ, Π] #[ϕ] #
+Σ, Λ = interpolate, [ψ, ϕ, Π] #[ϕ] #
 
 ## 1D Examples 
 #  A staple one...
 Fn = [0, 0, 0, 1, 0, 0, 0]
-for Fx in zip(*ξ(N = 1024, fn = Fn, Λ = Λ)):
+for Fx in zip(*Σ(N = 1024, fn = Fn, Λ = Λ)):
     plt.plot(Fx) 
 plt.show()
 #  User-defined...
@@ -17,7 +17,7 @@ while True:
         N = int(input("Output size (N): ")) 
         Fn = [float(n) for n in rawFn]
         # Presentation 
-        for Fx in zip(*ξ(Fn, N)):
+        for Fx in zip(*Σ(Fn, N)):
             plt.plot(Fx)
         plt.title("Interpolations from {0} to {1} samples".format(len(Fn), len(Fx)))
         plt.show()

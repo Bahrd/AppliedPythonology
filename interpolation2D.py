@@ -11,7 +11,7 @@ from random import randrange as RA
 ## If one wants a serious 2D: https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/
 
 # Some shortcuts...
-Σ, Λ = interpolate, [ϕ] # Π, ψ, ϕ
+ΣΣ, Λ = interpolate, [ϕ] # Π, ψ, ϕ
 # A source image... 
 s, g = (0x1, 0x0) if RA(2) else (0x0, 0x1)
 img = np.array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
@@ -29,10 +29,10 @@ M = len(img); N = M << 1 #13 #
 ## A loop-by-loop version
 out = np.zeros((N, N)) # out = np.empty((N, N)) if not used interactively...
 for m in range(M):
-    out[m, :] = np.block(Σ(img[m, :], N, Λ = Λ)).flat
+    out[m, :] = np.block(ΣΣ(img[m, :], N, Λ = Λ)).flat
 displayImages((img, out), ('Original', 'Re-scaled rows'), cmp = 'copper')
 for n in range(N):
-    out[:, n] = np.block(Σ(out[:M, n], N, Λ = Λ)).flat
+    out[:, n] = np.block(ΣΣ(out[:M, n], N, Λ = Λ)).flat
 displayImages((img, out), ('Original', 'Re-scaled rows & columns'), cmp = 'copper')
 
 ## A pretty scary stuff... (or rather yet another aliasing-related effect)
