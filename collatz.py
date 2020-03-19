@@ -16,10 +16,11 @@ def cc_II(n):
 cc_III = lambda n : [1] if n == 1 else [n] + (cc_III(3*n + 1) if n % 2 else cc_III(n >> 1))
 
 
-# ... and one of them is randomly picked to make a graph...
+## ... and one of them is randomly picked to make a graph...
 collatz = eval('cc_{0}'.format(randy(1, 3) * 'I'))
 n = 27 if len(argv) != 2 else int(argv[1])
-plot(collatz(n), 'ro'), title("Collatz's sequence for n = {0}".format(n)), show()
+plot(collatz(n), 'ro'); title("Collatz's sequence for n = {0}".format(n)); show()
 
 ## The entire example matches the modeling and identification labs 
 #  rather than the machine vision one... But it's just fun.
+
