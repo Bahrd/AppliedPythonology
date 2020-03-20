@@ -1,26 +1,24 @@
 import numpy as np; import matplotlib.pyplot as plt
 from interpolation import Π, ψ, ϕ, interpolate
+from auxiliary import displayPlots
 
 #Some shortcuts...
-Σ, Λ = interpolate, [ψ, ϕ, Π] #[ϕ] #
+κ = 'ψ, ϕ, Π'
+ΣΛ, Λ, ΛΛ = interpolate, eval(κ), κ.split(',')  
 
 ## 1D Examples 
 #  A staple one...
 Fn = [0, 0, 0, 1, 0, 0, 0]
-for Fx in zip(*Σ(N = 1024, fn = Fn, Λ = Λ)):
-    plt.plot(Fx) 
-plt.show()
+Fx = np.array(ΣΛ(N = 1024, fn = Fn, Λ = Λ)).T
+plt.plot(Fx); plt.title(κ); plt.show()
+
 #  User-defined...
 while True:
     rawFn = input("Samples: ").split()
     if len(rawFn) > 1:
-        N = int(input("Output size (N): ")) 
-        Fn = [float(n) for n in rawFn]
-        # Presentation 
-        for Fx in zip(*Σ(Fn, N)):
-            plt.plot(Fx)
-        plt.title("Interpolations from {0} to {1} samples".format(len(Fn), len(Fx)))
-        plt.show()
+        N = int(input("Output size (N): ")); Fn = [float(n) for n in rawFn]        
+        # 2in1: computations and presentation 
+        displayPlots(ΣΛ(Fn, N), ΛΛ)        
     else:
         break
 

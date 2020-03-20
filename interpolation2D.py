@@ -28,10 +28,10 @@ M = len(img); N = M << 0b1 #13 #
 ## A loop-by-loop version
 out = np.zeros((N, N)) # out = np.empty((N, N)) for brave enough...
 for m in range(M):
-    out[m, :] = np.block(ΣΣ(img[m, :], N, Λ = Λ)).flat
+    out[m, ...] = np.block(ΣΣ(img[m, ...], N, Λ = Λ)).flat
 displayImages((img, out), ('Original', 'Re-scaled rows'), cmp = 'copper')
 for n in range(N):
-    out[:, n] = np.block(ΣΣ(out[:M, n], N, Λ = Λ)).flat
+    out[..., n] = np.block(ΣΣ(out[:M, n], N, Λ = Λ)).flat
 displayImages((img, out), ('Original', 'Re-scaled rows & columns'), cmp = 'copper')
 
 ## A pretty scary stuff... (or rather yet another aliasing-related effect)
