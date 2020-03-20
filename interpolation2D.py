@@ -14,17 +14,17 @@ from random import randrange
 randbin, ΣΣ, Λ = lambda: randrange(0b10), interpolate, [ϕ] # Π, ψ, ϕ 
 # A source image... 
 s = randbin(); g = s ^ 0b1; img = np.array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
-                [0, 1, 1, 1, 1, 1, 1, 1, 0], 
-                [0, 1, 0, 0, 1, g, g, 1, 0], 
-                [1, 1, 0, 0, 1, 0, 0, 1, 1], 
-                [1, 1, 1, 1, 0, 1, 1, 1, 1], 
-                [0, 1, s, 1, 1, 1, s, 1, 0], 
-                [0, 0, 1, 0, 0, 0, 1, 0, 0], 
-                [0, 0, 1, g, g, g, 1, 0, 0], 
-                [0, 0, 0, 1, 1, 1, 0, 0, 0]])
+                                            [0, 1, 1, 1, 1, 1, 1, 1, 0], 
+                                            [0, 1, 0, 0, 1, g, g, 1, 0], 
+                                            [1, 1, 0, 0, 1, 0, 0, 1, 1], 
+                                            [1, 1, 1, 1, 0, 1, 1, 1, 1], 
+                                            [0, 1, s, 1, 1, 1, s, 1, 0], 
+                                            [0, 0, 1, 0, 0, 0, 1, 0, 0], 
+                                            [0, 0, 1, g, g, g, 1, 0, 0], 
+                                            [0, 0, 0, 1, 1, 1, 0, 0, 0]])
 M = len(img); N = M << 0b1 #13 #
 
-# 2D interpolation - simple as that?! (only when M ≤ N...)
+# 2D interpolation - simple as that?! (yeap, but only when M ≤ N...)
 ## A loop-by-loop version
 out = np.zeros((N, N)) # out = np.empty((N, N)) for brave enough...
 for m in range(M):
@@ -35,7 +35,7 @@ for n in range(N):
 displayImages((img, out), ('Original', 'Re-scaled rows & columns'), cmp = 'copper')
 
 ## A pretty scary stuff... (or rather yet another aliasing-related effect)
-if 0b0: 
+if 0b1: 
     # Troughs and crests
     plt.plot(out[0b1101, :], 'ro-'); plt.show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0

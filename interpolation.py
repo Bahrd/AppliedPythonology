@@ -4,8 +4,8 @@
 # The window/rectangular and the hat/tent/triangular (yet anonymous!) function
 Π, ψ =  lambda x, l = -.5, r = .5: (x >= l) * (x < r), lambda x: (1 - abs(x)) * (abs(x) < 1)
 # The Keys' cubic interpolating function (b'cause: https://realpython.com/python-lambda/#syntax)
-def ϕ(x):                       
-    x, a = abs(x), -0.5
+def ϕ(x): 
+    x, a = abs(x), -.5
     return (((a + 2) * x**3 - (a + 3) * x**2 + 1)             * Π(x, 0, 1) 
            + (     a * x**3 -     5*a * x**2 + 8*a * x - 4*a) * Π(x, 0, 2) * (1 - Π(x, 0, 1)))
 

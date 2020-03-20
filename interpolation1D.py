@@ -10,7 +10,7 @@ from auxiliary import displayPlots
 #  A staple one...
 Fn = [0, 0, 0, 1, 0, 0, 0]
 Fx = np.array(ΣΛ(N = 1024, fn = Fn, Λ = Λ)).T
-plt.plot(Fx); plt.title(κ); plt.show()
+plt.plot(Fx); plt.title(κ); plt.show(); displayPlots(Fx.T, ΛΛ)
 
 #  User-defined...
 while True:
