@@ -35,7 +35,7 @@ for n in range(N):
 displayImages((img, out), ('Original', 'Re-scaled rows & columns'), cmp = 'copper')
 
 ## A pretty scary stuff... (or rather yet another aliasing-related effect)
-if 0b1: 
+if 0b0: 
     # Troughs and crests
     plt.plot(out[0b1101, :], 'ro-'); plt.show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
