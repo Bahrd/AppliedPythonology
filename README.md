@@ -3,6 +3,7 @@
 ## System identification and image processing algorithms
 ### Low-level image processing
 - basic interpolation algorithms: [interpolation1D.py](./interpolation1D.py) and [interpolation2D.py](./interpolation2D.py)
+- simple NN-interpolation-based image rotation algorithm [NNrotation.py](./NNrotation.py)
 - basic demosaicking (for Bayer and X-Trans CFAs) algorithms: [demosaicking.py](./demosaicking.py) and [demosaickingX.py](./demosaickingX.py)
 - JPG 'lite" compression scheme: [jpglite.py](./jpglite.py)
 - Julia and Mandelbrot fractals visualisations: [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
