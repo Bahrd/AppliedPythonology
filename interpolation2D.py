@@ -8,7 +8,6 @@ from random import randrange
 #                      ϕ(x, y) = ϕ(x)ϕ(y)
 #  can be implemented as a successive application of the 1D interpolation 
 #  procedure to each row and then to each column of the image.
-## If one wants a serious 2D: https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/
 
 # Some shortcuts...
 randbin, ΣΣ, Λ = lambda: randrange(0b10), interpolate, [ϕ] # Π, ψ, ϕ 
@@ -34,12 +33,10 @@ for n in range(N):
     out[..., n] = np.block(ΣΣ(out[:M, n], N, Λ = Λ)).flat
 displayImages((img, out), ('Original', 'Re-scaled rows & columns'), cmp = 'copper')
 
-## A pretty scary stuff... (or rather yet another aliasing-related effect)
+## A pretty scary stuff... Will you dare? 
+#  (Or rather yet another aliasing-related effect ;)
 if 0b0: 
     # Troughs and crests
-    plt.plot(out[0b1101, :], 'ro-'); plt.show()
+    plt.plot(out[0b1101, ...], 'ro-'); plt.show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
     displayImages((img, out), ('Original', 'Re-scaled'), cmp = 'copper')
-
-# cd C:\Users\Przem\source\repos\Bahrd\AppliedPythonology
-# python .\interpolation2D.py

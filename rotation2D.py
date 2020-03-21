@@ -1,13 +1,24 @@
 ﻿from auxiliary import displayImages as DI
+from interpolation import *
 from random import randrange as RR
-from numpy import array, clip, empty
+from numpy import array, empty
 from math import sin, cos, pi
 from sys import argv
-## 2D rotation - a canonical version with an implicit NN interpolation
-#  Be careful however, because ("Timeo Danaos et dona ferentes!"?) Python 
-#  thinks that 'ϑ is θ == True' (and so are 'ϱ' and 'ρ', see ll. 39-40)!
+## 2D rotation - the canonical version of NN, bi-linear and bi-qubic-based algorithms
+#  If one wants a serious 2D: https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/
 
-# A source image... 
+clp = lambda n, nmin, nmax: nmin if n < 0 else n if n < nmax else nmax - 1
+## Turning a 2D image f(n, m) into 2D function f(x, y) using 'Π, ψ, or ϕ'
+def f(x, y, img, λ, ε = 3):
+    N, M = img.shape; xx, yy = int(x), int(y)
+    fxy = 0
+    for n in range(clp(xx - ε, 0, N), clp(xx + ε, 0, N)):
+        for m in range(clp(yy - ε, 0, M), clp(yy + ε, 0, M)):
+            fxy += λ(x - n) * λ(y - m) * img[n, m]
+    return fxy
+
+
+# A source image... (cf. './rotationNN.py')
 s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
                                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
                                          [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0], 
@@ -20,7 +31,7 @@ s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 1, g, g, g, 1, 0, 0, 0], 
                                          [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],])
-M = len(img); N = M << 0b11; out = empty((N, N)) 
+M = len(img); N = M << 0b1; out = empty((N, N)) 
 
 # Setting a rotation angle α
 α = int(argv[1]) if len(argv) == 2 else RR(-180, 180) #°
@@ -33,7 +44,7 @@ OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)],
 for n in range(N):
     for m in range(N):
         ϑ = array([n/N, m/N]) * M - OXY
-        ϑ = Rα @ ϑ + OXY
-        x, y = clip(ϑ, 0, M - 1).astype(int) # where the NNs dwell
-        out[n, m] = img[x, y]                         #(ϱ)
-DI((img, out), ('Original', 'NN-rotated by {0}°'.format(ρ)), cmp = 'copper')
+        x, y = Rα @ ϑ + OXY
+        out[n, m] = f(x, y, img, ϕ)  
+
+DI((img, out), ('Original', '{0}-rotated by {1}°'.format(ϕ.__name__, ϱ)), cmp = 'copper')
