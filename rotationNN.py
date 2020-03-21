@@ -5,8 +5,8 @@ from math import sin, cos, pi
 from sys import argv
 ## 2D rotation - a canonical version with an implicit NN interpolation
 
-## Be careful ("Timeo Danaos et dona ferentes!")
-#  Python thinks that 'ϑ is θ == True' (and so are 'ϱ' and 'ρ', see ll. 39-40)!
+## Be careful, however ("Timeo Danaos et dona ferentes!" and 
+#  Python thinks that 'ϑ is θ == True' (and so are 'ϱ' and 'ρ', see ll. 39-40)!)
 
 # A source image... 
 s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
