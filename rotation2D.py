@@ -4,19 +4,18 @@ from random import randrange as RR
 from numpy import array, empty
 from math import sin, cos, pi
 from sys import argv
-## 2D rotation - the canonical version of NN, bi-linear and bi-qubic-based algorithms
+## 2D rotation - the canonical version of the NN, bi-linear and bi-qubic-based algorithms
 #  If one wants a serious 2D: https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/
 
-clp = lambda n, nmin, nmax: nmin if n < 0 else n if n < nmax else nmax - 1
+clp = lambda n, nmax, nmin = 0: nmin if n < 0 else n if n < nmax else nmax - 1
 ## Turning a 2D image f(n, m) into 2D function f(x, y) using 'Π, ψ, or ϕ'
-def f(x, y, img, λ, ε = 3):
+def f(x, y, img, λ, Δ = 3):
     N, M = img.shape; xx, yy = int(x), int(y)
     fxy = 0
-    for n in range(clp(xx - ε, 0, N), clp(xx + ε, 0, N)):
-        for m in range(clp(yy - ε, 0, M), clp(yy + ε, 0, M)):
+    for n in range(clp(xx - Δ, N), clp(xx + Δ, N)):
+        for m in range(clp(yy - Δ, M), clp(yy + Δ, M)):
             fxy += λ(x - n) * λ(y - m) * img[n, m]
     return fxy
-
 
 # A source image... (cf. './rotationNN.py')
 s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
