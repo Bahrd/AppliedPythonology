@@ -8,7 +8,7 @@ from sys import argv
 #  If one wants a serious 2D: https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/
 
 clp = lambda n, nmax, nmin = 0: nmin if n < 0 else n if n < nmax else nmax - 1
-## Turning a 2D image f(n, m) into 2D function f(x, y) using 'Π, ψ, or ϕ'
+## Turning a 2D image f(n, m) into a 2D function f(x, y) - using 'Π, ψ, or ϕ'
 def f(x, y, img, λ, Δ = 3):
     N, M = img.shape; xx, yy = int(x), int(y)
     fxy = 0
