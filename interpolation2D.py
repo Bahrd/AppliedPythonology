@@ -11,6 +11,7 @@ from random import randrange
 
 # Some shortcuts...
 randbin, ΣΣ, Λ = lambda: randrange(0b10), interpolate, [ϕ] # Π, ψ, ϕ 
+ΛΛ = Λ[0].__name__
 # A source image... 
 s = randbin(); g = s ^ 0b1; img = np.array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
                                             [0, 1, 1, 1, 1, 1, 1, 1, 0], 
@@ -23,15 +24,15 @@ s = randbin(); g = s ^ 0b1; img = np.array([[0, 0, 0, 1, 1, 1, 0, 0, 0],
                                             [0, 0, 0, 1, 1, 1, 0, 0, 0]])
 M = len(img); N = M << 0b1 #13 #
 
-# 2D interpolation - simple as that?! (yeap, but only when M ≤ N...)
-## A loop-by-loop version
-out = np.zeros((N, N)) # out = np.empty((N, N)) for brave enough...
+##2D interpolation - simple as that?! (yeap, but only when M ≤ N...)
+# A loop-by-loop version
+out = np.zeros((N, N)) # out = np.empty((N, N)) for those brave enough...
 for m in range(M):
     out[m, ...] = np.block(ΣΣ(img[m, ...], N, Λ = Λ)).flat
-displayImages((img, out), ('Original', 'Re-scaled rows'), cmp = 'copper')
+displayImages((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = 'copper')
 for n in range(N):
     out[..., n] = np.block(ΣΣ(out[:M, n], N, Λ = Λ)).flat
-displayImages((img, out), ('Original', 'Re-scaled rows & columns'), cmp = 'copper')
+displayImages((img, out), ('Original', '{0}-scaled rows & columns'.format(ΛΛ)), cmp = 'copper')
 
 ## A pretty scary stuff... Will you dare? 
 #  (Or rather yet another aliasing-related effect ;)
@@ -39,4 +40,4 @@ if 0b0:
     # Troughs and crests
     plt.plot(out[0b1101, ...], 'ro-'); plt.show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
-    displayImages((img, out), ('Original', 'Re-scaled'), cmp = 'copper')
+    displayImages((img, out), ('Original', '{0}-scaled'.format(ΛΛ)), cmp = 'copper')
