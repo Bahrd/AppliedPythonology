@@ -1,8 +1,9 @@
 ﻿## Some interpolating functions, Π(x), ψ(x) and ϕ(x) or... 
 #  whatchamacallit this thingamajig...
 
-# The window/rectangular and the hat/tent/triangular (yet anonymous!) function
-Π, ψ =  lambda x, l = -.5, r = .5: (x >= l) * (x < r), lambda x: (1 - abs(x)) * (abs(x) < 1)
+# The window/rectangular and the hat/tent/triangular (not anonymous!) function
+def Π(x, l = -.5, r = .5): return (x >= l) * (x < r)
+def ψ(x): return (1 - abs(x)) * (abs(x) < 1)
 # The Keys' cubic interpolating function (b'cause: https://realpython.com/python-lambda/#syntax)
 def ϕ(x): 
     x, a = abs(x), -.5

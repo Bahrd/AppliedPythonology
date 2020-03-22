@@ -46,20 +46,28 @@ s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 1, g, g, g, 1, 0, 0, 0], 
                                          [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],])
-M = len(img); N = M << 0b10; out = empty((N, N)) 
+M = len(img); N = M << 0b1; out = empty((N, N)) 
 
 # Setting a rotation angle α
 α = int(argv[1]) if len(argv) == 2 else RR(-180, 180) #°
 ϱ = α # an auxiliary variable
 α *= pi/180.0
 
+# Interpoland...:) Π, ψ, ϕ
+λ = ψ 
+
 # Rotation of the vector ϑ = [x, y].T, w.r.t. OXY and through an angle α
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
-                                    [sin(α),  cos(α)]]) # '+' clockwise
+                                    [sin(α),  cos(α)]]) # turns clockwise when α > 0
+f = f if 0x0 else fl
+# Omloop Het...
 for n in range(N):
     for m in range(N):
         ϑ = array([n/N, m/N]) * M - OXY
         x, y = Rα @ ϑ + OXY
-        out[n, m] = f(x, y, img)  
+        out[n, m] = f(x, y, img, λ)  
+DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λ.__name__, ϱ)), cmp = 'copper')
 
-DI((img, out), ('Original', '{0}-rotated by {1}°'.format(ϕ.__name__, ϱ)), cmp = 'copper')
+## A harder-coded version (but a tad faster, right?)
+out = [[f(*(OXY + Rα @ (array([n/N, m/N]) * M - OXY)), img, λ) for m in range(N)] for n in range (N)]
+DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λ.__name__, ϱ)), cmp = 'copper')
