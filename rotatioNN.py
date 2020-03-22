@@ -24,7 +24,7 @@ M = len(img); N = M << 0b11; out = empty((N, N))
 
 # Setting a rotation angle α
 α = int(argv[1]) if len(argv) == 2 else RR(-180, 180) #°
-ϱ = α # an auxiliary variable
+ϱ, Cu = α, 'copper' # Auxiliary variables
 α *= pi/180.0
 
 # Rotation of the vector ϑ = [x, y].T, w.r.t. OXY and through an angle α
@@ -37,4 +37,4 @@ for n in range(N):
         x, y = clip(ϑ, 0, M - 1).astype(int) # where the NNs dwell
         out[n, m] = img[x, y]                         
                                                       #(ϱ)
-DI((img, out), ('Original', 'NN-rotated by {0}°'.format(ρ)), cmp = 'copper')
+DI((img, out), ('Original', 'NN-rotated by {0}°'.format(ρ)), cmp = Cu)
