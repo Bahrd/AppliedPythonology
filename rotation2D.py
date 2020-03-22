@@ -1,29 +1,37 @@
 ﻿from auxiliary import displayImages as DI
 from interpolation import *
 from random import randrange as RR
-from numpy import array, empty
+from numpy import array, empty, arange as A, tensordot as TD
 from math import sin, cos, pi
 from sys import argv
 ## 2D rotation - the canonical version of the NN, bi-linear and bi-qubic-based algorithms
 #  If one wants a serious 2D: https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/
 
 clp = lambda n, nmax, nmin = 0: nmin if n < 0 else n if n < nmax else nmax - 1
+rclp = lambda n, m, nmax: (clp(n, nmax), clp(m, nmax)) # range clipper
+
 ## Turning a 2D image f(n, m) into a 2D function f(x, y) - using 'Π, ψ, or ϕ'
+# A not-so-quick-yet-dirty (loop-in-loop) version... 
+# Since "premature optimization is the root of all evil"! 
+# -- D. Knuth [http://wiki.c2.com/?PrematureOptimization]
+def fl(x, y, img, λ = ϕ, Δ = 3):
+    N, M = img.shape; xx, yy = int(x), int(y)
+
+    fxy = 0.0
+    for n in range(*rclp(xx - Δ, xx + Δ, N)):
+        for m in range(*rclp(yy - Δ, yy + Δ, M)):
+            fxy += λ(x - n) * λ(y - m) * img[n, m]
+    return fxy
+# ... and a quick'n'clean (loop-free) one
 def f(x, y, img, λ = ϕ, Δ = 3):
     N, M = img.shape; xx, yy = int(x), int(y)
-    n = np.arange(clp(xx - Δ, N), clp(xx + Δ, N))
-    m = np.arange(clp(yy - Δ, M), clp(yy + Δ, M))
+    n, m = A(*rclp(xx - Δ, xx + Δ, N)), A(*rclp(yy - Δ, yy + Δ, M))
 
     Λx, Λy = λ(x - n), λ(y - m) 
-    Λxy = np.tensordot(Λx.T, Λy, axes = 0)
+    Λxy = TD(Λx.T, Λy, axes = 0)
 
-    return np.tensordot(Λxy, img[clp(xx - Δ, N):clp(xx + Δ, N), clp(yy - Δ, M):clp(yy + Δ, M)])
-    ## A loop-in-loop version...
-    #fxy = 0.0
-    #for n in range(clp(xx - Δ, N), clp(xx + Δ, N)):
-    #    for m in range(clp(yy - Δ, M), clp(yy + Δ, M)):
-    #        fxy += λ(x - n) * λ(y - m) * img[n, m]
-    #return fxy
+    img = img[clp(xx - Δ, N):clp(xx + Δ, N), clp(yy - Δ, M):clp(yy + Δ, M)]
+    return TD(Λxy, img)
 
 # A source image... (cf. './rotationNN.py')
 s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
@@ -38,7 +46,7 @@ s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 1, g, g, g, 1, 0, 0, 0], 
                                          [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],])
-M = len(img); N = M << 0b100; out = empty((N, N)) 
+M = len(img); N = M << 0b10; out = empty((N, N)) 
 
 # Setting a rotation angle α
 α = int(argv[1]) if len(argv) == 2 else RR(-180, 180) #°

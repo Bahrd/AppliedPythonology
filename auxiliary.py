@@ -72,3 +72,14 @@ def Φ(x, f, λ):
 def interpolate(fn, N, Λ = [Π, ψ, ϕ]):
     X = np.linspace(0, len(fn), N)
     return [[Φ(x, fn, λ) for λ in Λ] for x in X] 
+
+## A decorative fun... See: https://www.geeksforgeeks.org/decorators-in-python/
+from time import time as TT
+def ITT(f):
+	def time_warper_wrapper(*args, **kwargs): 
+		begin = TT() # from time import time as TT
+		r = f(*args, **kwargs) 
+		end = TT()
+		print('{0} evaluated in {1}s'.format(f.__name__, round(end - begin)))
+		return r
+	return time_warper_wrapper
