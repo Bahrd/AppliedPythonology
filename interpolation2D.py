@@ -27,18 +27,26 @@ s = randbin(); g = s ^ 0b1; img = array([[0, 0, 0, 1, 1, 1, 0, 0, 0],
 M = len(img); N = int(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
 
 ##2D interpolation - simple as that?! (yeap, but only when M ≤ N...)
-# A loop-by-loop version
-out = zeros((N, N)) 
-for m in range(M):
-    out[m, ...] = block(ΣΣ(img[m, ...], N, Λ = Λ)).flat
-displayImages((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = 'copper')
-for n in range(N):
-    out[..., n] = block(ΣΣ(out[:M, n], N, Λ = Λ)).flat
-displayImages((img, out), ('Original', '{0}-scaled rows & columns'.format(ΛΛ)), cmp = 'copper')
+# A loop-by-loop version...
+if 0b1:
+    out = zeros((N, N)) 
+    for m in range(M):
+        out[m, ...] = block(ΣΣ(img[m, ...], N, Λ = Λ)).flat
+    displayImages((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = 'copper')
+    for n in range(N):
+        out[..., n] = block(ΣΣ(out[:M, n], N, Λ = Λ)).flat
+    displayImages((img, out), ('Original', '{0}-scaled rows & columns'.format(ΛΛ)), cmp = 'copper')
+# ... and the more convoluted (snake-like) version
+else:
+    out = array([ΣΣ(img[m, ...], N, Λ = Λ) for m in range(M)]).reshape(M, N)
+    displayImages((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = 'copper')
+
+    out = array([ΣΣ(out[:M, n], N, Λ = Λ) for n in range(N)]).reshape(N, N).T
+    displayImages((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = 'copper')
 
 ## A pretty scary stuff... Will you dare? 
 #  (Or rather yet another aliasing-related effect ;)
-if 0b1: 
+if 0b0: 
     # Troughs and crests
     plt.plot(out[0b1101, ...], 'ro-'); plt.show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
