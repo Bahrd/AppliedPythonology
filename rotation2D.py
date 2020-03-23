@@ -46,10 +46,10 @@ s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 1, g, g, g, 1, 0, 0, 0], 
                                          [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],])
-M = len(img); N = M << 0b1; out = empty((N, N)) 
+M = len(img); N = int(argv[2]) if len(argv) == 3 else M << 0b1; out = empty((N, N)) 
 
 # Setting a rotation angle α
-α = int(argv[1]) if len(argv) == 2 else RR(-180, 180) #°
+α = int(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
 ϱ, Cu = α, 'copper' # Auxiliary variables
 α *= pi/180.0
 
