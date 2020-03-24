@@ -2,7 +2,7 @@
 from auxiliary import displayImages
 import matplotlib.pyplot as plt
 from random import randrange
-from numpy import block, zeros, array
+from numpy import zeros, array
 from sys import argv
 
 ## In principle, a 2D interpolation, for a separable interpolation function, that is,
@@ -13,7 +13,7 @@ from sys import argv
 
 # Some shortcuts...
 randbin, ΣΣ, Λ = lambda: randrange(0b10), interpolate, [ϕ] # Π, ψ, ϕ 
-ΛΛ = Λ[0].__name__
+ΛΛ, Cu = Λ[0].__name__, 'copper'
 # A source image... 
 s = randbin(); g = s ^ 0b1; img = array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
                                             [0, 1, 1, 1, 1, 1, 1, 1, 0], 
@@ -28,26 +28,27 @@ M = len(img); N = int(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
 
 ##2D interpolation - simple as that?! (yeap, but only when M ≤ N...)
 # A loop-by-loop version...
-if 0b1:
+if 0b0:
     out = zeros((N, N)) 
     for m in range(M):
-        out[m, ...] = block(ΣΣ(img[m, ...], N, Λ = Λ)).flat
+        out[m, ...] = array(ΣΣ(img[m, ...], N, Λ = Λ)).flat
     displayImages((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = 'copper')
+
     for n in range(N):
-        out[..., n] = block(ΣΣ(out[:M, n], N, Λ = Λ)).flat
+        out[..., n] = array(ΣΣ(out[:M, n], N, Λ = Λ)).flat
     displayImages((img, out), ('Original', '{0}-scaled rows & columns'.format(ΛΛ)), cmp = 'copper')
 # ... and the more convoluted (snake-like) version
 else:
     out = array([ΣΣ(img[m, ...], N, Λ = Λ) for m in range(M)]).reshape(M, N)
     displayImages((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = 'copper')
 
-    out = array([ΣΣ(out[:M, n], N, Λ = Λ) for n in range(N)]).reshape(N, N).T
-    displayImages((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = 'copper')
+    out = array([ΣΣ(out[..., n], N, Λ = Λ) for n in range(N)]).reshape(N, N).T
+    displayImages((img, out), ('Original', '{0}-scaled rows & columns'.format(ΛΛ)), cmp = 'copper')
 
 ## A pretty scary stuff... Will you dare? 
 #  (Or rather yet another aliasing-related effect ;)
-if 0b0: 
+if 0b1: 
     # Troughs and crests
-    plt.plot(out[0b1101, ...], 'ro-'); plt.show()
+    plt.plot(out[N >> 0b1, ...], 'ro-'); plt.show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
-    displayImages((img, out), ('Original', '{0}-scaled'.format(ΛΛ)), cmp = 'copper')
+    displayImages((img, out), ('Original', '{0}-scaled'.format(ΛΛ)), cmp = Cu)
