@@ -1,5 +1,5 @@
 from cv2 import imread
-from numpy import count_nonzero, any, all
+from numpy import count_nonzero, any
 
 ## Parameters
 f = 'Tesla-M3'
@@ -15,6 +15,7 @@ all = h * w           # No. of all pixels
 #    for y in range (w):
 #        bgr = tuple(img[x, y])
 #        area += bgr != bckgrnd_bgr
+
 ## ... and a code:
 area = count_nonzero(any(img != bckgrnd_bgr, axis = 2))
 
@@ -28,8 +29,7 @@ print('Pixel counted {0}\'s frontal area = {1}m² ({2}ft²)'.format(f,
                                                     round(a_ft, 2)))
 
 ### A Monte Carlo approach (random sampling)
-from numpy.random import rand
-from numpy import array
+from numpy.random import default_rng as drng
 all = 1000           # No. of all samples 
 ##Pseudo-Python:
 #area = 0            # No. of pixels inside the frontal area
@@ -37,8 +37,9 @@ all = 1000           # No. of all samples
 #    x, y = RR(h), RR(w)
 #    bgr = tuple(img[x, y])
 #    area += bgr != bckgrnd_bgr
-## ... and a code:
-x, y = array([rand(all) * h, rand(all) * w]).astype(int)
+
+## ... and a code [Numpy 1.17+]:
+rng = drng(); x, y = rng.integers([h, w], size = [all, 2]).T  # random samples
 area = count_nonzero(any(img[x, y] != bckgrnd_bgr, axis = 1))
 
 a_m = HxW/all * area; a_ft = a_m * 10.76
