@@ -29,6 +29,7 @@ print('Pixel counted {0}\'s frontal area = {1}m² ({2}ft²)'.format(f,
 
 ### A Monte Carlo approach (random sampling)
 from numpy.random import rand
+from numpy import array
 all = 1000           # No. of all samples 
 ##Pseudo-Python:
 #area = 0            # No. of pixels inside the frontal area
@@ -37,7 +38,7 @@ all = 1000           # No. of all samples
 #    bgr = tuple(img[x, y])
 #    area += bgr != bckgrnd_bgr
 ## ... and a code:
-x, y = (rand(all) * h).astype(int), (rand(all) * w).astype(int)
+x, y = array([rand(all) * h, rand(all) * w]).astype(int)
 area = count_nonzero(any(img[x, y] != bckgrnd_bgr, axis = 1))
 
 a_m = HxW/all * area; a_ft = a_m * 10.76
