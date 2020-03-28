@@ -60,13 +60,14 @@ OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)],
                                     [sin(α),  cos(α)]]) # turns clockwise when α > 0
 f = f if 0x1 else fl
 # Omloop Het...
-for n in range(N):
-    for m in range(N):
-        ϑ = array([n/N, m/N]) * M - OXY
-        x, y = Rα @ ϑ + OXY
-        out[n, m] = f(x, y, img, λ)  
-DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
-
+if 0b0:
+    for n in range(N):
+        for m in range(N):
+            ϑ = array([n/N, m/N]) * M - OXY
+            x, y = Rα @ ϑ + OXY
+            out[n, m] = f(x, y, img, λ)
+    DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
 ## A harder-coded version (but a tad faster, right?)
-out = [[f(*(OXY + Rα @ (array([n/N, m/N]) * M - OXY)), img, λ) for m in range(N)] for n in range (N)]
-DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
+else:
+    out = [[f(*(OXY + Rα @ (array([n/N, m/N]) * M - OXY)), img, λ) for m in range(N)] for n in range (N)]
+    DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)

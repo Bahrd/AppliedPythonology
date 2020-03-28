@@ -1,5 +1,5 @@
 ﻿from interpolation import Π, ψ, ϕ, interpolate
-from auxiliary import displayImages
+from auxiliary import displayImages as DI
 import matplotlib.pyplot as plt
 from random import randrange
 from numpy import zeros, array
@@ -32,18 +32,18 @@ if 0b0:
     out = zeros((N, N)) 
     for m in range(M):
         out[m, ...] = array(ΣΣ(img[m, ...], N, Λ = Λ)).flat
-    displayImages((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = 'copper')
+    DI((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = Cu)
 
     for n in range(N):
         out[..., n] = array(ΣΣ(out[:M, n], N, Λ = Λ)).flat
-    displayImages((img, out), ('Original', '{0}-scaled rows & columns'.format(ΛΛ)), cmp = 'copper')
+    DI((img, out), ('Original', '{0}-scaled rows & columns'.format(ΛΛ)), cmp = Cu)
 # ... and the more convoluted (snake-like) version
 else:
     out = array([ΣΣ(img[m, ...], N, Λ = Λ) for m in range(M)]).reshape(M, N)
-    displayImages((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = 'copper')
+    DI((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = Cu)
 
     out = array([ΣΣ(out[..., n], N, Λ = Λ) for n in range(N)]).reshape(N, N).T
-    displayImages((img, out), ('Original', '{0}-scaled rows & columns'.format(ΛΛ)), cmp = 'copper')
+    DI((img, out), ('Original', '{0}-scaled rows & columns'.format(ΛΛ)), cmp = Cu)
 
 ## A pretty scary stuff... Will you dare? 
 #  (Or rather yet another aliasing-related effect ;)
@@ -51,4 +51,4 @@ if 0b1:
     # Troughs and crests
     plt.plot(out[N >> 0b1, ...], 'ro-'); plt.show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
-    displayImages((img, out), ('Original', '{0}-scaled'.format(ΛΛ)), cmp = Cu)
+    DI((img, out), ('Original', '{0}-scaled'.format(ΛΛ)), cmp = Cu)
