@@ -1,13 +1,15 @@
 import matplotlib.pyplot as plt
-from numpy import linspace as lsp, power as pwr, mat as mt, isnan, isinf
+from numpy import linspace as lsp, power as pwr, mat as mt, isnan, any, log, e
 
 ## An approximate Julia set function (resolution grows with ν)
 #       J = {ω ∈ Ω: julia(ω, ∞) < 2}
 # see e.g. https://en.wikipedia.org/wiki/Julia_set for some nicer c's
 def julia(ω, ν = 0x40, c = -.8 + .156j, p = 2):
     for _ in range(ν):
-           ω = pwr(ω, p) + c
-    return abs(ω)           # Not exactly a set function
+        ω = pwr(ω, p) + c
+        # Julia's face-lifting...
+        ω[any([isnan(ω), abs(ω) > 0xff], axis = 0)] = 0xf
+    return log(e + abs(ω))  # Not exactly a set function (like 'return abs(ω) > 2')
                             # but looks somehow fancier..
 ## Presentation
 # Unsettling settings
