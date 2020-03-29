@@ -4,25 +4,25 @@ from numpy import count_nonzero, any
 ## Parameters
 f = 'Tesla-M3'
 img = imread('./{0}.png'.format(f))
-bckgrnd_bgr = 0x0, 0x0, 0xff # If the background is red 
+bgnd_bgr = 0x0, 0x0, 0xff # Change if background isn't pure red 
 
 ### A pixel-counting method
-h, w, _ = img.shape
-all = h * w           # No. of all pixels
+h, w, _ = img.shape; hxw = h * w    # No. of all pixels
 ##Pseudo-Python:
-#area = 0             # No. of frontal area pixels
+#pixels = 0                         # No. of frontal area pixels
 #for x in range (h):
 #    for y in range (w):
 #        bgr = tuple(img[x, y])
-#        area += bgr != bckgrnd_bgr
+#        pixels += bgr != bckgrnd_bgr
 
 ## ... and a code:
-area = count_nonzero(any(img != bckgrnd_bgr, axis = 2))
+pixels = count_nonzero(any(img != bgnd_bgr, axis = 2))
 
 ## Area computation/conversion
 # Image size in meters (matches the car's dimensions when tightly cropped)
 HxW = 1.443 * 2.089     # Model 3's H and W ([mm], unfolded mirrors)
-a_m = HxW/all * area    # Area in m²
+
+a_m = HxW/hxw * pixels  # Area in m²
 a_ft = a_m * 10.76      # m² to ft² conversion (1m ~ 3.28ft)
 print('Pixel counted {0}\'s frontal area = {1}m² ({2}ft²)'.format(f, 
                                                     round(a_m, 2), 
@@ -30,19 +30,20 @@ print('Pixel counted {0}\'s frontal area = {1}m² ({2}ft²)'.format(f,
 
 ### A Monte Carlo approach (random sampling)
 from numpy.random import default_rng as drng
-all = 1000           # No. of all samples 
+samples = 1000          # No. of all samples 
+rng = drng()            # Random samples with Numpy 1.17+
 ##Pseudo-Python:
-#area = 0            # No. of pixels inside the frontal area
+#pixels = 0             # No. of pixels inside the frontal area
 #for _ in range(all):
 #    x, y = RR(h), RR(w)
 #    bgr = tuple(img[x, y])
-#    area += bgr != bckgrnd_bgr
+#    pixels += bgr != bckgrnd_bgr
 
-## ... and a code [Numpy 1.17+]:
-rng = drng(); x, y = rng.integers([h, w], size = [all, 2]).T  # random samples
-area = count_nonzero(any(img[x, y] != bckgrnd_bgr, axis = 1))
+## ... and a code 
+x, y = rng.integers([h, w], size = [samples, 2]).T 
+pixels = count_nonzero(any(img[x, y] != bgnd_bgr, axis = 1))
 
-a_m = HxW/all * area; a_ft = a_m * 10.76
+a_m = HxW/samples * pixels; a_ft = a_m * 10.76
 print('Monte Carlo {0}\'s frontal area = {1}m² ({2}ft²)'.format(f, 
                                                     round(a_m, 2), 
                                                     round(a_ft, 2)))
