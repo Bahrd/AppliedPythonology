@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+from matplotlib.pyplot import imshow, title, show
 from numpy import linspace as lsp, power as pwr, mat as mt, isnan, any, log, e
 
 ## An approximate Julia set function (resolution grows with ν)
@@ -11,14 +11,13 @@ def julia(ω, ν = 0x40, c = -.8 + .156j, p = 2):
         ω[any([isnan(ω), abs(ω) > 0xff], axis = 0)] = 0xf
     return log(e + abs(ω))  # Not exactly a set function (like 'return abs(ω) > 2')
                             # but looks somehow fancier..
+
 ## Presentation
 # Unsettling settings
 [N, M] = [0x400, 0x200]     # resolution
 Ω = mt([[complex(n, m) for n in lsp(-2, 2, N)] 
                        for m in lsp(-1, 1, M)])
 # ... and a show off!
-J = julia(Ω)
-J[isnan(J) | isinf(J) | (J > 0xff)] = 0xff # Handling the "NaNs'n'Infs"
+c = -.8 + .156j; J = julia(Ω, c = c)
 
-plt.imshow(J, cmap = 'Blues')
-plt.show()
+imshow(J, cmap = 'Blues'); title('Julia set for c = {0}'.format(c)); show()
