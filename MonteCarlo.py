@@ -7,7 +7,7 @@ img = imread('./{0}.png'.format(f))
 bckgrnd_bgr = 0x0, 0x0, 0xff # If the background is red 
 
 ### A pixel-counting method
-h, w = img.shape[0], img.shape[1]
+h, w, _ = img.shape
 all = h * w           # No. of all pixels
 ##Pseudo-Python:
 #area = 0             # No. of frontal area pixels
