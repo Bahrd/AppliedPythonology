@@ -28,7 +28,7 @@ M = len(img); N = int(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
 
 ##2D interpolation - simple as that?! (yeap, but only when M ≤ N...)
 # A loop-by-loop version...
-if 0b0:
+if randbin():
     out = zeros((N, N)) 
     for m in range(M):
         out[m, ...] = array(ΣΣ(img[m, ...], N, Λ = Λ)).flat

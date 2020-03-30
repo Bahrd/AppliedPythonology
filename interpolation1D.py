@@ -4,7 +4,7 @@ from auxiliary import displayPlots
 
 #Some shortcuts...
 κ = 'ψ, ϕ, Π'
-ΣΛ, Λ, ΛΛ = interpolate, eval(κ), κ.split(',')  
+ΣΛ, Λ, ΛΛ = interpolate, list(eval(κ)), κ.split(',')  
 
 ## 1D Examples 
 #  A staple one...

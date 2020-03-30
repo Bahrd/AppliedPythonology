@@ -9,14 +9,14 @@ def ϕ(x):
     return (((a + 2) * x**3 - (a + 3) * x**2 + 1)             * Π(x, 0, 1) 
            + (     a * x**3 -     5*a * x**2 + 8*a * x - 4*a) * Π(x, 0, 2) * (1 - Π(x, 0, 1)))
 
-import numpy as np
+from numpy import arange, linspace
 # An interpolation routine Λ: f(n) ➞ f(x) using λ = ϕ, ψ or Π, 
 def Φ(x, f, λ):
-    n = np.arange(len(f))
+    n = arange(len(f))
     Λ = λ(x - n)                         
     return Λ @ f
 
 # An actual interpolation Φ: Fn ➞ Fx 
 def interpolate(fn, N, Λ = [Π, ψ, ϕ]):
-    X = np.linspace(0, len(fn), N)
+    X = linspace(0, len(fn), N)
     return [[Φ(x, fn, λ) for x in X] for λ in Λ] if type(Λ) is list else [Φ(x, fn, Λ) for x in X]
