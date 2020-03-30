@@ -1,5 +1,5 @@
 ﻿from auxiliary import displayImages as DI
-from interpolation import *
+from interpolation import Π, ψ, ϕ
 from random import randrange as RR
 from numpy import array, empty, arange as A, tensordot as tendot
 from math import sin, cos, pi
@@ -22,7 +22,7 @@ def fl(x, y, img, λ = ϕ, Δ = 3):
         for m in range(*rclp(yy - Δ, yy + Δ, M)):
             fxy += λ(x - n) * λ(y - m) * img[n, m]
     return fxy
-# ... and a quick'n'clean (loop-free) one
+# ... and a quick'n'clean (explicit-loop-free) one
 def f(x, y, img, λ = ϕ, Δ = 3):
     N, M = img.shape; xx, yy = int(x), int(y)
     n, m = A(*rclp(xx - Δ, xx + Δ, N)), A(*rclp(yy - Δ, yy + Δ, M))

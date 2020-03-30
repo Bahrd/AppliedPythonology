@@ -12,8 +12,8 @@ from sys import argv
 #  procedure to each row and then to each column of the image.
 
 # Some shortcuts...
-randbin, ΣΣ, Λ = lambda: randrange(0b10), interpolate, [ϕ] # Π, ψ, ϕ 
-ΛΛ, Cu = Λ[0].__name__, 'copper'
+randbin, ΣΣ, Λ = lambda: randrange(0b10), interpolate, ϕ # Π, ψ, ϕ 
+ΛΛ, Cu = Λ.__name__, 'copper'
 # A source image... 
 s = randbin(); g = s ^ 0b1; img = array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
                                             [0, 1, 1, 1, 1, 1, 1, 1, 0], 
@@ -37,7 +37,7 @@ if 0b0:
     for n in range(N):
         out[..., n] = array(ΣΣ(out[:M, n], N, Λ = Λ)).flat
     DI((img, out), ('Original', '{0}-scaled rows & columns'.format(ΛΛ)), cmp = Cu)
-# ... and the more convoluted (snake-like) version
+# ... and the more convoluted (snaky, sneaky'n'snacky) version
 else:
     out = array([ΣΣ(img[m, ...], N, Λ = Λ) for m in range(M)]).reshape(M, N)
     DI((img, out), ('Original', '{0}-scaled rows'.format(ΛΛ)), cmp = Cu)

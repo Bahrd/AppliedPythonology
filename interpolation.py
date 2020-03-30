@@ -1,6 +1,5 @@
 ﻿## Some interpolating functions, Π(x), ψ(x) and ϕ(x) or... 
 #  whatchamacallit this thingamajig...
-
 # The window/rectangular and the hat/tent/triangular (not anonymous!) function
 def Π(x, l = -.5, r = .5): return (x >= l) * (x < r)
 def ψ(x): return (1 - abs(x)) * (abs(x) < 1)
@@ -20,4 +19,4 @@ def Φ(x, f, λ):
 # An actual interpolation Φ: Fn ➞ Fx 
 def interpolate(fn, N, Λ = [Π, ψ, ϕ]):
     X = np.linspace(0, len(fn), N)
-    return [[Φ(x, fn, λ) for x in X] for λ in Λ]
+    return [[Φ(x, fn, λ) for x in X] for λ in Λ] if type(Λ) is list else [Φ(x, fn, Λ) for x in X]
