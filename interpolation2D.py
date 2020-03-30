@@ -12,10 +12,10 @@ from sys import argv
 #  procedure to each row and then to each column of the image.
 
 # Some shortcuts...
-randbin, ΣΣ, Λ = lambda: randrange(0b10), interpolate, ϕ # Π, ψ, ϕ 
+את, ΣΣ, Λ = lambda: randrange(0b10), interpolate, ϕ # Π, ψ, ϕ 
 ΛΛ, Cu = Λ.__name__, 'copper'
 # A source image... 
-s = randbin(); g = s ^ 0b1; img = array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
+s = את(); g = s ^ 0b1; img = array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
                                             [0, 1, 1, 1, 1, 1, 1, 1, 0], 
                                             [0, 1, 0, 0, 1, g, g, 1, 0], 
                                             [1, 1, 0, 0, 1, 0, 0, 1, 1], 
@@ -28,7 +28,7 @@ M = len(img); N = int(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
 
 ##2D interpolation - simple as that?! (yeap, but only when M ≤ N...)
 # A loop-by-loop version...
-if randbin():
+if את():
     out = zeros((N, N)) 
     for m in range(M):
         out[m, ...] = array(ΣΣ(img[m, ...], N, Λ = Λ)).flat
