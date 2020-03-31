@@ -22,16 +22,13 @@ def mandelbrother(c, ν = 0x42):
         ω[any([isnan(ω), abs(ω) > 0xfffffffff], axis = 0)] = 0x0
     return abs(ω)
 
-
 ## Presentation
 # Rehearsal...
 [N, M] = [0x200, 0x200]     # resolution
 [X, Y], ε = [-1/2, 0], 3/2  # size
 Ω = mt([[complex(n, m) for n in lnsp(X - ε, X + ε, N)] for m in lnsp(Y - ε, Y + ε, M)])
-# ... and act!
-while True:
-    rawN = input("Iterations [N = 0b110] = ") # '0x6' and '0x42' are rather arbitrarily selected
-    N = int(rawN) if len(rawN) > 0 else 0x6   # to make the compound image look nice(r)...
-    M, MM = mandelbrot(Ω), mandelbrother(Ω, N) + mandelbrother(Ω)
-    MM = log(e + MM)
-    DI((M, MM), ('Mandelbrot...', 'Mandelbrothers...'), cmp = 'copper')
+
+## ... and act! Iteration numbers, '0x6' and '0x42', are rather arbitrarily
+#               selected to make the compound image look nice(r)...
+M, MM = mandelbrot(Ω), mandelbrother(Ω, 0x6) + mandelbrother(Ω)
+DI((M, log(e + MM)), ('Mandelbrot...', 'Mandelbrothers...'), cmp = 'copper')
