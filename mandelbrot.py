@@ -9,9 +9,9 @@ def mandelbrot(c, ν = 0x40):
     for _ in range(ν):
         ω = pwr(ω, 2) + c
         # Face-lifting of an old set...
-        ω[any([isnan(ω), abs(ω) > 0xffffffff], axis = 0)] = 0x0
-    # A picturesque version   A more set-like one...
-    return log(e + abs(ω))    # return abs(ω) < 2.0
+        ω[any([isnan(ω), abs(ω) > 0xfffffffff], axis = 0)] = 0x0
+    # A picturesque version   And a more set-like one...
+    return abs(ω)             # return abs(ω) < 2.0
 
 ## Presentation
 # Rehearsal...
@@ -21,6 +21,6 @@ def mandelbrot(c, ν = 0x40):
 # ... and act!
 while True:
     rawN = input("Iterations: ")
-    N = int(rawN) if len(rawN) > 0 else 0x5    # '0x5' and '0x40' are arbitrarily selected iterations
-    M = mandelbrot(Ω, N) + mandelbrot(Ω, 0x40) # to make the compound image look nice(r)...
+    N = int(rawN) if len(rawN) > 0 else 0x6             # '0x6' and '0x42' are rather arbitrarily selected
+    M = log(e + mandelbrot(Ω, N) + mandelbrot(Ω, 0x42)) # to make the compound image look nice(r)...
     imshow(M, cmap = 'copper'); title('Mandelbrot set'); show()
