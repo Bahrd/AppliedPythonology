@@ -30,9 +30,8 @@ def mandelbrother(c, ν = 0x42):
 Ω = mt([[complex(n, m) for n in lnsp(X - ε, X + ε, N)] for m in lnsp(Y - ε, Y + ε, M)])
 # ... and act!
 while True:
-    rawN = input("Iterations [N = 0b110] = ")
-    N = int(rawN) if len(rawN) > 0 else 0x6 # '0x6' and '0x42' are rather arbitrarily selected
-    M = mandelbrot(Ω)                       # to make the compound image look nice(r)...
-    MM = mandelbrother(Ω, N) + mandelbrother(Ω)
+    rawN = input("Iterations [N = 0b110] = ") # '0x6' and '0x42' are rather arbitrarily selected
+    N = int(rawN) if len(rawN) > 0 else 0x6   # to make the compound image look nice(r)...
+    M, MM = mandelbrot(Ω), mandelbrother(Ω, N) + mandelbrother(Ω)
     MM = log(e + MM)
     DI((M, MM), ('Mandelbrot...', 'Mandelbrothers...'), cmp = 'copper')
