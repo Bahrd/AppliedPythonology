@@ -1,7 +1,7 @@
 ## See https://matplotlib.org/3.2.1/gallery/widgets/slider_demo.html
 import cv2
 import numpy as np
-from numpy.random import poisson
+from numpy.random import poisson, randint as RI
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, RadioButtons
 
@@ -15,13 +15,14 @@ def poissonimg(val):
     plt.imshow(imp, cmap = 'gray')
 
 def scotophotopic(label):
-    global img, fig
-    img = cv2.imread("GrassHopper.PNG")
+    global img, fig, mb
+    img = cv2.imread(mb)
     cvt = cv2.COLOR_BGR2RGB if label == 'RGB' else cv2.COLOR_BGR2GRAY
     img = cv2.cvtColor(img, cvt)
     plt.subplot(1, 1, 1); plt.imshow(img, cmap = 'gray'); fig.canvas.draw_idle() 
 
 # GUI elements
+mb = 'MB{0}.png'.format(['A', 'B', 'C', 'D'][RI(4)])
 fig, _ = plt.subplots()
 axEV, axc = plt.axes([.25, .1, .65, .03]), plt.axes([.025, .5, .15, .15])
 slEV = Slider(axEV, 'EV', -10.0, 10.0, valinit = 0, valstep = .5)
@@ -30,5 +31,5 @@ slEV.on_changed(poissonimg); radio.on_clicked(scotophotopic)
 plt.subplots_adjust(left = .25, bottom = .25); plt.subplot(1, 1, 1)
 
 # Image re/de-generation
-img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2RGB)
+img = cv2.cvtColor(cv2.imread(mb), cv2.COLOR_BGR2RGB)
 plt.title('0EV'); plt.imshow(img); plt.show()
