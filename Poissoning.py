@@ -27,8 +27,8 @@ axEV, axc = plt.axes([.25, .1, .65, .03]), plt.axes([.025, .5, .15, .15])
 slEV = Slider(axEV, 'EV', -10.0, 10.0, valinit = 0, valstep = .5)
 radio = RadioButtons(axc, ('RGB', 'B&W'), active = 0)
 slEV.on_changed(poissonimg); radio.on_clicked(scotophotopic)
+plt.subplots_adjust(left = .25, bottom = .25); plt.subplot(1, 1, 1)
 
 # Image re/de-generation
 img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2RGB)
-plt.subplots_adjust(left = .25, bottom = .25); plt.subplot(1, 1, 1)
 plt.title('0EV'); plt.imshow(img); plt.show()
