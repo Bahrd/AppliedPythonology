@@ -11,7 +11,8 @@ def poissonimg(val):
     global img
     λ = 2**val
     imp = np.clip(poisson(img * λ)/λ, 0, 0xff).astype(int)
-    plt.subplot(1, 1 ,1); plt.imshow(imp, cmap = 'gray')
+    plt.subplot(1, 1 ,1); plt.title('{0}EV'.format(val))
+    plt.imshow(imp, cmap = 'gray')
 
 def scotophotopic(label):
     global img, fig
@@ -29,5 +30,5 @@ slEV.on_changed(poissonimg); radio.on_clicked(scotophotopic)
 
 # Image re/de-generation
 img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2RGB)
-plt.subplots_adjust(left = .25, bottom = .25)
-plt.subplot(1, 1, 1); plt.imshow(img); plt.show()
+plt.subplots_adjust(left = .25, bottom = .25); plt.subplot(1, 1, 1)
+plt.title('0EV'); plt.imshow(img); plt.show()
