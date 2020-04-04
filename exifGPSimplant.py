@@ -2,7 +2,6 @@
 from exif import Image
 from sys import argv as names
 from math import floor
-import sys
 
 def dd_GPS_dms(coordinate):
     latlonitude = float(coordinate)

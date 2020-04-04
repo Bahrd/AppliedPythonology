@@ -4,7 +4,11 @@ import piexif as pxf
 from sys import argv as names
 
 # Donor and recipient names (command line arguments)
-donor, recipients = names[1], names[2:]
+if(len(names) < 3):
+    print('USAGE: exifGPStransplant donor recipient1 [recipient2 ...]')
+    exit(-1)
+else:
+    donor, recipients = names[1], names[2:]
 
 # GPS tags procurement, transport...
 exif = pxf.load(donor)
