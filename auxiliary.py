@@ -4,7 +4,7 @@ from matplotlib.colors import LinearSegmentedColormap as lscm
 
 #Image presentation
 def displayImages(images, titles = '', cmp = 'gray'):
-    if type(images) is tuple: 
+    if type(images) is tuple or type(images) is list: 
         number = len(images)
         for p, image, title in zip(range(number), images, titles):
             plt.subplot(1, number, p + 1)
