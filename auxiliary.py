@@ -3,11 +3,15 @@ import numpy as np; import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap as lscm
 
 #Image presentation
-def displayImages(images, titles, cmp = 'gray'):
-    number = len(images)
-    for p, image, title in zip(range(number), images, titles):
-        plt.subplot(1, number, p + 1)
-        plt.title(title); plt.imshow(image, cmap = cmp)
+def displayImages(images, titles = '', cmp = 'gray'):
+    if type(images) is tuple: 
+        number = len(images)
+        for p, image, title in zip(range(number), images, titles):
+            plt.subplot(1, number, p + 1)
+            plt.title(title); plt.imshow(image, cmap = cmp)
+    else:
+        plt.subplot(1, 1, 1)
+        plt.title(titles); plt.imshow(images, cmap = cmp)
     plt.show()
 
 def displayPlots(plots, titles):
@@ -30,7 +34,7 @@ def displayChannels(images, channels, positions, rows = 1, cols = 4):
 
 # CFA filter mask (replication of a single CFA segment into a whole sensor mask)
 def CFA(masks, X):
-    return np.dstack(np.tile(mask, X) for mask in masks)
+    return np.dstack([np.tile(mask, X) for mask in masks])
 
 JPG_QT_Y = [[16, 11, 10, 16,  24,  40,  51,  61],
             [12, 12, 14, 19,  26,  58,  60,  55],
