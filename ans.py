@@ -1,5 +1,5 @@
-﻿from math import floor, ceil, log2;
-x = 0; p = 1/16; y = '10000000000000000000000000000000000000101' # p = P(Y = 1)
+﻿from math import floor, ceil, log2 as lg2
+x = 0; p = 1/16; y = '100000000000000000000000000000000000101' # p = P(Y = 1)
 
 ## J. Duda 2007 ANS/ABC (see: http://mattmahoney.net/dc/dce.html#Section_33)
 # Encoding
@@ -20,4 +20,4 @@ for _ in range(len(y)):
 
 ## Presentation
 msg = "Message:{0}\nCode:\t{1}\nBits:\t{2} vs {3}\nDecoded:{4}"
-print(msg.format(y, xx, len(y), floor(log2(xx) + 1), zz))
+print(msg.format(y, xx, len(y), floor(lg2(xx) + 1), zz))
