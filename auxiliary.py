@@ -3,7 +3,7 @@ import numpy as np; import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap as lscm
 
 #Image presentation
-def displayImages(images, titles = '', cmp = 'gray'):
+def displayImages(images, titles = '', cmp = 'gray', show = True):
     if type(images) is tuple or type(images) is list: 
         number = len(images)
         for p, image, title in zip(range(number), images, titles):
@@ -12,7 +12,7 @@ def displayImages(images, titles = '', cmp = 'gray'):
     else:
         plt.subplot(1, 1, 1)
         plt.title(titles); plt.imshow(images, cmap = cmp)
-    plt.show()
+    if show: plt.show()
 
 def displayPlots(plots, titles):
     number = len(plots)
