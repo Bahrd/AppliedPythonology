@@ -6,7 +6,7 @@
 - simple scaling and rotation: [rotatioNN.py](./rotatioNN.py) and [rotation2D.py](./rotation2D.py)
 - basic demosaicking (for Bayer and X-Trans CFAs): [demosaicking.py](./demosaicking.py) and [demosaickingX.py](./demosaickingX.py)
 - low-light image generation: [Poissoning.py](./Poissoning.py)
-- Monte Carlo pixel counting/area measurements: [MonteCarlo.py] (./MonteCarlo.py)
+- Monte Carlo pixel counting/area measurements: [MonteCarlo.py](./MonteCarlo.py)
 - JPG 'lite" compression scheme: [jpglite.py](./jpglite.py)
 - Julia and Mandelbrot fractals visualisations: [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
 - J. Duda's ANS compression scheme: [ans.py](./ans.py)
