@@ -51,7 +51,7 @@ def gsl(f, ε, l, r):
 class GSS:
     def __init__(λ, f, ε, l, r): # 'λ' stands for 'λογιστικόν' (a part of soul
         λ.f, λ.ε = f, ε          # associated with logic - according to Plato)
-        λ.l, λ.r = l, r          # or a usual 'self' in a Python OO approach
+        λ.l, λ.r = l, r          # or the usual 'seλf' in the Python's OO lingo
         λ.ιφ = (math.sqrt(5) - 1)/2 # Note again: φ-1 == φ⁻¹
     # The recursive search
     def search(λ, l, r, n, m):
