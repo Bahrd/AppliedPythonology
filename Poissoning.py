@@ -4,6 +4,7 @@ from numpy import clip
 from numpy.random import poisson, randint as RI
 from matplotlib.pyplot import subplots, subplots_adjust, axes, show
 from matplotlib.widgets import Slider, RadioButtons
+## See https://link.springer.com/chapter/10.1007/978-3-030-12450-2_29 
 from auxiliary import displayImages as DI
 
 # A handy shortcut...
