@@ -16,7 +16,7 @@
 - Julia and Mandelbrot fractals (yes, again but now as the nonlinear dynamic phenomena): [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
 - Collatz conjecture visualization: [collatz.py](./collatz.py)
 - Golden Section Search: [GSS.py](./GSS.py)
-- Monty Hall's (no-)problem: [MontyHall.py](./MontyHall.py)
+- Monty Hall's (no-)problem: [MontyHall.py](./montyhall.py)
 ### Todo(s)
 - [ ] other simple image processing algorithms 
 	- [ ] bilateral convolution filters
