@@ -1,11 +1,11 @@
-## See https://matplotlib.org/3.2.1/gallery/widgets/slider_demo.html
+## Cite as: https://link.springer.com/chapter/10.1007/978-3-030-12450-2_29 
 from cv2 import imread, cvtColor, COLOR_BGR2RGB as RGB, COLOR_BGR2GRAY as GRAY
-from numpy import clip
-from numpy.random import poisson, randint as RI
 from matplotlib.pyplot import subplots, subplots_adjust, axes, show
 from matplotlib.widgets import Slider, RadioButtons
-## See https://link.springer.com/chapter/10.1007/978-3-030-12450-2_29 
+## https://matplotlib.org/3.2.1/gallery/widgets/slider_demo.html
+from numpy.random import poisson, randint as RI
 from auxiliary import displayImages as DI
+from numpy import clip
 
 # A handy shortcut...
 DIH = lambda img, ttl = '', cmp = 'gray', shw = False: DI(img, ttl, cmp, shw)
