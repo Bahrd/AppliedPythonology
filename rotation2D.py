@@ -14,7 +14,7 @@ rclp = lambda n, m, nmax: (clp(n, nmax), clp(m, nmax)) # range clipper
 # A not-so-quick-yet-dirty (loop-in-loop) version... 
 # Since "premature optimization is the root of all evil"! 
 # -- D. Knuth [http://wiki.c2.com/?PrematureOptimization]
-def fl(x, y, img, λ = ϕ, Δ = 3):
+def fl(img, x, y, λ = ϕ, Δ = 3):
     N, M = img.shape; xx, yy = int(x), int(y)
 
     fxy = 0.0
@@ -22,8 +22,8 @@ def fl(x, y, img, λ = ϕ, Δ = 3):
         for m in range(*rclp(yy - Δ, yy + Δ, M)):
             fxy += λ(x - n) * λ(y - m) * img[n, m]
     return fxy
-# ... and a quick'n'clean (explicit-loop-free) one
-def f(x, y, img, λ = ϕ, Δ = 3):
+# ... and a quicker'n'cleaner (explicit-loop-free) one
+def f(img, x, y, λ = ϕ, Δ = 3):
     N, M = img.shape; xx, yy = int(x), int(y)
     n, m = A(*rclp(xx - Δ, xx + Δ, N)), A(*rclp(yy - Δ, yy + Δ, M))
 
@@ -46,7 +46,8 @@ s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 1, g, g, g, 1, 0, 0, 0], 
                                          [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],])
-M = len(img); N = int(argv[2]) if len(argv) == 3 else M << 0b1; out = empty((N, N)) 
+M = len(img); N = int(argv[2]) if len(argv) == 3 else M << 0b1
+out = empty((N, N)) 
 
 # Setting a rotation angle α
 α = int(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
@@ -54,20 +55,22 @@ M = len(img); N = int(argv[2]) if len(argv) == 3 else M << 0b1; out = empty((N, 
 α *= pi/180.0
 
 # Interpoland...:) Π, ψ, ϕ
-λ = ψ; λλ = λ.__name__
+λ = ϕ; λλ = λ.__name__
 # Rotation of the vector ϑ = [x, y].T, w.r.t. OXY and through an angle α
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
                                     [sin(α),  cos(α)]]) # turns clockwise when α > 0
-f = f if 0x1 else fl
-# Omloop Het...
-if 0b0:
+f = f if 0x0 else fl
+if 0b0: 
+    # Omloop Het...
     for n in range(N):
         for m in range(N):
             ϑ = array([n/N, m/N]) * M - OXY
             x, y = Rα @ ϑ + OXY
-            out[n, m] = f(x, y, img, λ)
-    DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
-## A harder-coded version (but a tad faster, right?)
-else:
-    out = [[f(*(OXY + Rα @ (array([n/N, m/N]) * M - OXY)), img, λ) for m in range(N)] for n in range (N)]
-    DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
+            out[n, m] = f(img, x, y, λ) # cf. rotationNN.py's '... = img[x, y]'
+else:   
+    # A harder-coded version (but a tad faster, right?)
+    out = [[f(img, *(OXY + Rα @ (array([n/N, m/N]) * M - OXY)), λ) 
+                                                 for m in range(N)] 
+                                                 for n in range(N)]
+
+DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
