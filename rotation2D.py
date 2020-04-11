@@ -1,5 +1,5 @@
-﻿from auxiliary import displayImages as DI
-from interpolation import Π, ψ, ϕ, ξ
+﻿from interpolation import Π, ψ, ϕ, ξ
+from auxiliary import displayImages as DI
 from random import randrange as RR
 from numpy import array, empty, arange as A, tensordot as tendot
 from math import sin, cos, pi

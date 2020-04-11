@@ -18,7 +18,7 @@ def ξ(x, m = pi):
 #from numpy import sinc
 
 from numpy import arange, linspace
-# An interpolation routine Λ: f(n) ➞ f(x) using λ = ϕ, ψ or Π, 
+# An interpolation routine Λ: f(n) ➞ f(x) using λ = ϕ, ψ or Π, ξ 
 def Φ(x, f, λ):
     n = arange(len(f))
     Λ = λ(x - n)                         
