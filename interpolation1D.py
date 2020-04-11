@@ -1,5 +1,5 @@
 import numpy as np; import matplotlib.pyplot as plt
-from interpolation import Π, ψ, ϕ, interpolate, sinc
+from interpolation import Π, ψ, ϕ, ξ, interpolate
 from auxiliary import displayPlots
 
 #Some shortcuts...
