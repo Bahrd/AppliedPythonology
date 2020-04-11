@@ -54,7 +54,7 @@ out = empty((N, N))
 ϱ, Cu = α, 'copper' # Auxiliary variables
 α *= pi/180.0
 
-# Interpoland...:) Π, ψ, ϕ, ξ or... '.\interpolation2D.py 44 "lambda x: ψ(x-1)"'
+# Interpoland...:) Π, ψ, ϕ, ξ or... 
 λ = eval(argv[3]) if len(argv) == 4 else ξ; λλ = λ.__name__
 # Rotation of the vector ϑ = [x, y].T, w.r.t. OXY and through an angle α
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
