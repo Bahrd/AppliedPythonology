@@ -1,6 +1,6 @@
-﻿## Some interpolating functions, Π(x), ψ(x) and ϕ(x) or... 
+﻿## Some interpolating functions, Π(x), ψ(x) and ϕ(x) or sinc(x)... 
 #  whatchamacallit this thingamajig...
-# The window/rectangular and the hat/tent/triangular (not anonymous!) function
+# The window/rectangular and the hat/tent/triangular/sinc (not anonymous!) functions
 def Π(x, l = -.5, r = .5): return (x >= l) * (x < r)
 def ψ(x): return (1 - abs(x)) * (abs(x) < 1)
 # The Keys' cubic interpolating function (b'cause: https://realpython.com/python-lambda/#syntax)
@@ -10,7 +10,7 @@ def ϕ(x):
            + (     a * x**3 -     5*a * x**2 + 8*a * x - 4*a) * Π(x, 0, 2) * (1 - Π(x, 0, 1)))
 
 from numpy import sin, ones_like, pi
-def sinc(x, m = pi): 
+def ξ(x, m = pi): 
     x = x * m; ss = ones_like(x)
     ss[x != 0] = sin(x[x != 0])/(x[x != 0])
     return ss
@@ -25,6 +25,6 @@ def Φ(x, f, λ):
     return Λ @ f
 
 # An actual interpolation Φ: Fn ➞ Fx 
-def interpolate(fn, N, Λ = [Π, ψ, ϕ, sinc]):
+def interpolate(fn, N, Λ = [Π, ψ, ϕ, ξ]):
     X = linspace(0, len(fn), N)
     return [[Φ(x, fn, λ) for x in X] for λ in Λ] if type(Λ) is list else [Φ(x, fn, Λ) for x in X]

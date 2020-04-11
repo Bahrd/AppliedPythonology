@@ -3,7 +3,7 @@ from interpolation import Π, ψ, ϕ, interpolate, sinc
 from auxiliary import displayPlots
 
 #Some shortcuts...
-κ = 'ψ, ϕ, Π, sinc'
+κ = 'ψ, ϕ, Π, ξ'
 ΣΛ, Λ, ΛΛ = interpolate, list(eval(κ)), κ.split(',')  
 
 ## 1D Examples 
@@ -21,6 +21,3 @@ while True:
         displayPlots(ΣΛ(Fn, N), ΛΛ)        
     else:
         break
-
-# cd C:\Users\[...]\Bahrd\AppliedPythonology
-# python .\interpolation1D.py
