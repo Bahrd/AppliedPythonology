@@ -1,9 +1,9 @@
 import numpy as np; import matplotlib.pyplot as plt
-from interpolation import Π, ψ, ϕ, interpolate
+from interpolation import Π, ψ, ϕ, interpolate, sinc
 from auxiliary import displayPlots
 
 #Some shortcuts...
-κ = 'ψ, ϕ, Π'
+κ = 'ψ, ϕ, Π, sinc'
 ΣΛ, Λ, ΛΛ = interpolate, list(eval(κ)), κ.split(',')  
 
 ## 1D Examples 
@@ -22,5 +22,5 @@ while True:
     else:
         break
 
-# cd C:\Users\Przem\source\repos\Bahrd\AppliedPythonology
+# cd C:\Users\[...]\Bahrd\AppliedPythonology
 # python .\interpolation1D.py

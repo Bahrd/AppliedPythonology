@@ -1,5 +1,5 @@
 ﻿from auxiliary import displayImages as DI
-from interpolation import Π, ψ, ϕ
+from interpolation import Π, ψ, ϕ, sinc
 from random import randrange as RR
 from numpy import array, empty, arange as A, tensordot as tendot
 from math import sin, cos, pi
@@ -55,7 +55,7 @@ out = empty((N, N))
 α *= pi/180.0
 
 # Interpoland...:) Π, ψ, ϕ
-λ = ϕ; λλ = λ.__name__
+λ = sinc; λλ = λ.__name__
 # Rotation of the vector ϑ = [x, y].T, w.r.t. OXY and through an angle α
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
                                     [sin(α),  cos(α)]]) # turns clockwise when α > 0

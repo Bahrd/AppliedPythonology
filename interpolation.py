@@ -9,6 +9,14 @@ def ϕ(x):
     return (((a + 2) * x**3 - (a + 3) * x**2 + 1)             * Π(x, 0, 1) 
            + (     a * x**3 -     5*a * x**2 + 8*a * x - 4*a) * Π(x, 0, 2) * (1 - Π(x, 0, 1)))
 
+from numpy import sin, ones_like, pi
+def sinc(x, m = pi): 
+    x = x * m; ss = ones_like(x)
+    ss[x != 0] = sin(x[x != 0])/(x[x != 0])
+    return ss
+# Or, simply...
+#from numpy import sinc
+
 from numpy import arange, linspace
 # An interpolation routine Λ: f(n) ➞ f(x) using λ = ϕ, ψ or Π, 
 def Φ(x, f, λ):
@@ -17,6 +25,6 @@ def Φ(x, f, λ):
     return Λ @ f
 
 # An actual interpolation Φ: Fn ➞ Fx 
-def interpolate(fn, N, Λ = [Π, ψ, ϕ]):
+def interpolate(fn, N, Λ = [Π, ψ, ϕ, sinc]):
     X = linspace(0, len(fn), N)
     return [[Φ(x, fn, λ) for x in X] for λ in Λ] if type(Λ) is list else [Φ(x, fn, Λ) for x in X]
