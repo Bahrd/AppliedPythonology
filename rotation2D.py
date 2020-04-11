@@ -46,7 +46,7 @@ s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 1, g, g, g, 1, 0, 0, 0], 
                                          [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
                                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],])
-M = len(img); N = int(argv[2]) if len(argv) == 3 else M << 0b1
+M = len(img); N = int(argv[2]) if len(argv) > 2 else M << 0b1
 out = empty((N, N)) 
 
 # Setting a rotation angle α
@@ -54,8 +54,8 @@ out = empty((N, N))
 ϱ, Cu = α, 'copper' # Auxiliary variables
 α *= pi/180.0
 
-# Interpoland...:) Π, ψ, ϕ, ξ
-λ = ξ; λλ = λ.__name__
+# Interpoland...:) Π, ψ, ϕ, ξ or... '.\interpolation2D.py 44 "lambda x: ψ(x-1)"'
+λ = eval(argv[3]) if len(argv) == 4 else ξ; λλ = λ.__name__
 # Rotation of the vector ϑ = [x, y].T, w.r.t. OXY and through an angle α
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
                                     [sin(α),  cos(α)]]) # turns clockwise when α > 0
@@ -74,3 +74,5 @@ else:
                                                  for n in range(N)]
 
 DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
+
+## Users' fun: 'python .\rotation2D.py 44 42 "lambda x: ψ(x + .5)"'
