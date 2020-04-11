@@ -1,6 +1,6 @@
-﻿from interpolation import Π, ψ, ϕ, interpolate
+﻿from interpolation import Π, ψ, ϕ, ξ, interpolate
+from matplotlib.pyplot import plot, show
 from auxiliary import displayImages as DI
-import matplotlib.pyplot as plt
 from random import randrange
 from numpy import zeros, array
 from sys import argv
@@ -12,7 +12,7 @@ from sys import argv
 #  procedure to each row and then to each column of the image.
 
 # Some shortcuts...
-את, ΣΣ, Λ = lambda: randrange(0b10), interpolate, ϕ # Π, ψ, ϕ 
+את, ΣΣ, Λ = lambda: randrange(0b10), interpolate, ξ # Π, ψ, ϕ, ξ 
 ΛΛ, Cu = Λ.__name__, 'copper'
 # A source image... 
 s = את(); g = s ^ 0b1; img = array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
@@ -49,6 +49,6 @@ else:
 #  (Or rather yet another aliasing-related effect ;)
 if 0b1: 
     # Troughs and crests
-    plt.plot(out[N >> 0b1, ...], 'ro-'); plt.show()
+    plot(out[N >> 0b1, ...], 'ro-'); show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
     DI((img, out), ('Original', '{0}-scaled'.format(ΛΛ)), cmp = Cu)
