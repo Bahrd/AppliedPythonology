@@ -1,6 +1,6 @@
 ﻿from random import randint
 
-## There is a famous and (supposedly) counterintuitive problem: 
+## There is a famous and (supposedly) counterintuitive no-problem: 
 #   https://en.wikipedia.org/wiki/Monty_Hall_problem
 #   "El sueño de la razón produce experimentos!" F. Goya would have said...
 
