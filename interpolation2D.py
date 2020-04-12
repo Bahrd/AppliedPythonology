@@ -1,7 +1,7 @@
 ﻿from interpolation import Π, ψ, ϕ, ξ, interpolate as intrpl
 from matplotlib.pyplot import plot, show
 from auxiliary import displayImages as DI
-from random import randrange
+from random import randrange as RR
 from numpy import zeros, array
 from sys import argv
 
@@ -12,8 +12,8 @@ from sys import argv
 #  procedure to each row and then to each column of the image.
 
 # Some shortcuts... 
-את, ΣΣ, Λ = lambda: randrange(0b10), intrpl, eval(argv[2]) if len(argv) > 2 else ξ 
-ΛΛ, Cu = Λ.__name__, 'copper'
+את, ΣΣ, ΛΛ = lambda: RR(0b10), intrpl, argv[2] if len(argv) > 2 else ξ.__name__ 
+Λ, Cu = eval(ΛΛ), 'copper'
 # A source image... 
 s = את(); g = s ^ 0b1; img = array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
                                     [0, 1, 1, 1, 1, 1, 1, 1, 0], 
@@ -53,4 +53,4 @@ if 0b1:
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
     DI((img, out), ('Original', '{0}-scaled'.format(ΛΛ)), cmp = Cu)
 
-## Users' enjoyment "python .\interpolation2D.py 44 'lambda x: ψ(x - 2.1)'"
+## Deterministic users' enjoyment "python .\interpolation2D.py 42 'lambda x: ψ(x - 6/7)'"
