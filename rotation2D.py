@@ -75,4 +75,4 @@ else:
 
 DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
 
-## Users' fun: 'python .\rotation2D.py 44 42 "lambda x: ψ(x + .5)"'
+## Users' fun: 'python .\rotation2D.py 44 42 "lambda x: ψ(x + RR(6)/7)"'
