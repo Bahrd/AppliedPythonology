@@ -54,8 +54,8 @@ out = empty((N, N))
 ϱ, Cu = α, 'copper' # Auxiliary variables
 α *= pi/180.0
 
-# Interpoland...:) Π, ψ, ϕ, ξ or... 
-λ = eval(argv[3]) if len(argv) == 4 else ξ; λλ = λ.__name__
+# Interpoland...:) picker: Π, ψ, ϕ, ξ, "or else..."
+λ = eval(argv[3]) if len(argv) > 3 else ϕ; λλ = λ.__name__
 # Rotation of the vector ϑ = [x, y].T, w.r.t. OXY and through an angle α
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
                                     [sin(α),  cos(α)]]) # turns clockwise when α > 0
@@ -75,4 +75,7 @@ else:
 
 DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
 
-## Users' fun: 'python .\rotation2D.py 44 42 "lambda x: ψ(x + RR(6)/7)"'
+## Users' fun: python .\rotation2D.py 44 42 'lambda x: ψ(x + RR(9)/12)'
+# 44:   "A imię jego..." A.M. Dz. III 
+# 42:   The Deep Thought's answer
+# 9/12: Heidegger/Wittgenstein
