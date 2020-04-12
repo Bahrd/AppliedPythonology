@@ -77,6 +77,6 @@ else:
 DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
 
 ## Random users' fun: python .\rotation2D.py 44 42 'lambda x: ψ(x + RR(9)/12)'
-# 44:   "A imię jego..." A.M. Dz. III 
+# 44:   "A imię jego..." A. M. Dz. III 
 # 42:   The Deep Thought's answer
-# 9/12: Heidegger/Wittgenstein
+# 9/12: A quote of Heidegger/Wittgenstein

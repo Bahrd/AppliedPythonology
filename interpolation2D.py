@@ -53,4 +53,5 @@ if 0b1:
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
     DI((img, out), ('Original', '{0}-scaled'.format(ΛΛ)), cmp = Cu)
 
-## Deterministic users' enjoyment "python .\interpolation2D.py 42 'lambda x: ψ(x - 6/7)'"
+## Deterministic users' enjoyment:
+#  "python .\interpolation2D.py 42 'lambda x: ψ(x - 6/7)'"
