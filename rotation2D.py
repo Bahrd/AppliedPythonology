@@ -35,11 +35,11 @@ def f(img, x, y, λ = ϕ, Δ = 3):
 
 ## Setting...
 #  A rotation angle...
-ϱ = int(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
+ϱ = eval(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
 α, Cu = ϱ * pi/180.0, 'copper' # Main and auxiliary variables
 
 #  A source image... 
-img = Eddie(); M = len(img); N = int(argv[2]) if len(argv) > 2 else M << 0b1
+img = Eddie(); M = len(img); N = eval(argv[2]) if len(argv) > 2 else M << 0b1
 out = empty((N, N)) 
 
 # ... and an interpoland...:) Π, ψ, ϕ, or ξ, "or else..."
@@ -64,7 +64,7 @@ else:
 
 DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
 
-## Random users' fun: python .\rotation2D.py 44 42 'lambda x: ψ(x + RR(9)/12)'
+## Random users' fun: python .\rotation2D.py '-RR(44)' '42 + RR(7) - 6' 'lambda x: ψ(x + RR(9)/12)''
 # 44:   "A imię jego..." A. M. Dz. III 
-# 42:   The Deep Thought's answer
+# 42:   The Deep Thought's answer ( = 7 * 6)
 # 9/12: A quote of Heidegger/Wittgenstein
