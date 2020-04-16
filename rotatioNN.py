@@ -1,4 +1,5 @@
-﻿from auxiliary import displayImages as DI
+﻿from interpolation import Eddie
+from auxiliary import displayImages as DI
 from random import randrange as RR
 from numpy import array, clip, empty
 from math import sin, cos, pi
@@ -7,26 +8,15 @@ from sys import argv
 #  Be careful however, because ("Timeo Danaos et dona ferentes!"?) Python 
 #  thinks that 'ϑ is θ == True' (and so are 'ϱ' and 'ρ', see ll. 39-40)!
 
-# A source image...  (cf. './rotation2D.py')
-s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-                                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-                                         [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0], 
-                                         [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0], 
-                                         [0, 0, 0, 1, 0, 0, 1, g, g, 1, 0, 0], 
-                                         [0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0], 
-                                         [0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0], 
-                                         [0, 0, 0, 1, s, 1, 1, 1, s, 1, 0, 0], 
-                                         [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], 
-                                         [0, 0, 0, 0, 1, g, g, g, 1, 0, 0, 0], 
-                                         [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-                                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],])
-M = len(img); N = int(argv[2]) if len(argv) == 3 else M << 0b1
+## Setting... 
+#  A rotation angle α
+ϱ = int(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
+α, Cu = ϱ * pi/180.0, 'copper' # Main and auxiliary variables
+
+#  ... and a source image...  (cf. './rotation2D.py')
+img = Eddie(); M = len(img); N = int(argv[2]) if len(argv) > 2 else M << 0b1
 out = empty((N, N)) 
 
-# Setting a rotation angle α
-α = int(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
-ϱ, Cu = α, 'copper' # Auxiliary variables
-α *= pi/180.0
 
 # Rotation of the vector ϑ = [x, y].T, w.r.t. OXY and through an angle α
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 

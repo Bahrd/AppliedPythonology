@@ -1,4 +1,4 @@
-﻿from interpolation import Π, ψ, ϕ, ξ
+﻿from interpolation import Π, ψ, ϕ, ξ, Eddie
 from auxiliary import displayImages as DI
 from random import randrange as RR
 from numpy import array, empty, arange as A, tensordot as tendot
@@ -33,30 +33,18 @@ def f(img, x, y, λ = ϕ, Δ = 3):
     img = img[clp(xx - Δ, N):clp(xx + Δ, N), clp(yy - Δ, M):clp(yy + Δ, M)]
     return tendot(Λxy, img)
 
-# A source image... (cf. './rotationNN.py')
-s = RR(0b10); g = s ^ 0b1; img = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-                                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-                                         [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0], 
-                                         [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0], 
-                                         [0, 0, 0, 1, 0, 0, 1, g, g, 1, 0, 0], 
-                                         [0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0], 
-                                         [0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0], 
-                                         [0, 0, 0, 1, s, 1, 1, 1, s, 1, 0, 0], 
-                                         [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], 
-                                         [0, 0, 0, 0, 1, g, g, g, 1, 0, 0, 0], 
-                                         [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-                                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],])
-M = len(img); N = int(argv[2]) if len(argv) > 2 else M << 0b1
+## Setting...
+#  A rotation angle...
+ϱ = int(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
+α, Cu = ϱ * pi/180.0, 'copper' # Main and auxiliary variables
+
+#  A source image... 
+img = Eddie(); M = len(img); N = int(argv[2]) if len(argv) > 2 else M << 0b1
 out = empty((N, N)) 
 
-# Setting a rotation angle α
-α = int(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
-ϱ, Cu = α, 'copper' # Auxiliary variables
-α *= pi/180.0
+# ... and an interpoland...:) Π, ψ, ϕ, or ξ, "or else..."
+λλ = argv[3] if len(argv) > 3 else ϕ.__name__; λ = eval(λλ) 
 
-# Interpoland...:) picker: Π, ψ, ϕ, ξ, "or else..."
-λλ = argv[3] if len(argv) > 3 else ϕ.__name__ 
-λ = eval(λλ) 
 # Rotation of the vector ϑ = [x, y].T, w.r.t. OXY and through an angle α
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
                                     [sin(α),  cos(α)]]) # turns clockwise when α > 0

@@ -28,3 +28,22 @@ def Φ(x, f, λ):
 def interpolate(fn, N, Λ = [Π, ψ, ϕ, ξ]):
     X = linspace(0, len(fn), N)
     return [[Φ(x, fn, λ) for x in X] for λ in Λ] if type(Λ) is list else [Φ(x, fn, Λ) for x in X]
+
+#  A source image...
+from random import randrange
+from numpy import array
+def Eddie():
+    s = randrange(0b10)
+    g = s ^ 0b1
+    return array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+                  [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0], 
+                  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0], 
+                  [0, 0, 0, 1, 0, 0, 1, g, g, 1, 0, 0], 
+                  [0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0], 
+                  [0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0], 
+                  [0, 0, 0, 1, s, 1, 1, 1, s, 1, 0, 0], 
+                  [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], 
+                  [0, 0, 0, 0, 1, g, g, g, 1, 0, 0, 0], 
+                  [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
