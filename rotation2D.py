@@ -1,4 +1,4 @@
-﻿from interpolation import Π, ψ, ϕ, ξ, Eddie
+﻿from interpolation import Π, ψ, ϕ, ξ, eddie
 from auxiliary import displayImages as DI
 from random import randrange as RR
 from numpy import array, empty, arange as A, tensordot as tendot
@@ -34,20 +34,20 @@ def f(img, x, y, λ = ϕ, Δ = 3):
     return tendot(Λxy, img)
 
 ## Setting...
-#  A rotation angle...
+#  A rotation angle α...
 ϱ = eval(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
 α, Cu = ϱ * pi/180.0, 'copper' # Main and auxiliary variables
 
 #  A source image... 
-img = Eddie(); M = len(img); N = eval(argv[2]) if len(argv) > 2 else M << 0b1
+img = eddie; M = len(img); N = eval(argv[2]) if len(argv) > 2 else M << 0b1
 out = empty((N, N)) 
+# ... and rotation of ϑ = [x, y].T, w.r.t. OXY and through that angle 
+OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
+                                    [sin(α),  cos(α)]]) # turns clockwise when α > 0
 
 # ... and an interpoland...:) Π, ψ, ϕ, or ξ, "or else..."
 λλ = argv[3] if len(argv) > 3 else ϕ.__name__; λ = eval(λλ) 
 
-# Rotation of the vector ϑ = [x, y].T, w.r.t. OXY and through an angle α
-OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
-                                    [sin(α),  cos(α)]]) # turns clockwise when α > 0
 f = f if 0x0 else fl
 if 0b0: 
     # Omloop Het...
@@ -64,7 +64,7 @@ else:
 
 DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
 
-## Random users' fun: python .\rotation2D.py '-RR(44)' '42 + RR(7) - 6' 'lambda x: ψ(x + RR(9)/12)''
+## Random users' fun: "python .\rotation2D.py '-RR(44)' '42 + RR(7) - 6' 'lambda x: ψ(x + RR(9)/12)'"
 # 44:   "A imię jego..." A. M. Dz. III 
 # 42:   The Deep Thought's answer ( = 7 * 6)
 # 9/12: A quote of Heidegger/Wittgenstein

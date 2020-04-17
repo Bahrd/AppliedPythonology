@@ -1,4 +1,4 @@
-﻿from interpolation import Π, ψ, ϕ, ξ, interpolate as intrpl
+﻿from interpolation import Π, ψ, ϕ, ξ, interpolate as intrpl, eddie
 from matplotlib.pyplot import plot, show
 from auxiliary import displayImages as DI
 from random import randrange as RR
@@ -11,20 +11,12 @@ from sys import argv
 #  can be implemented as a successive application of the 1D interpolation 
 #  procedure to each row and then to each column of the image.
 
-# Some shortcuts... 
-את, ΣΣ, ΛΛ = lambda: RR(0b10), intrpl, argv[2] if len(argv) > 2 else ξ.__name__ 
+## Setting:
+#  A source image... 
+img = eddie; M = len(img); N = int(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
+# ... and some shortcuts.
+את, ΣΣ, ΛΛ = lambda : RR(0b10), intrpl, argv[2] if len(argv) > 2 else ξ.__name__ 
 Λ, Cu = eval(ΛΛ), 'copper'
-# A source image... 
-s = את(); g = s ^ 0b1; img = array([[0, 0, 0, 1, 1, 1, 0, 0, 0], 
-                                    [0, 1, 1, 1, 1, 1, 1, 1, 0], 
-                                    [0, 1, 0, 0, 1, g, g, 1, 0], 
-                                    [1, 1, 0, 0, 1, 0, 0, 1, 1], 
-                                    [1, 1, 1, 1, 0, 1, 1, 1, 1], 
-                                    [0, 1, s, 1, 1, 1, s, 1, 0], 
-                                    [0, 0, 1, 0, 0, 0, 1, 0, 0], 
-                                    [0, 0, 1, g, g, g, 1, 0, 0], 
-                                    [0, 0, 0, 1, 1, 1, 0, 0, 0]])
-M = len(img); N = int(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
 
 ##2D interpolation - simple as that?! (yeap, but only when M ≤ N...)
 # A loop-by-loop version...
@@ -53,5 +45,5 @@ if 0b1:
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
     DI((img, out), ('Original', '{0}-scaled'.format(ΛΛ)), cmp = Cu)
 
-## Deterministic users' enjoyment:
-#  "python .\interpolation2D.py 42 'lambda x: ψ(x - 6/7)'"
+## (In)Deterministic users' enjoyment:
+#  "python .\interpolation2D.py 42 'lambda x: ψ(x + RR(2) * RR(9)/12)'"
