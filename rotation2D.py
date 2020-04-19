@@ -28,7 +28,7 @@ def f(img, x, y, λ = ϕ, Δ = 3):
     n, m = A(*rclp(xx - Δ, xx + Δ, N)), A(*rclp(yy - Δ, yy + Δ, M))
 
     Λx, Λy = λ(x - n), λ(y - m) 
-    Λxy = tendot(Λx.T, Λy, axes = 0)
+    Λxy = tendot(Λx, Λy, axes = 0)
 
     img = img[clp(xx - Δ, N):clp(xx + Δ, N), clp(yy - Δ, M):clp(yy + Δ, M)]
     return tendot(Λxy, img)
