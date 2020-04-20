@@ -68,4 +68,4 @@ DI((img, out), ('Original', '{0}-rotated by {1}°'.format(λλ, ϱ)), cmp = Cu)
 # 44:   "A imię jego..." A. M. Dz. III 
 # 42:   The Deep Thought's answer ( = 7 * 6)
 # 9/12: A quote of Heidegger/Wittgenstein
-## Note to random fans: f ≠ fl!
+## A note to random fans: f ≠ fl!
