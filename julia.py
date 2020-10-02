@@ -9,12 +9,12 @@ def julia(ω, ν = 0x40, c = -.8 + .156j, p = 2):
         ω = pwr(ω, p) + c
         # Julia's face-lifting...
         ω[any([isnan(ω), abs(ω) > 0xff], axis = 0)] = 0xf
-    return log(e + abs(ω))  # Not exactly a set function (like 'return abs(ω) > 2')
+    return log(e + abs(ω))  # Not exactly a set function (like it would've been with 'return abs(ω) > 2')
                             # but looks somehow fancier..
 
 ## Presentation
 # Unsettling settings
-[N, M] = [0x400, 0x200]     # resolution
+N, M = 0x400, 0x200  # resolution
 Ω = mt([[complex(n, m) for n in lsp(-2, 2, N)] 
                        for m in lsp(-1, 1, M)])
 # ... and a show off!

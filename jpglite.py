@@ -30,7 +30,7 @@ def quantize(X, Q = 1):
 #   applied (note we assume for simplicity the fixed image size [being a power of two])
 org = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY)
 N = 512; org = cv2.resize(org, (N, N))
-B = 32;  tiles, blocks = range(0, N, B), range(int(N/B))
+B = 16;  tiles, blocks = range(0, N, B), range(int(N/B))
 
 ## Transforming each tile/block using DCT 2D
 trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
@@ -39,7 +39,7 @@ trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
 #   than 'int' conversion) or a standard JPG quatization matrix application)
 #   For instance, 'Q == 0.1' usually results in a poor quality image while
 #   for a JPG, 'Q == 10' yields a visually indistinguishable image
-Q = 1
+Q = .01
 ##  Coefficients quantization and inverse transformation
 #   Note that the 'trns' parameter is not deep-copied when passed to 
 #   'quantization' function and thus is modified there!

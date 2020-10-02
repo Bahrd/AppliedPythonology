@@ -8,7 +8,7 @@ from sys import argv
 def cc_I(n): return [1] if n == 1 else [n] + (cc_I(3*n + 1) if n % 2 else cc_I(n >> 1))
 # If one wants not to be stack-limited...
 def cc_II(n):
-    cs = []; 
+    cs = [] 
     while(n != 1):
         cs += [n]; n = 3*n + 1 if(n % 2) else n >> 1
     return cs + [1]
