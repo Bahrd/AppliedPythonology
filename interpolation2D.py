@@ -15,7 +15,7 @@ from sys import argv
 #  A source image... 
 img = eddie; M = len(img); N = int(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
 # ... and some shortcuts.
-את, ΣΣ, ΛΛ = lambda : RR(0b10), intrpl, argv[2] if len(argv) > 2 else ξ.__name__ 
+את, ΣΣ, ΛΛ = lambda : RR(0b10), intrpl, argv[2] if len(argv) > 2 else ϕ.__name__ 
 Λ, Cu = eval(ΛΛ), 'copper'
 
 ##2D interpolation - simple as that?! (yeap, but only when M ≤ N...)

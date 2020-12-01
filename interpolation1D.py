@@ -8,7 +8,7 @@ from auxiliary import displayPlots
 
 ## 1D Examples 
 #  A staple one...
-Fn = [0, 0, 0, 1, 0, 0, 0]
+Fn = [0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 Fx = np.array(ΣΛ(N = 1024, fn = Fn, Λ = Λ)).T
 plt.plot(Fx); plt.title(κ); plt.show(); displayPlots(Fx.T, ΛΛ)
 

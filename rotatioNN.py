@@ -25,6 +25,6 @@ for n in range(N):
         ϑ = array([n/N, m/N]) * M - OXY
         ϑ = Rα @ ϑ + OXY
         x, y = clip(ϑ, 0, M - 1).astype(int) # where the NNs dwell
-        out[n, m] = img[x, y]                # cf. rotation2D.py's '... = f(x, y, img, λ)'
+        out[n, m] = img[x, y]                # cf. rotation2D.py's '... = f(x, y, img, Π)'
                                                       #(ϱ)
 DI((img, out), ('Original', 'NN-rotated by {0}°'.format(ρ)), cmp = Cu)
