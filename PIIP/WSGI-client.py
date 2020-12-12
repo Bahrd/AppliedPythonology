@@ -1,5 +1,4 @@
 ﻿##  https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface
-#   Docs: https://pythonbasics.org/flask-rest-api/ 
 
 import requests
 import json
@@ -11,8 +10,8 @@ def invoke(url, data):
     return return_value['ID']
 
 # A target "namespace" and...   function name... 
-url = 'http://localhost:8006/' + 'KT6'
-# ... and arguments
+url = 'http://localhost:8006/' + 'JSON-EX'
+# ... and arguments 
 data = {'ID':0b1010, 
         'sender': 'Train Driver',
         'receiver': 'Traffic Controller',

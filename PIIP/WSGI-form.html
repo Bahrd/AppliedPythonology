@@ -1,0 +1,86 @@
+<html>
+<head lang="en-us">
+	<title>The WSGI mpg to l/100km converter</title>
+	<style>
+		form {
+			text-align: center;
+		}
+
+		p {
+			text-align: center;
+		}
+
+		body {
+			background-color: lightgoldenrodyellow;
+		}
+	</style>
+</head>
+<body>
+	<hr />
+	<form method="GET" action="http://localhost:8006/converter">
+		<input type="number"
+			   value="24"
+			   name="MPG"
+			   title="It’s not the years, it’s the mileage (YMMV...)"
+			   min="0" max="100" required />
+		mpg to l/100km
+		<input type="submit"
+			   value="Click to convert"
+			   title="☁️☁️☁️ Cloudy [out-there] converter ☁️☁️☁️" />
+	</form>
+	<hr />
+	<p>
+		<input id="MPG"
+			   value="21"
+			   type="number"
+			   title="X [mpg] = 100(3.8/1.6)/X [l/100km]"
+			   min="0" max="100" required>
+		mpg to l/100km
+		<button onclick="convert()"
+				title="🌫️🌫️🌫️ Foggy [in-situ] converter 🌫️🌫️🌫️">
+			Click to convert
+		</button>
+	</p>
+	<p id="lkm"></p><hr />	<p>
+		<input id="MPGC"
+			   value="12"
+			   type="number"
+			   title="X [mpg] = 100(3.8/1.6)/X [l/100km]"
+			   min="0" max="100" required>
+		mpg to l/100km
+		<button onclick="cloud_convert()"
+				title="☁️☁️☁️ Cloudy [out-there] converter ☁️☁️☁️">
+			Click to convert
+		</button>
+	</p><hr />
+	<script type="text/javascript">
+		function convert() {
+			// liter per gallon / km per mile * 100 km
+			var mpc = (3.78541178 / 1.609344) * 100
+			var mph = document.getElementById("MPG")
+			var mpv = mph.value
+			if (mph.checkValidity()) {
+				document.getElementById("lkm").innerHTML
+					= "Gotcha "
+					+ (mpc / mpv).toFixed(1)
+					+ "l/100km!"
+			}
+		}
+		function cloud_convert() {
+            let url = new URL('http://localhost:8006/converter');
+			let value = document.getElementById("MPGC").value;
+			url.searchParams.set('MPG', value); // added parameter with a space and !
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url, true);
+			xhttp.send();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById("lkm").innerHTML =
+						this.responseText;
+				}
+			}
+        }
+	</script>
+</body>
+</html>
