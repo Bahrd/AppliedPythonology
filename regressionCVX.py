@@ -24,9 +24,12 @@ c = [cvx_norm(A, 1) <= ρ]             #  subject to norm(A, 1) <= ρ
 p = Problem(o, c); p.solve()          # cvx_end
 
 ## Presentation stuff
-from matplotlib.pyplot import plot, show
+from matplotlib.pyplot import plot, show, title
+from auxiliary import displayPlots as DP
 
 Q = mat(rng[-3: 3: 3e-3]).T; Y = m(Q, A.value)
-plot(Q, Y); show()
+plot(Q, Y) 
+title('arg min‖Φ*A-Y‖₂² st. ‖A‖₁ ≤ {0} -> A = {1}'.format(ρ, round(A.value[:α.size]).T))
+show()
 print(" A = ", round(A.value[:α.size]).T, 
       " α = ",                       α.T)

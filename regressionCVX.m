@@ -1,8 +1,8 @@
 %% System
-AA = [1 0 -2 0 1]'; K = norm_l0(AA); p = 1; R = norm(AA, p);
+AA = [1 0 -2 0 1]'; K = norm_l0(AA); p = 1; rho = norm(AA, p);
 
 %% Measurements
-N = 64; L = 128; 
+N = 128; L = 512; 
 X = sort(rand(N, 1) * (2*pi) - pi); Z = randn(N, 1); Y = m(X, AA) + Z;
 Q = sort(rand(size(X)) * (2*pi) - pi); % "Do I feel lucky? Well, do ya, punk?" 
                                            % If not, play safe: Q = (-pi:pi/N:pi)';
@@ -21,7 +21,7 @@ A = inv(FI' * FI) * FI' * Y; disp(showA('inv(Φ''Φ)Φ''Y => ', A, AA));
 subplot(5, 1, 2); plot(X, m(X, AA), 'k-', Q, m(Q, A)); title('inv(Φ''Φ)Φ''Y');
 warning('on');
 % By a Matlab operator
-A = FI\Y;                    disp(showA('FI\Y => ', A, AA));
+A = FI\Y;                    disp(showA('Φ\Y => ', A, AA));
 subplot(5, 1, 3); plot(X, m(X, AA), 'k-', Q, m(Q, A)); title('Φ\\Y');
 % Using LS from a CVX solver
 cvx_begin quiet
@@ -30,8 +30,8 @@ cvx_begin quiet
    variable A(L) 
    minimize(norm(FI * A - Y, 2)) 
 cvx_end
-disp(showA('arg min(L₂(Φ*A-Y)) => ', A, AA));
-subplot(5, 1, 4); plot(X, m(X, AA), 'k-', Q, m(Q, A)); title('arg min(L₂(ΦA-Y))');
+disp(showA('arg min‖Φ*A-Y‖₂² => ', A, AA));
+subplot(5, 1, 4); plot(X, m(X, AA), 'k-', Q, m(Q, A)); title('arg min‖Φ*A-Y‖₂²');
 
 %% CVX!
 cvx_begin quiet
@@ -40,10 +40,10 @@ cvx_begin quiet
    variable A(L) 
    minimize(norm(FI * A - Y, 2)) 
    subject to 
-      norm(A, p) <= R
+      norm(A, p) <= rho
 cvx_end
-disp(showA('arg min(L₂(Φ*A-Y), L₁|A|<=R) => ', A, AA));
-subplot(5, 1, 5); plot(X, m(X, AA), 'k-', Q, m(Q, A)); title('arg min(L₂(ΦA-Y) st. L₁|A|<=R)');
+disp(showA('arg min‖Φ*A-Y‖₂² st. ‖A‖₁ <= ρ', A, AA));
+subplot(5, 1, 5); plot(X, m(X, AA), 'k-', Q, m(Q, A)); title('arg min‖Φ*A-Y‖₂² st. ‖A‖₁ <= ρ');
 
 %% Administration & beaurocracy stuff
 function Y = m(X, A)
