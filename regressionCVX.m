@@ -3,7 +3,7 @@ AA = [1 0 -2 0 1]'; K = norm_l0(AA); p = 1; rho = norm(AA, p);
 
 %% Measurements
 N = 128; L = 512; 
-X = sort(rand(N, 1) * (2*pi) - pi); Z = randn(N, 1); Y = m(X, AA) + Z;
+X = sort(rand(N, 1) * (2*pi) - pi); Z = randn(N, 1) * .125; Y = m(X, AA) + Z;
 Q = sort(rand(size(X)) * (2*pi) - pi); % "Do I feel lucky? Well, do ya, punk?" 
                                            % If not, play safe: Q = (-pi:pi/N:pi)';
 

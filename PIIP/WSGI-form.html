@@ -1,5 +1,6 @@
 <html>
 <head lang="en-us">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>The WSGI mpg to l/100km converter</title>
 	<style>
 		form {
@@ -19,7 +20,7 @@
 	<hr />
 	<p>
 		<a href="https://1drv.ms/f/s!ArXn9WU5Ugjzq81b8reRi8AZmARf3w" target="_blank">
-			<img src="San Francisco Peaks.jpeg" width="680" height="300">
+			<img src="San Francisco Peaks.jpeg" width="680" height="300" title="&#128739; San Francisco Peaks @ Route 66 &#128739;" alt="Journey, not a destination...">
 		</a>
 	</p>
 	<hr />
@@ -31,7 +32,7 @@
 			   min="0" max="100" required />
 		mpg to l/100km
 		<input type="submit"
-			   value="Click to convert"
+			   value="Convert on-line I"
 			   title="☁️☁️☁️ CGI Cloudy [out-there] converter ☁️☁️☁️" />
 	</form>
 	<hr />
@@ -43,8 +44,8 @@
 			   min="0" max="100" required>
 		mpg to l/100km
 		<button onclick="convert()"
-				title="🌫️🌫️🌫️ Foggy [in-situ] converter 🌫️🌫️🌫️">
-			Click to convert
+				title="🌫️🌫️🌫️ JS Foggy [in-situ] converter 🌫️🌫️🌫️">
+			Convert off-line
 		</button>
 	</p>
 	<p id="lkm"></p><hr />	<p>
@@ -55,8 +56,8 @@
 			   min="0" max="100" required>
 		mpg to l/100km
 		<button onclick="cloud_convert()"
-				title="☁️☁️☁️ Cloudy [out-there] converter ☁️☁️☁️">
-			Click to convert
+				title="☁️☁️☁️ JS Cloudy [out-there] converter ☁️☁️☁️">
+			Convert on-line II
 		</button>
 	</p><hr />
 	<script type="text/javascript">
