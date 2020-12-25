@@ -35,7 +35,7 @@ subplot(5, 1, 4); plot(X, m(X, AA), 'k-', Q, m(Q, A)); title('arg min‖Φ*A-Y�
 
 %% CVX!
 cvx_begin quiet
-   cvx_solver sdpt3 % sedumi is the other other.
+   cvx_solver sdpt3 % 'sedumi' is the other other.
 
    variable A(L) 
    minimize(norm(FI * A - Y, 2)) 
