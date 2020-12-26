@@ -26,8 +26,8 @@ def wc_op(c, wn, lvl, Q, op = lambda x, Q: x):
     # Inversing the wavelet transform
     return ifwt2(C, wn)
 
-art = 'GrassHopper'   # pseud. 'Filip'... ;)
-#art = 'Pollock No. 5' # https://blogs.uoregon.edu/richardtaylor/2016/02/08/fractal-analysis-of-jackson-pollocks-poured-paintings/
+#art = 'GrassHopper'   # pseud. 'Filip'... ;)
+art = 'Pollock No. 5' # https://blogs.uoregon.edu/richardtaylor/2016/02/08/fractal-analysis-of-jackson-pollocks-poured-paintings/
 #art = 'Malewicz I'    # a.k.a. 'Negroes Fighting in a Cellar at Night' by Allais 1897
 #art = 'Malewicz II'   # or 'Bociany albinosy w środku śnieżnej zamieci' by OT.TO 1997
 #art = 'Rothko'        # vel 'Orange, Red, Yellow' 1961
@@ -36,7 +36,7 @@ art = 'GrassHopper'   # pseud. 'Filip'... ;)
 # Irréversible color transform (ICT)*
 img = cv2.cvtColor(cv2.imread('./{}.png'.format(art)), cv2.COLOR_BGR2YCrCb)
 # Wavelet transforms' (hiper-)parameters
-L, wn, Q, qntz = 8, 'bior1.1', -6, lambda x, Q: np.floor(x*2**Q + .5)/2**Q
+L, wn, Q, qntz = 8, 'bior2.2', -6, lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 
 ### #######################################################################
 ## Wavelet multiresolution analysis (MRA) visualization (a digression)
@@ -68,7 +68,12 @@ img = cv2.cvtColor(img, cv2.COLOR_YCrCb2RGB)
 dersticker(); title('{} {}\'ed@level {}'.format(art, wn, L))
 imshow(img); show() 
 
-##*That the J2K's RCT (réversible) algorithm is indeed 
-#  réversible, is remarkable and truly stunning: 
-#  RCT:  Y = ⌊(R + 2G + B)/4⌋, Cr = G - R, Cb = G - B
-#  IRCT: G = Y - ⌊(Cr + Cb)/4⌋, R = G + Cr, B = G + Cb
+##* That the J2K's RCT (réversible) algorithm is indeed réversible,
+#   is remarkable and truly stunning ('⌊x⌋' stands for 'floor(x)'): 
+#   RCT:   Y = (R + 2G + B)/4⌋,  Cr = R  - G, Cb = B  - G
+#   RCT⁻¹: G = Y - ⌊(Cr + Cb)/4⌋, R = Cr + G,  B = Cb + G
+### Proof
+#   Y - ⌊(Cr + Cb)/4⌋ = Y - ⌊(R - G + B - G)/4⌋
+#                     = Y - ⌊(R - G + B - G + (4G - 4G))/4⌋
+#                     = Y - ⌊(R - G + B - G + 4G)/4⌋ + G
+#                     = Y - ⌊(R + 2G + B)/4⌋ + G = Y - Y + G = G
