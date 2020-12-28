@@ -69,12 +69,12 @@ img = cv2.cvtColor(img, cv2.COLOR_YCrCb2RGB)
 dersticker(); title('{} {}\'ed@level {} (step size = {})'.format(art, wn, L, 2**(-Q)))
 imshow(img); show() 
 
-##* That the J2K's RCT (réversible) algorithm is indeed réversible,
-#   is remarkable and truly stunning ('⌊x⌋' stands for 'floor(x)'): 
+##* That the J2K's RCT (réversible) algorithm ('⌊x⌋' stands for 'floor(x)'):
 #   RCT:   Y = (R + 2G + B)/4⌋,  Cr = R  - G, Cb = B  - G
 #   RCT⁻¹: G = Y - ⌊(Cr + Cb)/4⌋, R = Cr + G,  B = Cb + G
-### Proof
+#   is indeed réversible, is remarkable and a bit stunning...
+### Proof:
 #   Y - ⌊(Cr + Cb)/4⌋ = Y - ⌊(R - G + B - G)/4⌋
 #                     = Y - ⌊(R - G + B - G + (4G - 4G))/4⌋
 #                     = Y - ⌊(R - G + B - G + 4G)/4⌋ + G
-#                     = Y - ⌊(R + 2G + B)/4⌋ + G = Y - Y + G = G
+#                     = Y - ⌊(R + 2G + B)/4⌋ + G = Y - Y + G = G ■
