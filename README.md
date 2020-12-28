@@ -1,6 +1,6 @@
 # Applied Pythonology
 ![Laocoön and His Sons](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg/250px-Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg)
-## System identification and image processing algorithms
+## Basic system identification and image processing (a.k.a. 'machine learning and machine vision') algorithms
 ### Low-level image processing
 - basic interpolation: [interpolation1D.py](./interpolation1D.py) and [interpolation2D.py](./interpolation2D.py)
 - simple scaling and rotation: [rotatioNN.py](./rotatioNN.py) and [rotation2D.py](./rotation2D.py)
