@@ -20,7 +20,8 @@ def wc_op(c, wn, lvl, Q, op = lambda x, Q: x):
     #  bit layers after bit layers (for instance).
 
     # Displaying percentage of remaining coefficients
-    CC = np.block(C).flat; print('Non-zeros: {:,.2f}%'.format(100 * sum((CC)!= 0)/len(CC)))
+    CC = np.block(C).flat; CCC, CV = sum((CC)!= 0), len(CC)
+    print('Non-zeros: {} of {} = {:,.2f}%'.format(CCC, CV, 100 * CCC/CV))
     # Re-tupling the wavelet coefficients
     C = a2c(C, S, output_format = 'wavedec2')
     # Inversing the wavelet transform
@@ -55,11 +56,25 @@ for i, (a, t) in enumerate(zip([LL, HL, HL, HH], titles)):
     ax.set_title(t); ax.set_xticks([]); ax.set_yticks([])
     ax.imshow(a, cmap = 'gray')    
 show()
-Y = idwt2((LL, (HL, HL, HH)), wn); dersticker(); imshow(Y, cmap = 'gray'); show()
+Y = idwt2((LL, (HL, HL, HH)), wn)
+dersticker(); title('DWT⁻¹(DWT(Y)) == ... ?'); imshow(Y, cmap = 'gray'); show()
 ### #######################################################################
 
-## Back to the JPEG 2000...
+## Back to the JPEG 2000(-ish)...
 Y, Cb, Cr = [wc_op(img[..., n], wn, L, Q, qntz) for n in range(3)]
+
+### #######################################################################
+## YCbCr color space (yet another digression)
+fig = figure(figsize = (9, 3)); fig.tight_layout()
+titles = ['Y', 'Cb', 'Cr']
+
+for i, (a, t) in enumerate(zip([Y, Cb, Cr], titles)):
+    ax = fig.add_subplot(1, 3, i + 1)
+    ax.set_title(t); ax.set_xticks([]); ax.set_yticks([])
+    ax.imshow(a, cmap = 'gray')    
+show()
+### #######################################################################
+
 # Housekeeping... 
 img = np.array(np.clip(np.dstack((Y, Cb, Cr)), 0, 255), np.uint8)
 # ... and the inverse ICT
