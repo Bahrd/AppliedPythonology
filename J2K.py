@@ -41,7 +41,16 @@ img = cv2.cvtColor(cv2.imread('./{}.png'.format(art)), cv2.COLOR_BGR2YCrCb)
 L, wn, Q, qntz = 8, 'bior1.1', -6, lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 
 ### #######################################################################
-## Wavelet multiresolution analysis (MRA) visualization (a digression)
+## YCbCr color space (a digression)
+fig = figure(figsize = (9, 3)); fig.tight_layout()
+titles = ['Y', 'Cb', 'Cr']
+
+for i, t in enumerate(titles):
+    ax = fig.add_subplot(1, 3, i + 1)
+    ax.set_title(t); ax.set_xticks([]); ax.set_yticks([])
+    ax.imshow(img[..., i], cmap = 'gray')    
+show()
+## Wavelet multiresolution analysis (MRA) visualization (yet another digression)
 #  See https://pywavelets.readthedocs.io/en/latest/
 from pywt import dwt2, idwt2
 Y = img[..., 0] # A luminance (grayscale) channel only
@@ -62,24 +71,10 @@ dersticker(); title('DWT⁻¹(DWT(Y)) == ... ?'); imshow(Y, cmap = 'gray'); show
 
 ## Back to the JPEG 2000(-ish)...
 Y, Cb, Cr = [wc_op(img[..., n], wn, L, Q, qntz) for n in range(3)]
-
-### #######################################################################
-## YCbCr color space (yet another digression)
-fig = figure(figsize = (9, 3)); fig.tight_layout()
-titles = ['Y', 'Cb', 'Cr']
-
-for i, (a, t) in enumerate(zip([Y, Cb, Cr], titles)):
-    ax = fig.add_subplot(1, 3, i + 1)
-    ax.set_title(t); ax.set_xticks([]); ax.set_yticks([])
-    ax.imshow(a, cmap = 'gray')    
-show()
-### #######################################################################
-
 # Housekeeping... 
 img = np.array(np.clip(np.dstack((Y, Cb, Cr)), 0, 255), np.uint8)
 # ... and the inverse ICT
 img = cv2.cvtColor(img, cv2.COLOR_YCrCb2RGB)
-
 # Presentation
 dersticker(); title('{} {}\'ed@level {} (step size = {})'.format(art, wn, L, 2**(-Q)))
 imshow(img); show() 
