@@ -6,11 +6,14 @@ from matplotlib.colors import LinearSegmentedColormap as lscm
 def displayImages(images, titles = '', cmp = 'gray', show = True):
     if type(images) is tuple or type(images) is list: 
         number = len(images)
+        fig = plt.figure(figsize = (number * 3, 3)); fig.tight_layout()
         for p, image, title in zip(range(number), images, titles):
-            plt.subplot(1, number, p + 1)
+            sb = plt.subplot(1, number, p + 1)
+            sb.set_xticks([]); sb.set_yticks([])
             plt.title(title); plt.imshow(image, cmap = cmp)
     else:
-        plt.subplot(1, 1, 1)
+        sb = plt.subplot(1, 1, 1)
+        sb.set_xticks([]); sb.set_yticks([])
         plt.title(titles); plt.imshow(images, cmap = cmp)
     if show: plt.show()
 
@@ -25,10 +28,12 @@ def displayPlots(plots, titles):
 def displayChannels(images, channels, positions, rows = 1, cols = 4):
     for image in images:
         for p, c in zip(positions, channels):
-            plt.subplot(rows, cols, p + 1)
+            sb = plt.subplot(rows, cols, p + 1)
+            sb.set_xticks([]); sb.set_yticks([])
             cmp = lscm.from_list('_', ['black', c])
             plt.title(c); plt.imshow(image[..., p], cmp)
-        plt.subplot(rows, cols, rows * cols)
+        sb = plt.subplot(rows, cols, rows * cols)
+        sb.set_xticks([]); sb.set_yticks([])
         plt.title("RGB"); plt.imshow(image)
         plt.show()
 

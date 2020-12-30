@@ -6,6 +6,7 @@ from matplotlib.pyplot import figure, show, imshow, title, gcf
 # https://pywavelets.readthedocs.io/en/latest/ref/dwt-coefficient-handling.html
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2, threshold as thrsd, 
                   array_to_coeffs as a2c, coeffs_to_array as c2a)
+from auxiliary import displayImages as DI; from pywt import dwt2, idwt2
 ## Figure's stickers remover
 def dersticker(): gcf().gca().set_xticks([]); gcf().gca().set_yticks([])
 
@@ -34,51 +35,33 @@ art = 'GrassHopper'   # pseud. 'Filip'... ;)
 #art = 'Rothko'        # vel 'Orange, Red, Yellow' 1961
 
 ## JPEG 2000 main 'codec' 
-# Irréversible color transform (ICT)*
-img = cv2.cvtColor(cv2.imread('./{}.png'.format(art)), cv2.COLOR_BGR2YCrCb)
 # Wavelet transforms' (hiper-)parameters
 # 'bior1.1' == Haar wavelets, 'bior2.2' == LeGal 5/3, 'bior4.4' == CDF 9/7 
 L, wn, Q, qntz = 8, 'bior1.1', -6, lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 
+# Irréversible color transform (ICT)*
+img = cv2.cvtColor(cv2.imread('./{}.png'.format(art)), cv2.COLOR_BGR2YCrCb)
 ### #######################################################################
 ## YCbCr color space (a digression)
-fig = figure(figsize = (9, 3)); fig.tight_layout()
-titles = ['Y', 'Cb', 'Cr']
-
-for i, t in enumerate(titles):
-    ax = fig.add_subplot(1, 3, i + 1)
-    ax.set_title(t); ax.set_xticks([]); ax.set_yticks([])
-    ax.imshow(img[..., i], cmap = 'gray')    
-show()
+DI([img[..., n] for n in range(3)], ['Y', 'Cb', 'Cr'])
 ## Wavelet multiresolution analysis (MRA) visualization (yet another digression)
 #  See https://pywavelets.readthedocs.io/en/latest/
-from pywt import dwt2, idwt2
-Y = img[..., 0] # A luminance (grayscale) channel only
-LL, (HL, HL, HH) = dwt2(Y, wn)
-
-fig = figure(figsize = (6, 6)); fig.tight_layout()
 titles = ['{} approximation'.format(wn),    
           'Horizontal details', 'Vertical details', 'Diagonal details']
-
-for i, (a, t) in enumerate(zip([LL, HL, HL, HH], titles)):
-    ax = fig.add_subplot(2, 2, i + 1)
-    ax.set_title(t); ax.set_xticks([]); ax.set_yticks([])
-    ax.imshow(a, cmap = 'gray')    
-show()
-Y = idwt2((LL, (HL, HL, HH)), wn)
-dersticker(); title('DWT⁻¹(DWT(Y)) == ... ?'); imshow(Y, cmap = 'gray'); show()
+Y = img[..., 0] # A luminance (grayscale) channel only
+LL, (HL, HL, HH) = dwt2(Y, wn);    DI([LL, HL, HL, HH], titles)
+Y = idwt2((LL, (HL, HL, HH)), wn); DI(Y, 'DWT⁻¹(DWT(Y)) == ... ?')
+#dersticker(); title('DWT⁻¹(DWT(Y)) == ... ?'); imshow(Y, cmap = 'gray'); show()
 ### #######################################################################
-
 ## Back to the JPEG 2000(-ish)...
 Y, Cb, Cr = [wc_op(img[..., n], wn, L, Q, qntz) for n in range(3)]
+DI([Y, Cb, Cr], ['Y', 'Cb', 'Cr'])
 # Housekeeping... 
 img = np.array(np.clip(np.dstack((Y, Cb, Cr)), 0, 255), np.uint8)
-# ... and the inverse ICT
+# ... the inverse ICT...
 img = cv2.cvtColor(img, cv2.COLOR_YCrCb2RGB)
-# Presentation
-dersticker(); title('{} {}\'ed@level {} (step size = {})'.format(art, wn, L, 2**(-Q)))
-imshow(img); show() 
-
+# ... and the final presentation
+DI(img, '{} {}\'ed@level {} (step size = {})'.format(art, wn, L, 2**(-Q)))
 ##* That the J2K's RCT (réversible) algorithm ('⌊x⌋' stands for 'floor(x)'):
 #   RCT:   Y = (R + 2G + B)/4⌋,  Cr = R  - G, Cb = B  - G
 #   RCT⁻¹: G = Y - ⌊(Cr + Cb)/4⌋, R = Cr + G,  B = Cb + G
