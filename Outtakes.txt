@@ -1,3 +1,6 @@
+## Figure's stickers remover
+def dersticker(): gcf().gca().set_xticks([]); gcf().gca().set_yticks([])
+
 ## Restoring the values of raw pixels (highlights demosaicking pitfalls)
 #for n in range(3):
 #    rgb[BayerFilter[..., n] != 0, n] = raw[BayerFilter[..., n] != 0, n]

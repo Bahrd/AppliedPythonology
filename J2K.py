@@ -7,15 +7,13 @@ from matplotlib.pyplot import figure, show, imshow, title, gcf
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2, threshold as thrsd, 
                   array_to_coeffs as a2c, coeffs_to_array as c2a)
 from auxiliary import displayImages as DI; from pywt import dwt2, idwt2
-## Figure's stickers remover
-def dersticker(): gcf().gca().set_xticks([]); gcf().gca().set_yticks([])
 
-## Wavelet transform coefficients operation (here quantization)
-#  thresholding: 'lambda x, T: thrsd(x, T, mode = 'hard')' 
+## Wavelet transform coefficients operation wrapper
 def wc_op(c, wn, lvl, Q, op = lambda x, Q: x):
     # Applying a wavelet transform
     C = fwt2(c, wn, level = lvl)
-    # Performing operation on 'de-tupled' wavelet coefficients 'C' 
+    # Performing operation (quantization in JPEG 2000)
+    # on 'de-tupled' wavelet coefficients 'C' 
     C, S = c2a(C); C = list(map(op, C, repeat(Q)))    
     ## In the real JPEG 2000 the coefficients are here encoded, 
     #  bit layers after bit layers (for instance).
@@ -23,6 +21,7 @@ def wc_op(c, wn, lvl, Q, op = lambda x, Q: x):
     # Displaying percentage of remaining coefficients
     CC = np.block(C).flat; CCC, CV = sum((CC)!= 0), len(CC)
     print('Non-zeros: {} of {} = {:,.2f}%'.format(CCC, CV, 100 * CCC/CV))
+    
     # Re-tupling the wavelet coefficients
     C = a2c(C, S, output_format = 'wavedec2')
     # Inversing the wavelet transform
@@ -37,11 +36,13 @@ art = 'GrassHopper'   # pseud. 'Filip'... ;)
 ## JPEG 2000 main 'codec' 
 # Wavelet transforms' (hiper-)parameters
 # 'bior1.1' == Haar wavelets, 'bior2.2' == LeGal 5/3, 'bior4.4' == CDF 9/7 
+#  Hard thresholding:             'lambda x, T: thrsd(x, T, mode = 'hard')' 
 L, wn, Q, qntz = 8, 'bior1.1', -6, lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 
 # Irréversible color transform (ICT)*
 img = cv2.cvtColor(cv2.imread('./{}.png'.format(art)), cv2.COLOR_BGR2YCrCb)
-### #######################################################################
+
+###
 ## YCbCr color space (a digression)
 DI([img[..., n] for n in range(3)], ['Y', 'Cb', 'Cr'])
 ## Wavelet multiresolution analysis (MRA) visualization (yet another digression)
@@ -51,8 +52,8 @@ titles = ['{} approximation'.format(wn),
 Y = img[..., 0] # A luminance (grayscale) channel only
 LL, (HL, HL, HH) = dwt2(Y, wn);    DI([LL, HL, HL, HH], titles)
 Y = idwt2((LL, (HL, HL, HH)), wn); DI(Y, 'DWT⁻¹(DWT(Y)) == ... ?')
-#dersticker(); title('DWT⁻¹(DWT(Y)) == ... ?'); imshow(Y, cmap = 'gray'); show()
-### #######################################################################
+###
+
 ## Back to the JPEG 2000(-ish)...
 Y, Cb, Cr = [wc_op(img[..., n], wn, L, Q, qntz) for n in range(3)]
 DI([Y, Cb, Cr], ['Y', 'Cb', 'Cr'])
@@ -66,7 +67,7 @@ DI(img, '{} {}\'ed@level {} (step size = {})'.format(art, wn, L, 2**(-Q)))
 #   RCT:   Y = (R + 2G + B)/4⌋,  Cr = R  - G, Cb = B  - G
 #   RCT⁻¹: G = Y - ⌊(Cr + Cb)/4⌋, R = Cr + G,  B = Cb + G
 #   is indeed réversible, is remarkable and a bit stunning...
-### Proof:
+### Proof: R,G,B are integers. Hence:
 #   Y - ⌊(Cr + Cb)/4⌋ = Y - ⌊(R - G + B - G)/4⌋
 #                     = Y - ⌊(R - G + B - G + (4G - 4G))/4⌋
 #                     = Y - ⌊(R - G + B - G + 4G)/4⌋ + G
