@@ -47,11 +47,11 @@ img = cv2.cvtColor(cv2.imread('./{}.png'.format(art)), cv2.COLOR_BGR2YCrCb)
 DI([img[..., n] for n in range(3)], ['Y', 'Cb', 'Cr'])
 ## Wavelet multiresolution analysis (MRA) visualization (yet another digression)
 #  See https://pywavelets.readthedocs.io/en/latest/
-titles = ['{} approximation'.format(wn),    
-          'Horizontal details', 'Vertical details', 'Diagonal details']
+titles = ['{} approximation (LL)'.format(wn), 'Horizontal details (HL)', 
+          'Vertical details (LH)',            'Diagonal details (HH)']
 Y = img[..., 0] # A luminance (grayscale) channel only
-LL, (HL, HL, HH) = dwt2(Y, wn);    DI([LL, HL, HL, HH], titles)
-Y = idwt2((LL, (HL, HL, HH)), wn); DI(Y, 'DWT⁻¹(DWT(Y)) == ... ?')
+LL, (HL, LH, HH) = dwt2(Y, wn);    DI([LL, HL, LH, HH], titles)
+Y = idwt2((LL, (HL, LH, HH)), wn); DI(Y, 'DWT⁻¹(DWT(Y)) → ⌊…⌋ ?')
 ###
 
 ## Back to the JPEG 2000(-ish)...
