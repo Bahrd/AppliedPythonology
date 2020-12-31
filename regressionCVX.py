@@ -1,5 +1,10 @@
-from numpy.random import randn, randint; from numpy.linalg import norm
+from numpy.random import randn, randint; from numpy.linalg import norm as np_norm
 from numpy import arange, cos, kron, mat, r_ as rng, round, stack
+from matplotlib.pyplot import plot, show, title
+
+from cvxpy import Problem, Minimize, Variable
+from cvxpy import norm as cvx_norm
+from auxiliary import displayPlotsXY
 
 # Main function stuff                 # MATLAB's origins
 def m(X, A):                          # function Y = m(X, A)
@@ -9,13 +14,11 @@ def m(X, A):                          # function Y = m(X, A)
 
 ## Measurements (note N << L - the one way around...)
 α = randint(-2, 3, (6, 1))            # α = randi([-2, 3], 6, 1);
-ρ = norm(α, 1) * 1
-N  = 128; X, Z = (randn(N, 1), randn(N, 1) * .125); Y = m(X, α) + Z
+ρ = np_norm(α, 1) * 1
+N  = 128; X, Z = (randn(N, 1), randn(N, 1) * 0.1); X = sorted(X); Y = m(X, α) + Z
 ## Regressors matrix (note L >> N - the other way around...) 
 L  = 512; Φ = cos(kron(X, arange(L))) # Φ = cos(kron(X, 1:L)); 
 
-from cvxpy import Problem, Minimize, Variable
-from cvxpy import norm as cvx_norm
 #Python CVX                           # MATLAB CVX
                                       # cvx_begin quiet
 A = Variable((L, 1))                  #  variable A(L) 
@@ -24,12 +27,8 @@ c = [cvx_norm(A, 1) <= ρ]             #  subject to norm(A, 1) <= ρ
 p = Problem(o, c); p.solve()          # cvx_end
 
 ## Presentation stuff
-from matplotlib.pyplot import plot, show, title
-from auxiliary import displayPlots as DP
-
-Q = mat(rng[-3: 3: 3e-3]).T; Y = m(Q, A.value)
-plot(Q, Y) 
-title('arg min‖Φ*A-Y‖₂² st. ‖A‖₁ ≤ {0} -> A = {1}'.format(ρ, round(A.value[:α.size]).T))
-show()
-print(" A = ", round(A.value[:α.size]).T, 
-      " α = ",                       α.T)
+Q = mat(rng[-3: 3: 3e-3]).T; YY = m(Q, A.value)
+print(" A = ", round(A.value[:α.size], 0).T, 
+      " α = ",                          α.T)
+ttl = 'arg min‖Φ*A-Y‖₂² st. ‖A‖₁ ≤ {} → A = {}'.format(ρ, round(A.value[:α.size]).T)
+displayPlotsXY([(Q, YY), (X, Y)], [ttl, '(X, Y)'])

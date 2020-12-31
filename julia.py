@@ -1,5 +1,6 @@
 from matplotlib.pyplot import imshow, title, show
 from numpy import linspace as lsp, power as pwr, mat as mt, isnan, any, log, e
+from auxiliary import displayImages as DI; 
 
 ## An approximate Julia set function (resolution grows with ν)
 #       J = {ω ∈ Ω: julia(ω, ∞) < 2}
@@ -20,4 +21,4 @@ N, M = 0x400, 0x200  # resolution
 # ... and a show off!
 c = -.8 + .156j; J = julia(Ω, c = c)
 
-imshow(J, cmap = 'Blues'); title('Julia set for c = {0}'.format(c)); show()
+DI(J, 'Julia set for c = {}'.format(c), cmp = 'Blues')

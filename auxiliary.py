@@ -7,7 +7,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True):
     if type(images) is tuple or type(images) is list: 
         number = len(images)
         fig = plt.figure(figsize = (number * 3, 3)); fig.tight_layout()
-        for p, image, title in zip(range(number), images, titles):
+        for p, (image, title) in enumerate(zip(images, titles)):
             sb = plt.subplot(1, number, p + 1)
             sb.set_xticks([]); sb.set_yticks([])
             plt.title(title); plt.imshow(image, cmap = cmp)
@@ -19,9 +19,16 @@ def displayImages(images, titles = '', cmp = 'gray', show = True):
 
 def displayPlots(plots, titles):
     number = len(plots)
-    for p, pl, title in zip(range(number), plots, titles):
+    for p, pl, ttl in zip(range(number), plots, titles):
         plt.subplot(1, number, p + 1)
-        plt.title(title); plt.plot(pl)
+        plt.title(ttl); plt.plot(pl)
+    plt.show()
+
+def displayPlotsXY(plots, titles):
+    number = len(plots)
+    for p, (x, y), ttl in zip(range(number), plots, titles):
+        plt.subplot(1, number, p + 1)
+        plt.title(ttl); plt.plot(x, y)
     plt.show()
 
 # Image dissection presentation (the channels and the resulting image)
