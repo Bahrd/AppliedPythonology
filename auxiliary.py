@@ -18,16 +18,14 @@ def displayImages(images, titles = '', cmp = 'gray', show = True):
     if show: plt.show()
 
 def displayPlots(plots, titles):
-    number = len(plots)
-    for p, pl, ttl in zip(range(number), plots, titles):
-        plt.subplot(1, number, p + 1)
+    for p, (pl, ttl) in enumerate(zip(plots, titles)):
+        plt.subplot(1, len(plots), p + 1)
         plt.title(ttl); plt.plot(pl)
     plt.show()
 
 def displayPlotsXY(plots, titles):
-    number = len(plots)
-    for p, (x, y), ttl in zip(range(number), plots, titles):
-        plt.subplot(1, number, p + 1)
+    for p, ((x, y), ttl) in enumerate(zip(plots, titles)):
+        plt.subplot(1, len(plots), p + 1)
         plt.title(ttl); plt.plot(x, y)
     plt.show()
 
