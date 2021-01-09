@@ -36,7 +36,8 @@ art = 'GrassHopper'   # pseud. 'Filip'... ;)
 
 ## JPEG 2000 main 'codec' 
 # Wavelet transforms' (hiper-)parameters
-# 'bior1.1' == Haar wavelets, 'bior2.2' == LeGal 5/3, 'bior4.4' == CDF 9/7 
+# https://en.wikipedia.org/wiki/Cohen-Daubechies-Feauveau_wavelet#Numbering
+# 'bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7' 
 #  Hard thresholding:             'lambda x, T: thrsd(x, T, mode = 'hard')' 
 L, wn, Q, qntz = 6, 'bior1.1', -6, lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 
