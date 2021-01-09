@@ -34,6 +34,6 @@ rgb = np.dstack((R, G, B))
 ## Presentation
 channels = ("red", "green", "blue")
 # The Bayer CFA mosaic (aka 'RAW') and the de-mosaicked image
-aux.displayChannels((raw, rgb), channels, range(len(channels)))
+aux.displayChannels((raw, rgb), channels)
 # Input vs. output image
 aux.displayImages((img, rgb, img - rgb), ("scene", "image", "diff"))

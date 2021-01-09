@@ -29,17 +29,18 @@ def quantize(X, Q = 1):
 ## Image loading (if 'B == 8' then by default a JPG quantization scheme is 
 #   applied (note we assume for simplicity the fixed image size [being a power of two])
 org = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY)
-N = 512; org = cv2.resize(org, (N, N))
-B = 16;  tiles, blocks = range(0, N, B), range(int(N/B))
+N = 1024; org = cv2.resize(org, (N, N))
+B = 32;  tiles, blocks = range(0, N, B), range(int(N/B))
 
 ## Transforming each tile/block using DCT 2D
 trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
 
-#%% Compression quality ('Q == 1' means no scalar quantization (other 
-#   than 'int' conversion) or a standard JPG quatization matrix application)
-#   For instance, 'Q == 0.1' usually results in a poor quality image while
-#   for a JPG, 'Q == 10' yields a visually indistinguishable image
-Q = .01
+## Compression quality (for B ≠ 8 'Q == 1' means no scalar quantization (other 
+#  than 'int' conversion) or an application of the standard JPG 
+#  quatization matrix). For instance, 'Q == 0.1' usually results in a poor 
+#  quality image while 'Q == 10' yields a visually indistinguishable image.
+## Note that for B <> 8 the standard scalar quantization is applied
+Q = 1/64 
 ##  Coefficients quantization and inverse transformation
 #   Note that the 'trns' parameter is not deep-copied when passed to 
 #   'quantization' function and thus is modified there!
@@ -48,7 +49,6 @@ img  = [[idct2(qntz[n][m]).astype(np.int) for n in blocks] for m in blocks]
 
 #%% Presentation
 img, qntz = np.block(img), np.block(qntz)
-nonzeros  = sum((qntz != 0).flat)
+nz  = sum((qntz != 0).flat)
 aux.displayImages([org, qntz, img, org - img], 
-                  ['original', 'DCT 2D', 'Q = {}'.format(Q),
-                                         '{} non-zeros'.format(nonzeros)])
+                  ['original', 'DCT 2D', f'Q = {Q}', f'{nz} non-zeros'])
