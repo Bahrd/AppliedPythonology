@@ -1,23 +1,32 @@
 ﻿from math import floor, ceil, log2 as lg2
-x = 0; p = 1/2; y = '100000000000000000000000000000000000101' # p = P(Y = 1)
+from random import randint
+
+# A probability p = P(X = '1') 
+# and the resulting entropy 
+# 'H = -∑pi⋅lg2(pi)' [bit/smbl] 
+
+p = 1/64
+H = (p - 1)*lg2(1 - p) - p*lg2(p) 
+
+# A 'random' message...
+prefix, suffix = ('11', '00') if randint(0, 1) else ('00', '11')
+msg = prefix + 0x80 * '0' + suffix
+print(f'Entropy:{H:,.2f} [bit/symbol]\nMessage:{msg}')
 
 ## J. Duda 2007 ANS/ABC (see: http://mattmahoney.net/dc/dce.html#Section_33)
 # Encoding
-for i in y[:: -1]:
-    if (i == '0'):
-        x = ceil((x + 1)/(1 - p)) - 1
-    else:
-        x = floor(x/p)
+enc = 0
+for n in msg[:: -1]:
+    enc = ceil((enc + 1)/(1 - p)) - 1 if n == '0' else floor(enc/p)
 
 # Decoding
-xx, zz = x, ''
-for _ in range(len(y)):
-    z = ceil((x + 1) * p) - ceil(x * p); zz += str(z)
-    if z == 0:
-        x -= ceil(x * p)
-    else:
-        x = ceil(x * p)
+code, dec = enc, ''
+for _ in range(len(msg)):
+    z = ceil((enc + 1) * p) - ceil(enc * p)
+    dec += str(z)
+    enc = enc - ceil(enc * p) if z == 0 else ceil(enc * p)
 
 ## Presentation
-msg = "Message:{0}\nCode:\t{1}\nBits:\t{2} vs {3}\nDecoded:{4}" #int(y, 2)
-print(msg.format(y, xx, len(y), floor(lg2(xx) + 1), zz))
+ly, lc = len(msg), floor(lg2(code) + 1); rlc = 0o144 * lc/ly
+rprt = 'Encoded:{}\nBits:\t{} vs {} ({:,.2f}%)\nDecoded:{}'
+print(rprt.format(code, ly, lc, rlc, dec))
