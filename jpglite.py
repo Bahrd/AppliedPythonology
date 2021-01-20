@@ -35,19 +35,19 @@ B = 32;  tiles, blocks = range(0, N, B), range(int(N/B))
 ## Transforming each tile/block using DCT 2D
 trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
 
-## Compression quality (for B ≠ 8 'Q == 1' means no scalar quantization (other 
-#  than 'int' conversion) or an application of the standard JPG 
-#  quatization matrix). For instance, 'Q == 0.1' usually results in a poor 
-#  quality image while 'Q == 10' yields a visually indistinguishable image.
-## Note that for B <> 8 the standard scalar quantization is applied
+## Compression vs. image quality 
+#  If B ≠ 8, then the standard scalar quantization is applied and 'Q == 1'
+#  means no scalar quantization (other than conversion to the 'int' type). 
+#  For B == 8 the JPG quatization matrix is applied. Then 'Q == 0.1' results 
+#  usually in a poor quality image while 'Q == 10' yields a visually indistinguishable image.
 Q = 1/64 
-##  Coefficients quantization and inverse transformation
-#   Note that the 'trns' parameter is not deep-copied when passed to 
-#   'quantization' function and thus is modified there!
+## Coefficients quantization and inverse transformation
 qntz = [[quantize(trns[n][m], Q)          for n in blocks] for m in blocks]
 img  = [[idct2(qntz[n][m]).astype(np.int) for n in blocks] for m in blocks]
+#  Note that the 'trns' argument is not deep-copied when passed to 
+#  'quantize' function and thus is modified there!
 
-#%% Presentation
+## Presentation
 img, qntz = np.block(img), np.block(qntz)
 nz  = sum((qntz != 0).flat)
 aux.displayImages([org, qntz, img, org - img], 

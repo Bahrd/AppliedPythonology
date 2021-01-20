@@ -3,11 +3,11 @@ from random import randint
 
 # A probability p = P(X = '1') and the resulting entropy 'H = -∑pi⋅lg2(pi)'  
 
-p = 1/64; H = (p - 1)*lg2(1 - p) - p*lg2(p) #[bit/smbl]
+p = 1/4; H = (p - 1)*lg2(1 - p) - p*lg2(p) #[bit/smbl]
 
 # A 'random' message...
 prefix, suffix = ('11', '00') if randint(0, 1) else ('00', '11')
-msg = prefix + 0x40 * '0' + suffix
+msg = prefix + 0x4 * '0' + suffix
 print(f'P(X = \'1\') = 1/{1/p:,.0f}\nEntropy:{H:,.2f} [bit/symbol]\n\nMessage:{msg}')
 
 ## J. Duda 2007 ANS/ABC (see: http://mattmahoney.net/dc/dce.html#Section_33)
