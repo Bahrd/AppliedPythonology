@@ -1,5 +1,6 @@
 import cv2; import numpy as np; import auxiliary as aux
 import matplotlib.pyplot as plt
+from scipy.fftpack import dct, idct
 
 #%% JPG Lite - a (pretty much) simplified version of the standard 
 #   still image transform coding compression algorithm
@@ -7,11 +8,9 @@ import matplotlib.pyplot as plt
 ##  Useful routines
 #   Tile DCT 2D transform
 def dct2(img, nrm = 'ortho'):
-    from scipy.fftpack import dct
     return dct(dct(img.T, norm = nrm).T, norm = nrm) 
 #   Tile Inverse DCT 2D transform
 def idct2(img, nrm = 'ortho'):
-    from scipy.fftpack import idct
     return idct(idct(img.T, norm = nrm).T, norm = nrm) 
 
 ##  Quantization of the DCT 2D coefficients 
@@ -28,8 +27,8 @@ def quantize(X, Q = 1):
 
 ## Image loading (if 'B == 8' then by default a JPG quantization scheme is 
 #   applied (note we assume for simplicity the fixed image size [being a power of two])
-org = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2GRAY)
-N = 1024; org = cv2.resize(org, (N, N))
+org = cv2.cvtColor(cv2.imread('GrassHopper.PNG'), cv2.COLOR_BGR2YCrCb)
+N = 1024; org = cv2.resize(org[..., 0], (N, N))
 B = 32;  tiles, blocks = range(0, N, B), range(int(N/B))
 
 ## Transforming each tile/block using DCT 2D

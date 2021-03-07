@@ -21,7 +21,7 @@ def wc_op(c, wn, lvl, Q, op = lambda x, Q: x):
 
     # Displaying percentage of remaining coefficients
     CC = np.block(C).flat; CCC, CV = sum((CC)!= 0), len(CC)
-    print('Non-zeros: {} of {} = {:,.2f}%'.format(CCC, CV, 100 * CCC/CV))
+    print(f'Non-zeros: {CCC} of {CV} = {100 * CCC/CV:,.2f}%')
     
     # Re-tupling the wavelet coefficients
     C = a2c(C, S, output_format = 'wavedec2')
@@ -52,7 +52,7 @@ DI([img[..., n] for n in range(3)], ['Y', 'Cb', 'Cr'])
 ## Wavelet multiresolution analysis (MRA) visualization (yet another digression)
 #  See https://pywavelets.readthedocs.io/en/latest/
 titles = [f'{wn} approximation (LL)', 'Horizontal details (HL)', 
-          'Vertical details (LH)',    'Diagonal details (HH)']
+           'Vertical details (LH)',   'Diagonal details (HH)']
 Y = img[..., 0] # A luminance (grayscale) channel only
 LL, (HL, LH, HH) = dwt2(Y, wn);    DI([LL, HL, LH, HH], titles)
 Y = idwt2((LL, (HL, LH, HH)), wn); DI(Y, 'DWT⁻¹(DWT(Y)) → ⌊…⌋ ?')

@@ -14,7 +14,7 @@ DIH = lambda img, ttl = '', cmp = 'gray', shw = False: DI(img, ttl, cmp, shw)
 def poissonimg(val):
     global img
     λ = 2**(val - 8.0); imp = clip(poisson(img * λ)/λ, 0, 0xff).astype(int)
-    DIH(imp, '{0}EV'.format(val))
+    DIH(imp, '{}EV'.format(val))
 
 def scotophotopic(label):
     global img, fig, mb, slEV
@@ -30,7 +30,7 @@ radio = RadioButtons(axc, ('RGB', 'B&W'), active = 0)
 slEV.on_changed(poissonimg); radio.on_clicked(scotophotopic)
 
 # Image re/de-generation
-mb = 'MB{0}.png'.format(['A', 'B', 'C', 'D'][RI(4)])
+mb = 'MB{}.png'.format(['A', 'B', 'C', 'D'][RI(4)])
 img = cvtColor(imread(mb), RGB)
 
 poissonimg(8)

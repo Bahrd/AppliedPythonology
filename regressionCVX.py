@@ -30,7 +30,7 @@ p = Problem(o, c); p.solve()          # cvx_end
 
 ## Presentation stuff
 Q = mat(rng[-3: 3: 3e-3]).T; YY = m(Q, A.value)
-print(" A = ", round(A.value[:α.size], 0).T, 
-      " α = ",                          α.T)
-ttl = 'arg min‖Φ*A-Y‖₂² st. ‖A‖₁ ≤ {} → A = {}'.format(ρ, round(A.value[:α.size]).T)
+print(' A = ', round(A.value[:α.size], 0).T, 
+      ' α = ',                          α.T)
+ttl = f'arg min‖Φ*A-Y‖₂² st. ‖A‖₁ ≤ {ρ} → A = {round(A.value[:α.size]).T}'
 displayPlotsXY([(X, Y), (Q, YY)], ['(X, Y)', ttl])
