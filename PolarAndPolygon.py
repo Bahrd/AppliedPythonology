@@ -2,11 +2,11 @@
 from math import pi as π
 from numpy import cos, sin, sqrt, linspace as lsp, arange, reciprocal as rp
 
-#Polar square...
-for x, f, s in zip(arange(-π/4, 7/4*π, π/2), (cos, sin, cos, sin), (1, 1, -1, -1)):
-    θ = lsp(x, x + π/4, 0b10) # Byenary 100 all!
-    r = rp(f(θ)) * s
-    polar(θ, r); polar(θ+ π/4, r[::-1])
+##Polar square...
+θ = lsp(-π/4, 0, 2) # Byenary 100 all!
+r = rp(cos(θ))
+for φ in arange(0, 2*π, π/2):
+    polar(θ + φ, r, θ + φ + π/4, r[::-1])
 title('Polar square') 
 show()
 
@@ -16,6 +16,6 @@ y = sqrt(1.0 - x**2)
 for xy in (( x,  y), ( x, -y),
            (-x, -y), (-x,  y)):
     x, y = xy
-    plot(x, y); plot(y, x)
+    plot(x, y, y, x)
 title('Polygon circle')
 show()
