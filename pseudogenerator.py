@@ -27,12 +27,12 @@ plt.show()
 # A simple lack of periodicity check
 U = np.unique(X)                #_, U = np.unique(X, return_counts = True)
 # Yet another anomaly check...
-plt.plot(U)
-plt.title("{0} a nonperiodic sequence: {1} (out of {2}) values are unique."
-          .format("Not" if len(U) != len(X) else "Quite", len(U), len(X)))
+plt.plot(U, 'r.')
+adverb = 'Not' if len(U) != len(X) else 'Quite'
+plt.title(f'{adverb} a nonperiodic sequence: {len(U)} (out of {len(X)}) values are unique.')
 plt.show()
 
 # And another one...
 from scipy.fftpack import dct
 Y = abs(dct(np.array(X) - 0.5)) # '- 0.5' ditches a "DC"
-plt.plot(Y); plt.title("DCT of X"); plt.show()
+plt.plot(Y, 'r.'); plt.title("DCT of X"); plt.show()
