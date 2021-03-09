@@ -1,6 +1,6 @@
 ﻿## Some interpolating functions, Π(x), ψ(x) and ϕ(x) or sinc(x)... 
 #  whatchamacallit this thingamajig...
-# The window/rectangular and the hat/tent/triangular/sinc (not anonymous!) functions
+# The window/rectangular and the hat/tent/triangular and Keys & sinc (not anonymous!) functions
 def Π(x, l = -.5, r = .5): return (x >= l) * (x < r)
 def ψ(x): return (1 - abs(x)) * (abs(x) < 1)
 # The Keys' cubic interpolating function (b'cause: https://realpython.com/python-lambda/#syntax)
@@ -9,11 +9,11 @@ def ϕ(x):
     return (((a + 2) * x**3 - (a + 3) * x**2 + 1)             * Π(x, 0, 1) 
            + (     a * x**3 -     5*a * x**2 + 8*a * x - 4*a) * Π(x, 0, 2) * (1 - Π(x, 0, 1)))
 
-from numpy import sin, ones_like, pi
-def ξ(x, m = pi): 
-    x = x * m; ss = ones_like(x)
-    ss[x != 0] = sin(x[x != 0])/(x[x != 0])
-    return ss
+from numpy import sin, ones_like, pi as π
+def ξ(x, m = π): 
+    x = x * m; sinc = ones_like(x)
+    sinc[x != 0] = sin(x[x != 0])/(x[x != 0])
+    return sinc
 # Or, simply...
 #from numpy import sinc
 

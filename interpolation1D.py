@@ -3,14 +3,15 @@ from interpolation import Π, ψ, ϕ, ξ, interpolate
 from auxiliary import displayPlots
 
 #Some shortcuts...
-κ = 'ψ, ϕ, Π, ξ'
-ΣΛ, Λ, ΛΛ = interpolate, list(eval(κ)), κ.split(',')  
+ΣΛ, κ = interpolate, 'Π, ψ, ϕ, ξ'
+Λ, ΛΛ = list(eval(κ)), κ.split(',')  
 
 ## 1D Examples 
 #  A staple one...
 Fn = [0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 Fx = np.array(ΣΛ(N = 1024, fn = Fn, Λ = Λ)).T
-plt.plot(Fx); plt.title(κ); plt.show(); displayPlots(Fx.T, ΛΛ)
+
+displayPlots(Fx.T, ΛΛ); plt.plot(Fx); plt.title(κ); plt.show()
 
 #  User-defined...
 while True:
