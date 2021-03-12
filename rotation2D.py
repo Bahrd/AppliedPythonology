@@ -4,6 +4,7 @@ from random import randrange as RR
 from numpy import array, empty, arange as A, tensordot as tendot
 from math import sin, cos, pi
 from sys import argv
+
 ''' 2D rotation - the canonical version of the NN, bi-linear and bi-qubic-based algorithms
 If one wants a serious 2D: 
 https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/ '''
@@ -11,10 +12,10 @@ https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-
 clp = lambda n, nmax, nmin = 0: nmin if n < 0 else n if n < nmax else nmax - 1
 rclp = lambda n, m, nmax: (clp(n, nmax), clp(m, nmax)) # range clipper
 
-## Turning a 2D image f(n, m) into a 2D function f(x, y) - using 'Π, ψ, or ϕ'
-# A not-so-quick-yet-dirty (loop-in-loop) version... 
-# Since "premature optimization is the root of all evil"! 
-# -- D. Knuth [http://wiki.c2.com/?PrematureOptimization]
+'''Turning a 2D image f(n, m) into a 2D function f(x, y) - using 'Π, Λ, ϕ, ξ'
+A not-so-quick-yet-dirty (loop-in-loop) version... 
+Since "premature optimization is the root of all evil"! 
+-- D. Knuth [http://wiki.c2.com/?PrematureOptimization]'''
 def fl(img, x, y, ψ = ϕ, Δ = 3):
     N, M = img.shape; xx, yy = int(x), int(y)
 
