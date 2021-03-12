@@ -1,18 +1,18 @@
 import numpy as np; import matplotlib.pyplot as plt
 
 # A 'sawtooth' generator function (a.k.a a multiplicative pseudo-random number generator)  
-def stg(x, z):
+def stgf(x, z):
     while True:
         yield x
         x = x * z - np.floor(x * z)
 
 # Pseudo-random sequence parameters (quite random already)
-N, Z, S = 1024, 31415, 1.0/np.pi
-sprng = stg(S, Z)
+N, Z, S = 0o2000, 0o1001, 1/np.pi
+sprng = stgf(S, Z)
 X = [next(sprng) for _ in range(N)]
 
 # A simple 'pair' check
-x, y = X[0:1024:2], X[1:1024:2]
+x, y = X[0:0o2000:2], X[1:0o2000:2]
 _ = plt.plot(x, y, 'r.'), plt.title(f'Pseudorandom pairs for a {Z} tooth pseudogenerator')
 plt.show()
 
