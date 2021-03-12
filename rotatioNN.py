@@ -4,9 +4,10 @@ from random import randrange as RR
 from numpy import array, clip, empty
 from math import sin, cos, pi
 from sys import argv
-## 2D rotation - a canonical version with an implicit NN interpolation
-#  Be careful however, because ("Timeo Danaos et dona ferentes!"?) Python 
-#  thinks that 'ϑ is θ == True' (and so are 'ϱ' and 'ρ', see ll. 39-40)!
+
+''' 2D rotation - a canonical version with an implicit NN interpolation
+Be careful however, because ("Timeo Danaos et dona ferentes!"?) Python 
+thinks that 'ϑ is θ == True' (and so are 'ϱ' and 'ρ', see ll. 39-40)! '''
 
 ## Setting... 
 #  A rotation angle α...
@@ -26,5 +27,4 @@ for n in range(N):
         ϑ = Rα @ ϑ + OXY
         x, y = clip(ϑ, 0, M - 1).astype(int) # where the NNs dwell
         out[n, m] = img[x, y]                # cf. rotation2D.py's '... = f(x, y, img, Π)'
-                                                      #(ϱ)
 DI((img, out), ('Original', f'NN-rotated by {ρ}°'), cmp = Cu)

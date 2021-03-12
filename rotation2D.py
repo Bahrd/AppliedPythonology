@@ -4,8 +4,9 @@ from random import randrange as RR
 from numpy import array, empty, arange as A, tensordot as tendot
 from math import sin, cos, pi
 from sys import argv
-## 2D rotation - the canonical version of the NN, bi-linear and bi-qubic-based algorithms
-#  If one wants a serious 2D: https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/
+''' 2D rotation - the canonical version of the NN, bi-linear and bi-qubic-based algorithms
+If one wants a serious 2D: 
+https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/ '''
 
 clp = lambda n, nmax, nmin = 0: nmin if n < 0 else n if n < nmax else nmax - 1
 rclp = lambda n, m, nmax: (clp(n, nmax), clp(m, nmax)) # range clipper
@@ -64,9 +65,10 @@ else:
 
 DI((img, out), ('Original', f'{ψψ}-rotated by {ϱ}°'), cmp = Cu)
 
-## Random users' fun: "python .\rotation2D.py '-RR(44)' '42 + RR(7) - 6' 'lambda x: ϕ(x + RR(9)/12)'"
-# 44:   "A imię jego..." A. M. Dz. III 
-# 42:   The Deep Thought's answer ( = 7 * 6)
-# 9/12: A quote of Heidegger/Wittgenstein
-## A note to random fans: f ≠ fl! 
-### And an ι-note for Greek geeks: φ ≡ ϕ!
+''' Random users' fun: "python .\rotation2D.py '-RR(44)' '42 + RR(7) - 6' 'lambda x: ϕ(x + RR(9)/12)'"
+44:   "A imię jego..." A. M. Dz. III 
+42:   The Deep Thought's answer ( = 7 * 6)
+9/12: A quote of Heidegger/Wittgenstein
+
+A note to random fans: f ≠ fl! 
+And an ι-note for Greek geeks: φ ≡ ϕ! '''

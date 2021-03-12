@@ -5,11 +5,11 @@ from random import randrange as RR
 from numpy import zeros, array
 from sys import argv
 
-## In principle, a 2D interpolation, for a separable interpolation function, that is,
-#  the function that is a product of 1D interpolation functions, 
-#                      ϕ(x, y) = ϕ(x)ϕ(y)  # Π, ψ, ϕ, ξ 
-#  can be implemented as a successive application of the 1D interpolation 
-#  procedure to each row and then to each column of the image.
+''' In principle, a 2D interpolation, for a separable interpolation function, that is,
+the function that is a product of 1D interpolation functions, 
+                     ψ(x, y) = ψ(x)ψ(y)  # Π, Λ, ϕ, ξ 
+can be implemented as a successive application of the 1D interpolation 
+procedure to each row and then to each column of the image. '''
 
 ## Setting:
 #  A source image... 
