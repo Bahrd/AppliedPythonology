@@ -47,7 +47,7 @@ OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)],
                                     [sin(α),  cos(α)]]) # turns clockwise when α > 0
 
 # ... and an interpoland...:) Π, ψ, ϕ, or ξ, "or else..."
-ψψ = argv[3] if len(argv) > 3 else ϕ.__name__; ψ = eval(ψψ) 
+nomina = argv[3] if len(argv) > 3 else ϕ.__name__; ψ = eval(nomina) 
 
 f = ft if 0x1 else fl
 if 0b1: 
@@ -63,7 +63,7 @@ else:
                                                  for m in range(N)] 
                                                  for n in range(N)]
 
-DI((img, out), ('Original', f'{ψψ}-rotated by {ϱ}°'), cmp = Cu)
+DI((img, out), ('Original', f'{nomina}-rotated by {ϱ}°'), cmp = Cu)
 
 ''' Random users' fun: "python .\rotation2D.py '-RR(44)' '42 + RR(7) - 6' 'lambda x: ϕ(x + RR(9)/12)'"
 44:   "A imię jego..." A. M. Dz. III 
