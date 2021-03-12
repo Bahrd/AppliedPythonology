@@ -1,17 +1,15 @@
 import numpy as np; import matplotlib.pyplot as plt
 
-# A "saw" function definition
-def p(x, z, m = 1.0):
-    y = (x * z) - np.floor(x * z)   # 'toothing' operation
-    return m * y
+# A 'sawtooth' generator function (a.k.a a multiplicative pseudo-random number generator)  
+def stg(x, z):
+    while True:
+        yield x
+        x = x * z - np.floor(x * z)
 
 # Pseudo-random sequence parameters (quite random already)
-N, Z, X = 1023,  23, [.33333333] #31415, [1.0/np.pi]; #Quantity - 1, Teeth number, Initial value
-
-# Sequence generation
-for _ in range(N):
-    x  = X.pop();      # Note:   'pop()' removes 'x' from 'X'!
-    X += x, p(x, Z)    # Equiv.: X.append(x); X.append(p(x, Z))
+N, Z, S = 1024, 31415, 1.0/np.pi
+sprng = stg(S, Z)
+X = [next(sprng) for _ in range(N)]
 
 # A simple 'pair' check
 x, y = X[0:1024:2], X[1:1024:2]
