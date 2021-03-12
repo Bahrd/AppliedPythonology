@@ -2,7 +2,7 @@
 #  whatchamacallit this thingamajig...
 # The window/rectangular and the hat/tent/triangular and Keys & sinc (not anonymous!) functions
 def Π(x, l = -.5, r = .5): return (x >= l) * (x < r)
-def ψ(x): return (1 - abs(x)) * (abs(x) < 1)
+def Λ(x): return (1 - abs(x)) * (abs(x) < 1)
 # The Keys' cubic interpolating function (b'cause: https://realpython.com/python-lambda/#syntax)
 def ϕ(x): 
     x, a = abs(x), -.5
@@ -18,16 +18,16 @@ def ξ(x, m = π):
 #from numpy import sinc
 
 from numpy import arange, linspace
-# An interpolation routine Λ: f(n) ➞ f(x) using λ = ϕ, ψ or Π, ξ 
-def Φ(x, f, λ):
+# An interpolation routine: f(n) ➞ f(x) using φ = Π, Λ, ϕ or ξ 
+def Φ(x, f, φ):
     n = arange(len(f))
-    Λ = λ(x - n)                         
-    return Λ @ f
+    ψ = φ(x - n)                         
+    return ψ @ f
 
 # An actual interpolation Φ: Fn ➞ Fx 
-def interpolate(fn, N, Λ = [Π, ψ, ϕ, ξ]):
+def interpolate(fn, N, φ = [Π, Λ, ϕ, ξ]):
     X = linspace(0, len(fn), N)
-    return [[Φ(x, fn, λ) for x in X] for λ in Λ] if type(Λ) is list else [Φ(x, fn, Λ) for x in X]
+    return [[Φ(x, fn, ψ) for x in X] for ψ in φ] if type(φ) is list else [Φ(x, fn, φ) for x in X]
 
 #  A source image...
 from random import randrange as RR

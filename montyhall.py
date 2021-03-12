@@ -6,8 +6,8 @@
 
 trialsNo, trial, wins = 100, 0, 0
 
-## To switch or not to switch...
-switch = randint(0, 1)
+## To switch or not to switch...  # bool(random.getrandbits(1)) 
+switch = random.choice([True, False])
 
 while trial < trialsNo:
 ## Selecting a gate with an award and a player's guess
@@ -27,5 +27,5 @@ while trial < trialsNo:
             ...             ## And you remain so...
     trial += 1
 
-print('Win ratio = {0}% when switch = {1}'.format(round(wins/trialsNo*100, 1), switch))
+print('Win ratio = {0}% if switch = {1}'.format(round(wins/trialsNo*100, 1), switch))
 ## Move along, nothing to see here...

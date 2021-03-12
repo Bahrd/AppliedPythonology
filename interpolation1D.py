@@ -1,17 +1,17 @@
 import numpy as np; import matplotlib.pyplot as plt
-from interpolation import Π, ψ, ϕ, ξ, interpolate
+from interpolation import Π, Λ, ϕ, ξ, interpolate
 from auxiliary import displayPlots
 
 #Some shortcuts...
-ΣΛ, κ = interpolate, 'Π, ψ, ϕ, ξ'
-Λ, ΛΛ = list(eval(κ)), κ.split(',')  
+Σφ, κ = interpolate, 'Π, Λ, ϕ, ξ'
+φ, φφ = list(eval(κ)), κ.split(',')  
 
 ## 1D Examples 
 #  A staple one...
 Fn = [0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-Fx = np.array(ΣΛ(N = 1024, fn = Fn, Λ = Λ)).T
+Fx = np.array(Σφ(N = 1024, fn = Fn, φ = φ)).T
 
-displayPlots(Fx.T, ΛΛ); plt.plot(Fx); plt.title(κ); plt.show()
+displayPlots(Fx.T, φφ); plt.plot(Fx); plt.title(κ); plt.show()
 
 #  User-defined...
 while True:
@@ -19,6 +19,6 @@ while True:
     if len(rawFn) > 1:
         N = int(input("Output size (N): ")); Fn = [float(n) for n in rawFn]        
         # 2in1: computations and presentation 
-        displayPlots(ΣΛ(Fn, N), ΛΛ)        
+        displayPlots(Σφ(Fn, N), φφ)        
     else:
         break
