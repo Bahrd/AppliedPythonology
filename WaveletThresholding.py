@@ -11,13 +11,13 @@ from itertools import repeat; from more_itertools import flatten
 import numpy as np
 import math
 ## Signal generation 
-L, rng = 1024, np.random.default_rng()
-X, rpt, (f1, f2) = np.linspace(-1.0, 1.0, L), 3, (1, 2) #Hz
+L, rng = 0o2000, np.random.default_rng()
+X, rpt, (f1, f2) = np.linspace(-1.0, 1.0, L), 0b11, (0b1, 0b10) #Hz
 
 S, ε  = (np.cos(f1 * math.pi * X) + np.cos(f2 * math.pi * X), 
          rng.standard_normal(L * rpt))
 s = list(flatten(repeat(S, rpt)))
-S = s + ε/4
+S = s + ε/0b100
 
 # A FWT wrapper (transform → operation on coefficients → inverse transform)
 def wc_op(c, wn, lvl, h, op = lambda x, h: x, dsply = False):
@@ -46,9 +46,10 @@ def ValSUREThresh(X):
     THR = np.sqrt(a[ibest])
     return THR
 
-''' Levels of transform. 'L = 5' is arbitrary here. Note that L ≤ floor(log₂(len(X)) 
+''' Levels of transform, L, is arbitrary here. In general, 
+    L ≤ floor(log₂(len(X)) 
 or even less should a boundary effect be taken into account. 
-Insert your own threshold values here should you know it better '''
+Insert your own threshold values should you know it better, as well'''
 L, sh = 10, ValSUREThresh(S); h = sh
 Th = lambda x, h: thrsd(x, h, mode = 'hard')
 
@@ -66,9 +67,7 @@ def display():
     plt.cla()
     plt.xticks([]); plt.yticks([])
     plt.title(f'{wn} @ λ = {h}')
-    plt.plot(S, color ='gray', marker = '.', markersize = 1, linewidth = 0)
-    plt.plot(dft, 'k', s, 'r')
-    plt.show()
+    _ = plt.plot(S, color ='gray', marker = '.', markersize = 1, linewidth = 0), plt.plot(dft, 'k', s, 'r'), plt.show()
 def thresh_live(λ):
     global h; h = λ
     display()
