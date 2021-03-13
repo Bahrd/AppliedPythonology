@@ -1,36 +1,37 @@
-import numpy as np; import matplotlib.pyplot as plt
-
-# A 'sawtooth' generator function (a.k.a a multiplicative pseudo-random number generator)  
-def stgf(x, z):
+# A 'sawtooth' generator (a.k.a a multiplicative pseudo-random number generator)  
+import numpy as np
+def sawtooth(x, z):
     while True:
         yield x
         x = x * z - np.floor(x * z)
 
 # Pseudo-random sequence parameters (quite random already)
-N, Z, S = 0o2000, 0o1001, 1/np.pi
-sprng = stgf(S, Z)
-X = [next(sprng) for _ in range(N)]
+N, Z, S = 0o2000, 0o1001, 1/np.pi; sprngr = sawtooth(S, Z)
+X = [next(sprngr) for _ in range(N)]
 
-# A simple 'pair' check
+''' And a slew of look'n'feel uniform randomness checks... 
+    For a bit more serious testing one should consider 
+    https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test '''
+
+import matplotlib.pyplot as plt
+# Simple 'pair' check
 x, y = X[0:0o2000:2], X[1:0o2000:2]
-_ = plt.plot(x, y, 'r.'), plt.title(f'Pseudorandom pairs for a {Z} tooth pseudogenerator')
-plt.show()
+ttl = f'Pseudorandom pairs for a {Z} tooth pseudogenerator'
+_ = plt.title(ttl), plt.plot(x, y, 'r.'), plt.show()
 
-## Presentations (look'n'feel randomness checks)
 # Histogram...
-plt.hist(X, bins = 'auto', density = True) 
-plt.title(f'{N} pseudorandom samples for a {Z} tooth pseudogenerator')
-plt.show()
+ttl = f'{N} pseudorandom samples for a {Z} tooth pseudogenerator'
+_ = plt.title(ttl), plt.hist(X, bins = 'auto', density = True), plt.show()
 
-# A simple lack of periodicity check
+# Lack of periodicity check
 U = np.unique(X)                #_, U = np.unique(X, return_counts = True)
+
 # Yet another anomaly check...
-plt.plot(U, 'r.')
 adverb = 'Not' if len(U) != len(X) else 'Quite'
-plt.title(f'{adverb} a nonperiodic sequence: {len(U)} (out of {len(X)}) values are unique.')
-plt.show()
+ttl = f'{adverb} a nonperiodic sequence: {len(U)} (out of {len(X)}) values are unique'
+_ = plt.title(ttl), plt.plot(U, 'r.'), plt.show()
 
 # And another one...
 from scipy.fftpack import dct
 Y = abs(dct(np.array(X) - 0.5)) # '- 0.5' ditches a "DC"
-plt.plot(Y, 'r.'); plt.title("DCT of X"); plt.show()
+_ = plt.plot(Y, 'r.'); plt.title("DCT of X"), plt.show()
