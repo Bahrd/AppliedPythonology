@@ -1,7 +1,7 @@
 ﻿from interpolation import Π, Λ, ϕ, ξ, interpolate as intrpl, eddie
 from matplotlib.pyplot import plot, show
 from auxiliary import displayImages as DI
-from random import randrange as RR
+from random import randrange as RR, choice
 from numpy import zeros, array
 from sys import argv
 
@@ -15,7 +15,7 @@ procedure to each row and then to each column of the image. '''
 #  A source image... 
 img = eddie; M = len(img); N = int(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
 # ... and some shortcuts.
-את, ΣΣ, nomina = lambda : RR(0b10), intrpl, argv[2] if len(argv) > 2 else ϕ.__name__ 
+את, ΣΣ, nomina = lambda : choice([True, False]), intrpl, argv[0b10] if len(argv) > 0b10 else ϕ.__name__ 
 ψ, Cu = eval(nomina), 'copper'
 
 ##2D interpolation - simple as that?! (yeap, but only when M ≤ N...)
@@ -41,7 +41,7 @@ else:
 #  (Or rather yet another aliasing-related effect ;)
 if 0b1: 
     # Troughs and crests
-    plot(out[N >> 0b1, ...], 'ro-'); show()
+    _ = plot(out[N >> 0b1, ...], 'ro-'), show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
     DI((img, out), ('Original', f'{nomina}-scaled'), cmp = Cu)
 

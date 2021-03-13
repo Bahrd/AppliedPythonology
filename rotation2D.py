@@ -1,6 +1,6 @@
 ﻿from interpolation import Π, Λ, ϕ, ξ, eddie
 from auxiliary import displayImages as DI
-from random import randrange as RR
+from random import randrange as RR, choice
 from numpy import array, empty, arange as A, tensordot as tendot
 from math import sin, cos, pi
 from sys import argv
@@ -12,11 +12,12 @@ https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-
 clp = lambda n, nmax, nmin = 0: nmin if n < 0 else n if n < nmax else nmax - 1
 rclp = lambda n, m, nmax: (clp(n, nmax), clp(m, nmax)) # range clipper
 
-'''Turning a 2D image f(n, m) into a 2D function f(x, y) - using 'Π, Λ, ϕ, ξ'
-A not-so-quick-yet-dirty (loop-in-loop) version... 
+##Turning a 2D image f(n, m) into a 2D function f(x, y) - using 'Π, Λ, ϕ, ξ'
+
+'''A not-so-quick-yet-dirty (loop-in-loop) version... 
 Since "premature optimization is the root of all evil"! 
 -- D. Knuth [http://wiki.c2.com/?PrematureOptimization]'''
-def fl(img, x, y, ψ = ϕ, Δ = 3):
+def fl(img, x, y, ψ = ϕ, Δ = 0b11):
     N, M = img.shape; xx, yy = int(x), int(y)
 
     fxy = 0.0
@@ -25,7 +26,7 @@ def fl(img, x, y, ψ = ϕ, Δ = 3):
             fxy += ψ(x - n) * ψ(y - m) * img[n, m]
     return fxy
 # ... and a quicker'n'cleaner (explicit-loop-free) one 
-def ft(img, x, y, ψ = ϕ, Δ = 3):
+def ft(img, x, y, ψ = ϕ, Δ = 0b11):
     N, M = img.shape; xx, yy = int(x), int(y)
     n, m = A(*rclp(xx - Δ, xx + Δ, N)), A(*rclp(yy - Δ, yy + Δ, M))
 
@@ -37,21 +38,22 @@ def ft(img, x, y, ψ = ϕ, Δ = 3):
 
 ## Setting...
 #  A rotation angle α...
-ϱ = eval(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
+ϱ = eval(argv[0b1]) if len(argv) > 0b1 else RR(-180, 180) #°
 α, Cu = ϱ * pi/180.0, 'copper' # Main and auxiliary variables
 
 #  A source image... 
-img = eddie; M = len(img); N = eval(argv[2]) if len(argv) > 2 else M << 0b1
+img = eddie; M = len(img); N = eval(argv[0b10]) if len(argv) > 0b10 else M << 0b1
 out = empty((N, N)) 
 # ... and rotation of ϑ = [x, y].T, w.r.t. OXY and through that angle 
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
                                     [sin(α),  cos(α)]]) # turns clockwise when α > 0
 
-# ... and an interpoland...:) Π, ψ, ϕ, or ξ, "or else..."
-nomina = argv[3] if len(argv) > 3 else ϕ.__name__; ψ = eval(nomina) 
+# ... and an interpoland...:) Π, Λ, ϕ, ξ, "or else..."
+nomina = argv[0b11] if len(argv) > 0b11 else ϕ.__name__; ψ = eval(nomina) 
+ToF = lambda: choice([True, False]) 
 
-f = ft if 0x1 else fl
-if 0b1: 
+f = ft if ToF() else fl
+if ToF(): 
     # Omloop Het...
     for n in range(N):
         for m in range(N):

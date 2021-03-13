@@ -11,11 +11,11 @@ thinks that 'ϑ is θ == True' (and so are 'ϱ' and 'ρ', see ll. 39-40)! '''
 
 ## Setting... 
 #  A rotation angle α...
-ϱ = eval(argv[1]) if len(argv) > 1 else RR(-180, 180) #°
+ϱ = eval(argv[0b1]) if len(argv) > 0b1 else RR(-180, 180) #°
 α, Cu = ϱ * pi/180.0, 'copper' # Main and auxiliary variables
 
 #  ... and a source image...  (cf. './rotation2D.py')
-img = eddie; M = len(img); N = int(argv[2]) if len(argv) > 2 else M << 0b1
+img = eddie; M = len(img); N = int(argv[0b10]) if len(argv) > 0b10 else M << 0b1
 out = empty((N, N)) 
 # ... and rotation of ϑ = [x, y].T, w.r.t. OXY and through that angle
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
