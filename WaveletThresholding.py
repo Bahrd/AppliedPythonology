@@ -1,0 +1,89 @@
+﻿''' Warning: Never ignore warnings... ;) '''
+import warnings; warnings.filterwarnings("ignore")
+
+#Live thresholding
+from matplotlib.widgets import Slider, RadioButtons
+import matplotlib.pyplot as plt
+from scipy.fftpack import dct, idct
+from pywt import (wavedec as fwt, waverec as ifwt, threshold as thrsd, 
+                  array_to_coeffs as a2c, coeffs_to_array as c2a)
+from itertools import repeat; from more_itertools import flatten
+import numpy as np
+import math
+## Signal generation 
+L, rng = 1024, np.random.default_rng()
+X, rpt, (f1, f2) = np.linspace(-1.0, 1.0, L), 3, (1, 2) #Hz
+
+S, ε  = (np.cos(f1 * math.pi * X) + np.cos(f2 * math.pi * X), 
+         rng.standard_normal(L * rpt))
+s = list(flatten(repeat(S, rpt)))
+S = s + ε/4
+
+# A FWT wrapper (transform → operation on coefficients → inverse transform)
+def wc_op(c, wn, lvl, h, op = lambda x, h: x, dsply = False):
+    # Applying a wavelet transform
+    C = fwt(c, wn, level = lvl)
+
+    # Thresholding I
+    C, S = c2a(C); C = op(C, h)    
+    # Presentation
+    if(dsply): plot(C); show()    
+    # Re-tupling the wavelet coefficients
+    C = a2c(C, S, output_format = 'wavedec')
+    # Inversing the wavelet transform
+    return ifwt(C, wn)
+
+# See the source https://github.com/holgern/pyyawt/ for the reference 
+def ValSUREThresh(X):
+    n = np.size(X)
+    a = np.sort(np.abs(X))**2
+
+    c = np.linspace(n-1,0,n)
+    s = np.cumsum(a)+c*a
+    risk = (n - (2 * np.arange(n)) + s)/n
+
+    ibest = np.argmin(risk)
+    THR = np.sqrt(a[ibest])
+    return THR
+
+''' Levels of transform. 'L = 5' is arbitrary here. Note that L ≤ floor(log₂(len(X)) 
+or even less should a boundary effect be taken into account. 
+Insert your own threshold values here should you know it better '''
+L, sh = 10, ValSUREThresh(S); h = sh
+Th = lambda x, h: thrsd(x, h, mode = 'hard')
+
+''' A selection of wavelet filter names 
+https://pywavelets.readthedocs.io/en/latest/ref/wavelets.html for the entire family'''
+
+wns, modes = ['bior4.4', 'db8', 'sym8', 'coif8'], ['hard', 'soft', 'garrote']
+wn, mode = wns[0], modes[0]
+
+# Shrinkage... Live!
+def display():
+    global S, wn, L, h, Th
+    dft = wc_op(S, wn, L, h, Th)
+    plt.subplot(1, 1, 1)
+    plt.cla()
+    plt.xticks([]); plt.yticks([])
+    plt.title(f'{wn} @ λ = {h}')
+    plt.plot(S, color ='gray', marker = '.', markersize = 1, linewidth = 0)
+    plt.plot(dft, 'k', s, 'r')
+    plt.show()
+def thresh_live(λ):
+    global h; h = λ
+    display()
+def family_live(_wn):
+    global wn; wn = _wn
+    display()
+def mode_live(_mode):
+    global Th, mode; 
+    mode = _mode; Th = lambda x, h: thrsd(x, h, mode = mode)
+    display()
+
+fig, _ = plt.subplots(); plt.subplots_adjust(left = .1, bottom = .16)
+axTh, axWn, axM  = plt.axes([.57, .01, .33, .03]), plt.axes([.1, .01, .3, .12]), plt.axes([.31, .01, .15, .12])
+slTh = Slider(axTh, 'λ = ', 0.0, np.ceil(2*sh), valinit = sh, valstep = 0.03125 * sh)
+rbWn = RadioButtons(axWn, wns, active = 0); rbM = RadioButtons(axM, modes, active = 0)
+slTh.on_changed(thresh_live); rbWn.on_clicked(family_live); rbM.on_clicked(mode_live)
+
+thresh_live(h)
