@@ -9,11 +9,12 @@
 - Monte Carlo pixel counting/area measurements: [MonteCarlo.py](./MonteCarlo.py)
 - JPEG 'lite' algorithm: [jpglite.py](./jpglite.py)
 - JPEG 2000 'featherlite' algorithm: [J2K.py](./J2K.py)  
+- wavelet thresholding families: [WaveletThresholding.py](./WaveletThresholding.py)
 - Julia and Mandelbrot fractals visualisations: [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
 - J. Duda's ANS compression: [ans.py](./ans.py)
 ### Modeling and identification
 - basic pseudo-random number generator: [pseudogenerator.py](./pseudogenerator.py)
-- basic function regression estimation with \emph{L2} cost function and \emph{Lq} constraints: [regressionCVX.py](./regressionCVX.py)
+- basic function regression estimation with _L2_ cost function and _Lq_ constraints: [regressionCVX.py](./regressionCVX.py)
 - Julia and Mandelbrot fractals (yes, again but now as the nonlinear dynamic phenomena): [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
 - Collatz conjecture visualization: [collatz.py](./collatz.py)
 - Golden Section Search: [GSS.py](./GSS.py)
