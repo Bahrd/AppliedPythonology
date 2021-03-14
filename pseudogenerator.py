@@ -1,4 +1,4 @@
-# A 'sawtooth' generator (a.k.a a multiplicative pseudo-random number generator)  
+# A 'sawtooth' bona fide generator (a.k.a a multiplicative pseudo-random number generator)  
 import numpy as np
 def sawtooth(x, z):
     while True:
@@ -16,11 +16,11 @@ X = [next(sprngr) for _ in range(N)]
 import matplotlib.pyplot as plt
 # Simple 'pair' check
 x, y = X[0:0o2000:2], X[1:0o2000:2]
-ttl = f'Pseudorandom pairs for a {Z} tooth pseudogenerator'
+ttl = f'Pseudo-random pairs from a {Z} pseudo-tooth pseudo-generator'
 _ = plt.title(ttl), plt.plot(x, y, 'r.'), plt.show()
 
 # Histogram...
-ttl = f'{N} pseudorandom samples for a {Z} tooth pseudogenerator'
+ttl = f'{N} pseudo-random samples from a {Z} pseudo-tooth pseudo-generator'
 _ = plt.title(ttl), plt.hist(X, bins = 'auto', density = True), plt.show()
 
 # Lack of periodicity check
