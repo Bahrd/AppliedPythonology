@@ -34,4 +34,4 @@ _ = plt.title(ttl), plt.plot(U, 'r.'), plt.show()
 # And another one...
 from scipy.fftpack import dct
 Y = abs(dct(np.array(X) - 0.5)) # '- 0.5' ditches a "DC"
-_ = plt.plot(Y, 'r.'); plt.title("DCT of X"), plt.show()
+_ = plt.plot(Y, 'r.'), plt.title("DCT of X"), plt.show()
