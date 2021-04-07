@@ -54,6 +54,6 @@ rgb = np.dstack((R, G, B))
 ## Presentation
 channels = ("red", "green", "blue")
 # An X-Trans CFA mosaic (aka 'RAW') and the de-mosaicked image (aka 'JPG')
-aux.displayChannels((raw, rgb), channels, range(len(channels)))
+aux.displayChannels((raw, rgb), channels)
 # Input vs. output image
 aux.displayImages((img, rgb, img - rgb), ("scene", "image", "diff"))
