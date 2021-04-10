@@ -1,5 +1,5 @@
 ﻿''' Warning: Never ignore warnings... ;) '''
-import warnings; warnings.filterwarnings("ignore")
+import warnings; warnings.filterwarnings('ignore')
 
 #Live thresholding
 from matplotlib.widgets import Slider, RadioButtons

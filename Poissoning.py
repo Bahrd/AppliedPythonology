@@ -3,9 +3,13 @@ from cv2 import imread, cvtColor, COLOR_BGR2RGB as RGB, COLOR_BGR2GRAY as GRAY
 from matplotlib.pyplot import subplots, subplots_adjust, axes, show
 from matplotlib.widgets import Slider, RadioButtons
 ## https://matplotlib.org/3.2.1/gallery/widgets/slider_demo.html
-from numpy.random import poisson, randint as RI
+from numpy.random import poisson; from random import choice
 from auxiliary import displayImages as DI
 from numpy import clip
+
+''' Warning: Never ignore warnings... ;) '''
+import warnings; warnings.filterwarnings('ignore')
+
 
 # A handy shortcut...
 DIH = lambda img, ttl = '', cmp = 'gray', shw = False: DI(img, ttl, cmp, shw)
@@ -14,7 +18,7 @@ DIH = lambda img, ttl = '', cmp = 'gray', shw = False: DI(img, ttl, cmp, shw)
 def poissonimg(val):
     global img
     λ = 2**(val - 8.0); imp = clip(poisson(img * λ)/λ, 0, 0xff).astype(int)
-    DIH(imp, '{}EV'.format(val))
+    DIH(imp, f'{val}EV')
 
 def scotophotopic(label):
     global img, fig, mb, slEV
@@ -30,7 +34,7 @@ radio = RadioButtons(axc, ('RGB', 'B&W'), active = 0)
 slEV.on_changed(poissonimg); radio.on_clicked(scotophotopic)
 
 # Image re/de-generation
-mb = 'MB{}.png'.format(['A', 'B', 'C', 'D'][RI(4)])
+mb = 'MB{}.png'.format(choice('ABCD'))
 img = cvtColor(imread(mb), RGB)
 
 poissonimg(8)

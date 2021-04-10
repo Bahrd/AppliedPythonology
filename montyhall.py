@@ -1,4 +1,4 @@
-﻿from random import randint
+﻿from random import randint, choice
 
 ## There is a famous and (supposedly) counterintuitive no-problem: 
 #   https://en.wikipedia.org/wiki/Monty_Hall_problem
@@ -7,11 +7,11 @@
 trialsNo, trial, wins = 100, 0, 0
 
 ## To switch or not to switch...  # bool(random.getrandbits(1)) 
-switch = random.choice([True, False])
+switch = choice([True, False])
 
 while trial < trialsNo:
 ## Selecting a gate with an award and a player's guess
-    award, guess = randint(1, 3), randint(1, 3)
+    award, guess = choice([1, 2, 3]), choice([1, 2, 3])
     if award == guess:      ## You'd been correct (P = 1/3)
         if switch:
             ...
@@ -27,5 +27,5 @@ while trial < trialsNo:
             ...             ## And you remain so...
     trial += 1
 
-print('Win ratio = {0}% if switch = {1}'.format(round(wins/trialsNo*100, 1), switch))
+print('Win ratio = {}% if switch = {}'.format(round(wins/trialsNo*100, 1), switch))
 ## Move along, nothing to see here...

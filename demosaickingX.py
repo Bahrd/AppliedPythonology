@@ -3,7 +3,7 @@ import cv2; import numpy as np; import auxiliary as aux
 #### Image 'framing'
 # Note - the example works only for square images (N x N) and 
 # for 6 x 6 filter segments (and hence for N such that N % 6 = 0
-img = cv2.cvtColor(cv2.imread("GrassHopperX.PNG"), cv2.COLOR_BGR2RGB) 
+img = cv2.cvtColor(cv2.imread('GrassHopperX.PNG'), cv2.COLOR_BGR2RGB) 
 N = img.shape[0]; X = [int(N/6)]; X *= 2
 
 
@@ -52,8 +52,8 @@ R, G, B = [cv2.filter2D(raw[..., n], -1, deXTransFilter[n]) for n in range(3)]
 rgb = np.dstack((R, G, B))
 
 ## Presentation
-channels = ("red", "green", "blue")
+channels = ('red', 'green', 'blue')
 # An X-Trans CFA mosaic (aka 'RAW') and the de-mosaicked image (aka 'JPG')
 aux.displayChannels((raw, rgb), channels)
 # Input vs. output image
-aux.displayImages((img, rgb, img - rgb), ("scene", "image", "diff"))
+aux.displayImages((img, rgb, img - rgb), ('scene', 'image', 'diff'))

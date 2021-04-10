@@ -3,7 +3,7 @@ import cv2; import numpy as np; import auxiliary as aux
 #### Image 'framing'
 # Note - the example works only for square images (N x N) and for even N 
 # (the filter segments are 2 x 2)
-img = cv2.cvtColor(cv2.imread("GrassHopper.PNG"), cv2.COLOR_BGR2RGB) 
+img = cv2.cvtColor(cv2.imread('GrassHopper.PNG'), cv2.COLOR_BGR2RGB) 
 N = img.shape[0]; X = [N >> 1]; X *= 2 
 
 
@@ -32,8 +32,8 @@ R, G, B = [cv2.filter2D(raw[..., n], -1, deBayerFilter[n]) for n in range(3)]
 rgb = np.dstack((R, G, B))
 
 ## Presentation
-channels = ("red", "green", "blue")
+channels = ('red', 'green', 'blue')
 # The Bayer CFA mosaic (aka 'RAW') and the de-mosaicked image
 aux.displayChannels((raw, rgb), channels)
 # Input vs. output image
-aux.displayImages((img, rgb, img - rgb), ("scene", "image", "diff"))
+aux.displayImages((img, rgb, img - rgb), ('scene', 'image', 'diff'))
