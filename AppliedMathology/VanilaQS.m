@@ -1,36 +1,33 @@
 %% QuQuRickU
-% A simple implementation of a basic Grover's quantum search algorithm
-
+%% A simple implementation of a basic Grover's quantum search algorithm
 % Number of qubits
-Q = 6; NoS = 2^Q; 
-% A marked state |n>...
+Q = 5; NoS = 2^Q; 
+% A location n of a marked state is randomly selected here
 n = randi(NoS);
-
-%% Preparations
-phi_n = zeros(NoS, 1); phi_n(n) = 1;
-
-% Reflection w.r.t. |n>
-R = eye(NoS) - 2*phi_n*(phi_n');
-
-% Initial state |0...0>
-phi_0 = zeros(NoS, 1); phi_0(1) = 1;
-% Reflection w.r.t. |0>
-I = eye(NoS) - 2*phi_0*(phi_0');
+% A shortcut to a flipper
+R = @(n) fR(n, NoS);
 %Hadamard matrix
 H = hadamard(NoS)/sqrt(NoS);
 %Grover operator matrix
-G = -R*H*I*H;
-
+G = -R(n)*H*R(1)*H;
 
 %% Uno, due, tre...
-fi = R*H*phi_0;             % Initial step (inverting a phase of the marked state)
+phi_0 = zeros(NoS, 1); phi_0(1) = 1;
+phi = R(n)*H*phi_0;                 % Initial step (inverting a phase of the marked state)
 for i = 1:floor(pi*sqrt(NoS)/4)
-    fi = G*fi;              % Step-by-step amplitude amplification 
-    sprintf('%dth iteration yields %d with prob. %0.3g', i, n, fi(n)^2)
+    phi = G*phi;                    % Step-by-step amplitude amplification 
+    sprintf('%dth iteration yields %d with prob. %0.3g', i, n, phi(n)^2)
 end
-
-% or...
-fi = R*H*phi_0;             % Initial step (inverting a phase of the marked state)
+% or in an 'en bloc!' version...
+phi = R(n)*H*phi_0;
 q = floor(pi*sqrt(NoS)/4);
-fi = (G^q)*fi;              % En bloc amplitude amplification
-sprintf('%dth power of G yields %d with prob. %0.3g', q, n, fi(n)^2)
+phi = (G^q)*phi;              
+sprintf('%dth power of G yields %d with prob. %0.3g', q, n, phi(n)^2)
+
+%% Flipper (aka 'amplitude sign flipping operator')
+% Flipping the sign of the ampitude of the state |n> operator
+% (which happens to be a mean after Walsh-Hadamard transform when |0>)
+function r = fR(n, NoS)
+    psi = zeros(NoS, 1); psi(n) = 1;
+    r = eye(NoS) - 2*psi*(psi');
+end
