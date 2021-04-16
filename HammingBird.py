@@ -9,12 +9,12 @@
 #  Here we... don't! That's the trick (see the videos): 
 #  1. Create a random 2ⁿ-bit block and
 #  2. Make it a proper Hamming coded message (so that its Hamming syndrome is zero).
-from random import choice
+from numpy.random import choice
 from functools import reduce
 
 n = 0b101
 # The 'nest' is initially a sequence of random bits...
-nest = [choice((0b0, 0b1)) for _ in range(0b1 << n)]
+nest = choice((0b0, 0b1), 0b1 << n)
 # Hamming syndrome computation (the subblock parity bits)
 idx =  [i for i, b in enumerate(nest) if b] # Here the indices of 1's are collected
 cuckoo = reduce(lambda x, y: x^y, idx)      # and XOR-ed to yield their Hamming syndrome
@@ -26,7 +26,7 @@ print(f'{nest} - correct {0b1 << n}-bit block!')
 
 
 # In order to emulate a humming-bit we flip a random bird
-brd = choice(range(0b1 << n)); nest[brd] ^= 0b1
+brd = choice(0b1 << n); nest[brd] ^= 0b1
 print(f'{nest} - corrupted {0b1 << n}-bit block!')
 # To reveal the 'One [that] Flew Over the Cuckoo's Nest' straight away!
 idx = [i for i, b in enumerate(nest) if b]
