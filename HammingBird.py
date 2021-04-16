@@ -25,7 +25,7 @@ print(f'{nest} - correct {0b1 << n}-bit block!')
 
 
 
-# In order to emulate a humming-bit we flip a random bird
+# In order to emulate a humming-bit we flip a random bird (or vice-versa?)
 brd = choice(0b1 << n); nest[brd] ^= 0b1
 print(f'{nest} - corrupted {0b1 << n}-bit block!')
 # To reveal the 'One [that] Flew Over the Cuckoo's Nest' straight away!
