@@ -15,20 +15,19 @@ from functools import reduce
 n = 0b101
 # The 'nest' is initially a sequence of random bits...
 nest = [choice((0b0, 0b1)) for _ in range(0b1 << n)]
-
-##Hamming syndrome computation (the subblock parity bits)
+# Hamming syndrome computation (the subblock parity bits)
 idx =  [i for i, b in enumerate(nest) if b] # Here the indices of 1's are collected
 cuckoo = reduce(lambda x, y: x^y, idx)      # and XOR-ed to yield their Hamming syndrome
                                             # aka the incorrect bit (cuckoo?) location
 nest[cuckoo] ^= 0b1                         # Kill [cuckoo] a mocking bird ... 
-
 # The 'nest' is now Hamming coded!          # Savvy? https://youtu.be/xG6RHY_WJpM?t=129
 print(f'{nest} - the correct block!')
-# So we flip a random bird (in order to emulate a bad one) 
-brd = choice(range(0b1 << n)); nest[brd] ^= 0b1
-print(f'{nest} - bit No = {brd} is corrupted!')
 
-# # To detect the 'One [that] Flew Over the Cuckoo's Nest' straight away!
+
+
+# In order to emulate a humming-bird we flip a random bit
+brd = choice(range(0b1 << n)); nest[brd] ^= 0b1
+print(f'{nest} - the corrupted block!')
+# To reveal the 'One [that] Flew Over the Cuckoo's Nest' straight away!
 idx = [i for i, b in enumerate(nest) if b]
-hmmng = reduce(lambda x, y: x^y, idx)
-print(f'Yippee-Ki-Yay {hmmng} == {brd}!')
+hmmng = reduce(lambda x, y: x^y, idx); print(f'Yippee-Ki-Yay {hmmng} == {brd}!')
