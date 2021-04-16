@@ -60,3 +60,94 @@ displayImages((img, out), ('Original', 'Re-scaled'), cmp = 'copper')
 #
 #out = np.block([np.array(ξ(img[m, :], N, Λ = Λ)) for m in range(M)])
 #out = np.block([np.array(ξ(out[n,:M], N, Λ = Λ)) for n in range(N)])
+
+
+
+## See the 3B1B's videos first... 
+# https://youtu.be/X8jsijhllIA
+# https://youtu.be/b3NxrZOu_CE
+
+from random import choice
+from functools import reduce
+
+# Here we omit the nuisance part (how to fit 2ⁿ - (n+1) bits 
+# into 2ⁿ ones... at positions other than 2⁰,2¹,2²,…)
+# So... we do the trick! 
+# 1. We create a random 2ⁿ-bit message and...
+# 2. make it correct (so that its Hamming syndrome is zero.
+# Let
+n = 4; bits = [choice((0, 1)) for _ in range(2**n)]
+#idx =  [i for i, b in enumerate(bits) if b]
+#hmmng = reduce(lambda x, y: x^y, idx)
+
+#print(bits)
+#print(bin(hmmng))
+
+#for i in range(n):
+#    if hmmng & (2**i):
+#        bits[2**i] ^= 1
+
+#idx =  [i for i, b in enumerate(bits) if b]
+#hmmng = reduce(lambda x, y: x^y, idx)
+#print(bits)
+#print(bin(hmmng))
+
+bits[choice(range(2**n))] ^= 1
+idx =  [i for i, b in enumerate(bits) if b]
+hmmng = reduce(lambda x, y: x^y, idx)
+print(hmmng, bin(hmmng))
+
+import numpy as np
+bb = np.array([i for i in range(n) if hmmng & (2**i)]).astype(int)
+bits = np.array(bits)
+bits[2**bb] ^= 1
+#for i in range(n):
+#    bits[2**i] ^= bool(hmmng & (2**i))
+
+idx = [i for i, b in enumerate(bits) if b]
+hmmng = reduce(lambda x, y: x^y, idx)
+print(hmmng, bin(hmmng))
+
+## See the 3B1B's videos first... 
+# https://youtu.be/X8jsijhllIA
+# https://youtu.be/b3NxrZOu_CE
+# 'Hamming a humming data channel' [ We just couldn't help but play with these homophones!;]
+
+from random import choice
+from functools import reduce
+import numpy as np
+
+## A simple demonstration of the Hamming correction code
+# In the real world we need to fit 2ⁿ - n bits of the message into 
+# 2ⁿ ones in locations between the dyadic ones: 2⁰,2¹,2²,…, 2ⁿ⁻¹)
+# 
+# Here we... don't! That's the trick (see the videos): 
+# 1. Create a random 2ⁿ-bit message and...
+# 2. ... make it correct (so that its Hamming syndrome is zero).
+
+n = 0b111
+# The 'nest' is initially a sequence of random bits...
+nest = np.array([choice((0b0, 0b1)) for _ in range(0b1 << n)])
+
+##Hamming syndrome computation (the subblock parity bits)
+# Here the indices of 1's are collected...
+idx =  [i for i, b in enumerate(nest) if b]
+# ... and XOR-ed to yield their Hamming syndrome 
+hmmng = reduce(lambda x, y: x^y, idx)
+nest[hmmng] ^= 0b1
+
+## Here the bad 
+#brds = np.array([i for i in range(n) if hmmng & (0b1 << i)]).astype(int)
+#nest[0b1 << brds] ^= 0b1
+# The 'nest' is a correct meassage block now! Savvy? https://youtu.be/xG6RHY_WJpM?t=129
+print(f'{nest} - the correct block!')
+
+
+# Here we flip a random bird (in order to emulate a bad one)
+brd = choice(range(0b1 << n)); nest[brd] ^= 0b1
+print(f'{nest} - bit No = {brd} is corrupted!')
+
+# .. and here we detect it straight away!
+idx = [i for i, b in enumerate(nest) if b]
+hmmng = reduce(lambda x, y: x^y, idx)
+print(f'Does {hmmng} == {brd}?')

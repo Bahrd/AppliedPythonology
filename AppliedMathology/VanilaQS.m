@@ -1,8 +1,9 @@
 %% QuQuRickU
 clear psi;
 %% A simple implementation of a basic Grover's quantum search algorithm
+% See also: https://quantumcomputing.stackexchange.com/questions/1967/how-is-grovers-algorithm-used-to-estimate-the-mean-and-median-of-a-set-of-numbe
 % Number of qubits
-Q = 10; 
+Q = 3; 
 
 % Declarations and definitions...
 NoS = 2^Q;                                               % A database size
