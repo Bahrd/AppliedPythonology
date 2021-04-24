@@ -5,11 +5,10 @@
 # from sys import setrecursionlimit as reclim
 # reclim(10 ** 6)
 def mul_inv(a, b):
-    gcd = lambda p, q: gcd(q, p % q) if q else p
-    lcm = lambda p, q: (p * q)/gcd(p, q)
+    gcd = lambda p, q: gcd(q, p % q) if q else p; lcm = lambda p, q: (p * q)/gcd(p, q)
     def xgcd(a, b):
         α, β, γ, δ = 0b0, 0b1, 0b1, 0b0
-        while a != 0b0:
+        while a:
             (q, a), b = divmod(b, a), a
             α, β, γ, δ = β, α - q * β, δ, γ - q * δ
         return b, α, γ              # (g, x, y): a*x + b*y = g = gcd(a, b)
