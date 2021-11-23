@@ -34,7 +34,7 @@ radio = RadioButtons(axc, ('RGB', 'B&W'), active = 0)
 slEV.on_changed(poissonimg); radio.on_clicked(scotophotopic)
 
 # Image re/de-generation
-mb = 'MB{}.png'.format(choice('ABCD'))
+mb = 'Tesla-M3.png'#MB{}.png'.format(choice('ABCD'))
 img = cvtColor(imread(mb), RGB)
 
 poissonimg(8)

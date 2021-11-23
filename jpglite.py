@@ -28,7 +28,7 @@ def quantize(X, Q = 1):
 ## Image loading (if 'B == 8' then by default a JPG quantization scheme is 
 #   applied (note we assume for simplicity the fixed image size [being a power of two])
 org = cv2.cvtColor(cv2.imread('GrassHopper.PNG'), cv2.COLOR_BGR2YCrCb)
-N = 1024; org = cv2.resize(org[..., 0], (N, N))
+N = 512; org = cv2.resize(org[..., 0], (N, N))
 B = 32;  tiles, blocks = range(0, N, B), range(int(N/B))
 
 ## Transforming each tile/block using DCT 2D
@@ -39,7 +39,7 @@ trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
 #  means no scalar quantization (other than conversion to the 'int' type). 
 #  For B == 8 the JPG quatization matrix is applied. Then 'Q == 0.1' results 
 #  usually in a poor quality image while 'Q == 10' yields a visually indistinguishable image.
-Q = 1/64 
+Q = .01
 ## Coefficients quantization and inverse transformation
 qntz = [[quantize(trns[n][m], Q)          for n in blocks] for m in blocks]
 img  = [[idct2(qntz[n][m]).astype(np.int) for n in blocks] for m in blocks]

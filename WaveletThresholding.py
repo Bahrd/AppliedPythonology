@@ -10,11 +10,11 @@ from pywt import (wavedec as fwt, waverec as ifwt, threshold as thrsd,
 from itertools import repeat; from more_itertools import flatten
 import numpy as np
 import math
-## Signal generation 
+## Signal (PPG-like) generation 
 L, rng = 0o2000, np.random.default_rng()
-X, rpt, (f1, f2) = np.linspace(-1.0, 1.0, L), 0b11, (0b1, 0b10) #Hz
+X, rpt, (f1, f2) = np.linspace(-1.0, 1.0, L), 0b11, (0b10, 0b100) #Hz
 
-S, ε  = (np.cos(f1 * math.pi * X) + np.cos(f2 * math.pi * X), 
+S, ε  = (3 + np.sqrt(2)*np.sin(f1 * math.pi * X) + 2*np.sin(f2 * math.pi * X), 
          rng.standard_normal(L * rpt))
 s = list(flatten(repeat(S, rpt)))
 S = s + ε/0b100
@@ -48,8 +48,8 @@ def ValSUREThresh(X):
 
 ''' Levels of transform, L, is arbitrary here. In general, 
     L ≤ floor(log₂(len(X)) 
-or even less should a boundary effect be taken into account. 
-Insert your own threshold values should you know it better, as well'''
+    or even less should a boundary effect be taken into account. 
+    Insert your own threshold values should you know it better, as well'''
 L, sh = 10, ValSUREThresh(S); h = sh
 Th = lambda x, h: thrsd(x, h, mode = 'hard')
 

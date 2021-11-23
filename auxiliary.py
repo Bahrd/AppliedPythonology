@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt; from matplotlib.colors import LinearSegmentedCo
 
 #Image presentation
 def displayImages(images, titles = '', cmp = 'gray', show = True):
-    if type(images) is tuple or type(images) is list: 
+#    if type(images) is tuple or type(images) is list: 
+    if isinstance(images, (tuple, list)): 
         number = len(images)
         fig = plt.figure(figsize = (number * 3, 3)); fig.tight_layout()
         for p, (image, title) in enumerate(zip(images, titles)):

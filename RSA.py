@@ -10,11 +10,11 @@ def mul_inv(a, b):
         α, β, γ, δ = 0b0, 0b1, 0b1, 0b0
         while a:
             (q, a), b = divmod(b, a), a
-            α, β, γ, δ = β, α - q * β, δ, γ - q * δ
-        return b, α, γ              # (g, x, y): a*x + b*y = g = gcd(a, b)
-    g, x, _ = xgcd(a, b)
+            (α, β, γ, δ) = (β, α - q * β, δ, γ - q * δ)
+        return b, α                 
+    g, i = xgcd(a, b)
     if g != 0b1: raise Exception(f'gcd({a}, {b}) == {gcd(a, b)} != 1')
-    return x % b                    # x: (x * a) % b == 1
+    return i % b
 
 #   https://en.wikipedia.org/wiki/List_of_prime_numbers#Palindromic_primes
 p, q, totient = 787, 797, lambda p, q: (p - 1)*(q - 1)  # or lcm(p - 1, q - 1)

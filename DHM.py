@@ -2,7 +2,7 @@ from numpy import unique as unq
 from numpy.random import randint
 # Brute force is not the smartest way to check if p is a primitive root modulo q
 # But in the quantum computing realm they call it the Grover's algorithm...
-prm = lambda p, q: True if(p - len(unq([q**n % p for n in range(p)])) == 1) else False
+prm = lambda p, q: True if(p - len(unq([q ** n % p for n in range(p)])) == 1) else False
 hexen = lambda xeh: tuple([hex(n) for n in xeh])
 
 ## Diffie–Hellman–Merkle, 1976 & Cocks, 1969 
@@ -17,5 +17,5 @@ print(f'Take that {hexen((p, q, A, B))}, Eve!') # It's all public! Isn't it odd,
 sA, sB = (B ** Alice) % p, (A ** Bob) % p       # them all? Yet only Alice and Bob know their 
                                                 # new secret (since sA == sB)...
 # «Roman à clef» [ ♫Ups, we did it again!♫ ;]
-print(f'♫You still haven\'t found what you\'re looking for♫, Eve?') # Once they've used the key, can they spill the beans?
+print(f'Eve, ♫you still haven\'t found what you\'re looking for♫?') # Once they've used the key, can they spill the beans?
 print(f'Alice&Bob\'s secret keys: {hexen((sA, sB))}.')              # The Midas' barber syndrome...

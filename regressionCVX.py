@@ -2,6 +2,7 @@ from numpy.random import rand, randn, randint
 from numpy.linalg import norm as np_norm
 from numpy import arange, cos, kron, mat, r_ as rng, round, stack
 from matplotlib.pyplot import plot, show, title
+from math import pi as π
 
 from cvxpy import Problem, Minimize, Variable
 from cvxpy import norm as cvx_norm
@@ -16,8 +17,8 @@ def m(X, A):                          # function Y = m(X, A)
 ## Measurements (note N << L - the one way around...)
 α = randint(-2, 3, (6, 1))            # α = randi([-2, 3], 6, 1);
 ρ = np_norm(α, 1) * 1
-N  = 128; X = randn(N, 1) if randint(2) else rand(N, 1) * 6 - 3 
-X, Z = sorted(X), randn(N, 1) * 0.1; Y = m(X, α) + Z
+N  = 128; X = π*(2*rand(N, 1) - 1) # if randint(2) else randn(N, 1) 
+X, Z = sorted(X), randn(N, 1) * 0.125; Y = m(X, α) + Z
 ## Regressors matrix (note L >> N - the other way around...) 
 L  = 512; Φ = cos(kron(X, arange(L))) # Φ = cos(kron(X, 1:L)); 
 
@@ -30,7 +31,7 @@ p = Problem(o, c); p.solve()          # cvx_end
 
 ## Presentation stuff
 Q = mat(rng[-3: 3: 3e-3]).T; YY = m(Q, A.value)
-print(' A = ', round(A.value[:α.size], 0).T, 
-      ' α = ',                          α.T)
+print(' A = ', round(A.value[:α.size], 2).T, 
+      ' α = ',                       α.T)
 ttl = f'arg min‖Φ*A-Y‖₂² st. ‖A‖₁ ≤ {ρ} → A = {round(A.value[:α.size]).T}'
 displayPlotsXY([(X, Y), (Q, YY)], ['(X, Y)', ttl])

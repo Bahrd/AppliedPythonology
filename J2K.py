@@ -21,7 +21,7 @@ def wc_op(c, wn, lvl, Q, op = lambda x, Q: x):
 
     # Displaying percentage of remaining coefficients
     CC = np.block(C).flat; CCC, CV = sum((CC)!= 0), len(CC)
-    print(f'Non-zeros: {CCC} of {CV} = {100 * CCC/CV:,.2f}%')
+    print(f'Non-zeros: {CCC} of {CV} = {CCC/CV:,.2%}')
     
     # Re-tupling the wavelet coefficients
     C = a2c(C, S, output_format = 'wavedec2')
