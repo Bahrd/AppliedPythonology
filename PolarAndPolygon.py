@@ -5,7 +5,7 @@ from math import pi as π
 ##Polar square... and byenary 100 all!
 θ, ρ = lsp(0, π/0b100, 0b10), π/0o10 # ... or for octoplus!
 r = rp(cos(θ))   
-for θ in (θ + n*π/0b10 for n in range(4)): 
+for θ in (θ + n*π/0b10 for n in range(0b100)): 
     _ = polar(θ + ρ, r, θ + (π/0b100 + ρ), r[::-1]) 
 _ = title('Polar square'), show()
 
