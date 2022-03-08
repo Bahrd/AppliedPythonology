@@ -3,7 +3,7 @@ from cv2 import imread, cvtColor, COLOR_BGR2RGB as RGB, COLOR_BGR2GRAY as GRAY
 from matplotlib.pyplot import subplots, subplots_adjust, axes, show
 from matplotlib.widgets import Slider, RadioButtons
 ## https://matplotlib.org/3.2.1/gallery/widgets/slider_demo.html
-from numpy.random import poisson; from random import choice
+from numpy.random import poisson
 from auxiliary import displayImages as DI
 from numpy import clip
 

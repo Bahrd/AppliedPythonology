@@ -1,7 +1,7 @@
-﻿from interpolation import Π, Λ, ϕ, ξ, interpolate as intrpl, eddie
+﻿from interpolation import Π, Λ, ϕ, ξ, interpolate as intrpl, eddie, RR
 from matplotlib.pyplot import plot, show
 from auxiliary import displayImages as DI
-from random import randrange as RR, choice
+from random import choice
 from numpy import zeros, array
 from sys import argv
 

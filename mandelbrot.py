@@ -1,6 +1,5 @@
-from matplotlib.pyplot import imshow, show, title
 from auxiliary import displayImages as DI
-from numpy import linspace as ls, power as pwr, mat as mt, isnan, log, any, e, array
+from numpy import linspace as ls, power as pwr, mat as mt, log, e
 
 ## An approximate Mandelbrot set function (accuracy grows with ν)
 #       M = {ω ∈ Ω: mandelbrot(ω, ∞) < 2}

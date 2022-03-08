@@ -1,15 +1,15 @@
 ﻿''' Some interpolating functions, Π(x), Λ(x) and ϕ(x) or sinc(x) for that matter...
 
 Whatchamacallit this thingamajig: 
-* The window/rectangular and the hat/tent/triangular and Keys & sinc (not anonymous!) functions. 
+* The window/rectangular and the hat/tent/triangular and Keys & sinc (thus not anonymous!) functions. 
 * The Keys' cubic interpolating function (b'cause: https://realpython.com/python-lambda/#syntax)'''
 
 def Π(x, l = -.5, r = .5): return (x >= l) * (x < r)
 def Λ(x): return (1 - abs(x)) * (abs(x) < 1)
 def ϕ(x): 
-    x, a = abs(x), -.5
-    return (((a + 2) * x**3 - (a + 3) * x**2 + 1)             * Π(x, 0, 1) 
-           + (     a * x**3 -     5*a * x**2 + 8*a * x - 4*a) * Π(x, 0, 2) * (1 - Π(x, 0, 1)))
+    x, α = abs(x), -.5
+    return (((α + 2) * x**3 - (α + 3) * x**2 + 1)             * Π(x, 0, 1) 
+           + (     α * x**3 -     5*α * x**2 + 8*α * x - 4*α) * Π(x, 0, 2) * (1 - Π(x, 0, 1)))
 
 from numpy import sin, ones_like, pi as π
 def ξ(x, m = π): 
@@ -35,16 +35,16 @@ def interpolate(fn, N, φ = [Π, Λ, ϕ, ξ]):
 from random import randrange as RR
 from numpy import array
 
-s = RR(0b10); g = s ^ 0b1
+ζ = RR(0b10); ξ = ζ ^ 0b1 
 eddie = array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
                [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0], 
                [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0], 
-               [0, 0, 0, 1, 0, 0, 1, g, g, 1, 0, 0], 
+               [0, 0, 0, 1, 0, 0, 1, ξ, ξ, 1, 0, 0], 
                [0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0], 
                [0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0], 
-               [0, 0, 0, 1, s, 1, 1, 1, s, 1, 0, 0], 
+               [0, 0, 0, 1, ζ, 1, 1, 1, ζ, 1, 0, 0], 
                [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], 
-               [0, 0, 0, 0, 1, g, g, g, 1, 0, 0, 0], 
+               [0, 0, 0, 0, 1, ξ, ξ, ξ, 1, 0, 0, 0], 
                [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])

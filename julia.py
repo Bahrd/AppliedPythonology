@@ -1,4 +1,3 @@
-from matplotlib.pyplot import imshow, title, show
 from numpy import linspace as lsp, power as pwr, mat as mt, isnan, any, log, e
 from auxiliary import displayImages as DI; 
 

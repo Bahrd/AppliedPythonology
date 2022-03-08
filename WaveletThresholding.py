@@ -38,8 +38,8 @@ def ValSUREThresh(X):
     n = np.size(X)
     a = np.sort(np.abs(X))**2
 
-    c = np.linspace(n-1,0,n)
-    s = np.cumsum(a)+c*a
+    c = np.linspace(n - 1, 0, n)
+    s = np.cumsum(a) + c * a
     risk = (n - (2 * np.arange(n)) + s)/n
 
     ibest = np.argmin(risk)

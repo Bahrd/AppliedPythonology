@@ -1,4 +1,4 @@
-﻿from random import randint, choice
+﻿from random import choice
 
 ## There is a famous and (supposedly) counterintuitive no-problem: 
 #   https://en.wikipedia.org/wiki/Monty_Hall_problem

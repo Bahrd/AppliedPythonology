@@ -1,4 +1,4 @@
-﻿from numpy import cos, sin, sqrt, linspace as lsp, arange, reciprocal as rp
+﻿from numpy import cos, sqrt, linspace as lsp, reciprocal as rp
 from matplotlib.pyplot import plot, polar, title, show
 from math import pi as π
 

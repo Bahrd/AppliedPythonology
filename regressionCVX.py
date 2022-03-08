@@ -1,7 +1,6 @@
 from numpy.random import rand, randn, randint
 from numpy.linalg import norm as np_norm
-from numpy import arange, cos, kron, mat, r_ as rng, round, stack
-from matplotlib.pyplot import plot, show, title
+from numpy import arange, cos, kron, mat, r_ as rng, round
 from math import pi as π
 
 from cvxpy import Problem, Minimize, Variable
