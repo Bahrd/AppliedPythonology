@@ -1,5 +1,5 @@
 ﻿from numpy import cos, sqrt, linspace as lsp, reciprocal as rp
-from matplotlib.pyplot import plot, polar, title, show
+from matplotlib.pyplot import plot, polar, title, show, gca, axis
 from math import pi as π
 
 ##Polar square... and byenary 100 all!
@@ -12,6 +12,7 @@ _ = title('Polar square'), show()
 #Polygon circle...
 x = lsp(0, sqrt(0b10)/0b10, 0x10) # Hexadecaphilia!
 y = sqrt(1 - x**0b10)
+gca().set_aspect('equal')
 for x, y in ((x, y), (x, -y), (-x, -y), (-x, y)):
     _ = plot(x, y, y, x)
 _ = title('Polygon circle'), show()

@@ -27,7 +27,7 @@ def wc_op(c, wn, lvl, h, op = lambda x, h: x, dsply = False):
     # Thresholding I
     C, S = c2a(C); C = op(C, h)    
     # Presentation
-    if(dsply): plot(C); show()    
+    if(dsply): plt.plot(C); plt.show()    
     # Re-tupling the wavelet coefficients
     C = a2c(C, S, output_format = 'wavedec')
     # Inversing the wavelet transform
