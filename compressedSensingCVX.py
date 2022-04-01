@@ -33,10 +33,10 @@ y = fi @ img
 
 #Python CVX                           
                                       
-A = cvx.Variable((K, 1))              
-o = cvx.Minimize(cvx.cvx_norm(fi @ A - y, 2)) 
-c = [cvx.cvx_norm(A, 1) <= ρ]             
-p = cvx.Problem(o, c); p.solve()   
+#A = cvx.Variable((K, 1))              
+#o = cvx.Minimize(cvx.cvx_norm(fi @ A - y, 2)) 
+#c = [cvx.cvx_norm(A, 1) <= ρ]             
+#p = cvx.Problem(o, c); p.solve()   
 
 
 
