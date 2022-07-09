@@ -14,10 +14,11 @@ def m(X, A):                          # function Y = m(X, A)
     return Φ @ A                      #   Y  = Φ * A;
 
 ## Measurements (note N << L - the one way around...)
-α = randint(-2, 3, (6, 1))            # α = randi([-2, 3], 6, 1);
-ρ = np_norm(α, 1) * 1
-N  = 128; X = π*(2*rand(N, 1) - 1) # if randint(2) else randn(N, 1) 
-X, Z = sorted(X), randn(N, 1) * 0.125; Y = m(X, α) + Z
+α = randint(-2, 3, (6, 1))             # α = randi([-2, 3], 6, 1);
+R = 1; ρ = np_norm(α, 1) * R
+N  = 128; X = π*(2 * rand(N, 1) - 1)  # if randint(2) else randn(N, 1) 
+X, Z = sorted(X), randn(N, 1) * 0.125
+Y = m(X, α) + Z
 ## Regressors matrix (note L >> N - the other way around...) 
 L  = 512; Φ = cos(kron(X, arange(L))) # Φ = cos(kron(X, 1:L)); 
 
