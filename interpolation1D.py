@@ -9,7 +9,7 @@ from auxiliary import displayPlots
 ## 1D Examples 
 #  A staple one...
 Fn = [0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-Fx = np.array(Σψ(N = 0o2000, fn = Fn, φ = ψ)).T         # Octoplus!
+Fx = np.array(Σψ(N = 0o2000, fn = Fn, ϕ = ψ)).T         # Octoplus!
 
 displayPlots(Fx.T, ψψ); plt.plot(Fx); plt.title(κ); plt.show()
 
