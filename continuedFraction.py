@@ -7,13 +7,13 @@ from sys import float_info
 
 def cfc(x):
     ltx = lambda str: print(str, end = '')
-    def _cfc(N0, N1):
-        an, N = floor(N0/N1), N0%N1
+    def _cfc(p, q):
+        an, n = floor(p/q), p%q
 
-        ltx(f'\\frac{{1}}{{{an}')
-        if (N > float_info.epsilon * 1000): # At hoc Deus ex machina...
+        ltx(r'\frac{1}{' + f'{an}')         # String interpolation...
+        if (n > float_info.epsilon * 1000): # At hoc Deus ex machina!
             ltx('+')
-            _cfc(N1, N)
+            _cfc(q, n)
         ltx('}')
 
     ltx(f'{x} = ')
