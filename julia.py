@@ -14,7 +14,7 @@ def julia(ω, ν = 0x40, c = -.8 + .156j, p = 2):
 
 ## Presentation
 # Unsettling settings
-N, M = 0x400, 0x200  # resolution
+N, M = 0x800, 0x400  # resolution
 Ω = mt([[complex(n, m) for n in lsp(-2, 2, N)] 
                        for m in lsp(-1, 1, M)])
 # ... and a show off!
