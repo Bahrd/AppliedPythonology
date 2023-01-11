@@ -1,4 +1,4 @@
-﻿''' Several interpolating functions, Π(x), Λ(x) and ϕ(x) or sinc(x) for that matter...
+﻿''' Several interpolating functions, Π(x), Λ(x) and ϕ(x) or sinc(x) (a.k.a. ξ(x)) for that matter...
 
 Whatchamacallit this thingamajig: 
 * The window/rectangular and the hat/tent/triangular and Keys & sinc (thus not anonymous!) functions. 
@@ -11,6 +11,7 @@ def ϕ(x):
     return (((α + 2) * x**3 - (α + 3) * x**2 + 1)             * Π(x, 0, 1) 
            + (     α * x**3 -     5*α * x**2 + 8*α * x - 4*α) * Π(x, 0, 2) * (1 - Π(x, 0, 1)))
 
+# When our intuition goes astray... https://www.youtube.com/watch?v=851U557j6HE
 from numpy import sin, ones_like, pi as π
 def ξ(x, m = π): 
     x = x * m; sinc = ones_like(x)

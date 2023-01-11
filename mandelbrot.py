@@ -23,7 +23,7 @@ def mandelbrother(c, ν = 0x42):
 
 ## Presentation
 # Rehearsal...
-N, M = 0x200, 0x200     # resolution
+N, M = 0x400, 0x400     # resolution
 X, Y, ε = -1/2, 0, 3/2  # size
 Ω = mt([[complex(n, m) for n in ls(X - ε, X + ε, N)] for m in ls(Y - ε, Y + ε, M)])
 

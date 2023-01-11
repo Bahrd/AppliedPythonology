@@ -17,8 +17,8 @@ thinks that 'ϑ is θ == True' (and so are 'ϱ' and 'ρ', see ll. 39-40)! '''
 #  ... and a source image...  (cf. './rotation2D.py')
 img = eddie; M = len(img); N = int(argv[0b10]) if len(argv) > 0b10 else M << 0b1
 out = empty((N, N)) 
-# ... and rotation of ϑ = [x, y].T, w.r.t. OXY and through that angle
-OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
+# ... and rotation of ϑ = [x, y].T, w.r.t. OXY and through that angle: https://youtu.be/eV7UI_WX54c?t=191 
+OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)],  #              https://youtu.be/eV7UI_WX54c?t=361
                                     [sin(α),  cos(α)]]) # '+' clockwise
 
 for n in range(N):
