@@ -15,15 +15,14 @@ def cfc(x):
         an, n = floor(p/q), p%q
 
         ltx(r'\frac{1}{' + f'{an}')         # Either raw or interpolated...
-        if (n > float_info.epsilon * 1000): # At hoc Deus ex machina!
+        if (n >= float_info.epsilon * 1000): # At hoc Deus ex machina!
             ltx('+')
             _cfc_(q, n)
         ltx('}')
 
     ltx(f'{x} = ')
     n = floor(x)
-    if(n != 0.0):
-        ltx(f'{n}+')
+    if(n): ltx(f'{n}+')
     _cfc_(1, x - n)
 
 #Dare 4 more π!
