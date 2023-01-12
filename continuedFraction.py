@@ -1,10 +1,10 @@
-## Continued fraction representation (in LaTeX)
-#  x = a0 + ______1______
-#           a1 + ___1____
-#                a2 + ...
-# Exemplum: -3.142 = -4+\frac{1}{1+\frac{1}{6+\frac{1}{23+\frac{1}{1+\frac{1}{1+\frac{1}{1}}}}}}
-#  https://en.wikipedia.org/wiki/Continued_fraction
-
+'''Continued fraction representation (in LaTeX) of x
+   x = a0 + ______1______
+            a1 + ___1____
+                 a2 + ...
+   See: https://en.wikipedia.org/wiki/Continued_fraction
+   Exemplum: -3.142 = -4+\frac{1}{1+\frac{1}{6+\frac{1}{23+\frac{1}{1+\frac{1}{1+\frac{1}{1}}}}}}
+'''
 from cmath import pi as π
 from math import floor
 from sys import float_info
