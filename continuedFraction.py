@@ -1,4 +1,4 @@
-## Fraction to continued fraction (in LaTeX) converter
+## Continued fraction representation (in LaTeX)
 #  x = a0 + ______1______
 #           a1 + ___1____
 #                a2 + ...
