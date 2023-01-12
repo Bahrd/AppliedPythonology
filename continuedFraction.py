@@ -1,4 +1,8 @@
-## Fraction (positive) to continued fraction (in LaTeX) converter
+## Fraction to continued fraction (in LaTeX) converter
+#  x = a0 + ______1______
+#           a1 + ___1____
+#                a2 + ...
+# Exemplum: -3.142 = -4+\frac{1}{1+\frac{1}{6+\frac{1}{23+\frac{1}{1+\frac{1}{1+\frac{1}{1}}}}}}
 #  https://en.wikipedia.org/wiki/Continued_fraction
 
 from cmath import pi as π
@@ -7,20 +11,20 @@ from sys import float_info
 
 def cfc(x):
     ltx = lambda str: print(str, end = '')
-    def _cfc(p, q):
+    def _cfc_(p, q):
         an, n = floor(p/q), p%q
 
         ltx(r'\frac{1}{' + f'{an}')         # Either raw or interpolated...
         if (n > float_info.epsilon * 1000): # At hoc Deus ex machina!
             ltx('+')
-            _cfc(q, n)
+            _cfc_(q, n)
         ltx('}')
 
     ltx(f'{x} = ')
     n = floor(x)
     if(n != 0.0):
         ltx(f'{n}+')
-    _cfc(1, x - n)
+    _cfc_(1, x - n)
 
-#Go4π!
-cfc(floor(π * 1000)/1000)
+#Dare 4 more π!
+cfc(floor(-π * 1000)/1000)
