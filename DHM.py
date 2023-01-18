@@ -1,3 +1,7 @@
+## Diffie–Hellman–Merkle, 1976 & Cocks, 1969 
+#  https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange#Cryptographic_explanation
+#  Private key public distribution (for e.g. a symmetric-key cipher)
+
 from numpy import unique as unq
 from numpy.random import randint
 # Brute force is not the smartest way to check if p is a primitive root modulo q
@@ -5,10 +9,8 @@ from numpy.random import randint
 prm = lambda p, q: True if(p - len(unq([q ** n % p for n in range(p)])) == 1) else False
 hexen = lambda xeh: tuple([hex(n) for n in xeh])
 
-## Diffie–Hellman–Merkle, 1976 & Cocks, 1969 
-#  Private key public distribution
-p, q = 0x61, 0x56 # These numbers aren't arbitrary: https://en.wikipedia.org/wiki/Primitive_root_modulo_n
-                  # so check if prm(p, q) == True
+p, q = 0x61, 0x56 # These numbers aren't arbitrary:    https://en.wikipedia.org/wiki/Primitive_root_modulo_n
+                  # YMMV so check if prm(p, q) == True https://math.stackexchange.com/a/4484127 
 
 Alice, Bob = randint(0x2661), randint(0x221e)   # A pair of Alice and Bob's random secret values
 A, B = (q ** Alice) % p, (q ** Bob) % p         # Public exchange messages
