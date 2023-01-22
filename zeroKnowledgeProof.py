@@ -21,7 +21,8 @@ for _ in range(0x10):
     r = randint(p - 1)
     # ... and publishes equally random C
     C = g ** r % p
-    #  Each time Victor 'vehemently' decides which question to ask
+    #  Each time Victor 'vehemently' questions Alice's credibility 
+    #  with a random choice of the question...
     flip = choice(['trick', 'threat'])
     if(flip == 'trick'):
         #  Alice 

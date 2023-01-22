@@ -14,8 +14,8 @@ def cfc(x):
     def _cfc_(p, q):
         an, n = floor(p/q), p%q
 
-        ltx(r'\frac{1}{' + f'{an}')         # Either raw or interpolated...
-        if (n >= float_info.epsilon * 1000): # At hoc Deus ex machina!
+        ltx(r'\frac{1}{' + f'{an}')             # Either raw or interpolated...
+        if (n >= float_info.epsilon * 1000):    # At hoc Deus ex machina!
             ltx('+')
             _cfc_(q, n)
         ltx('}')
