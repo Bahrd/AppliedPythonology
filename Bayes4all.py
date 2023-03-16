@@ -25,8 +25,8 @@ def Bayes_formula(p_a_priori: float, p_false_positives: float, p_true_positives:
     Kowalski:   Ninety-five percent certain we're still doomed.             [1 - 1/20]
     Skipper:    And the, uh... other five percent?                          [1/20]
     Kowalski:   Adventure and glory like no penguins have ever seen before. '''
-from sys import argv      # .\Bayes4all.py '(1/1000, 1/100, 1/1)'
-a_priori, false_positives, true_positives = (1/1000, 1/100, 1/1) if len(argv) != 0b10 else eval(argv[0b1])
+from sys import argv      # .\Bayes4all.py '(1/100, 1/100, 1 - 1/100)' # a.k.a fifty-fifty
+a_priori, false_positives, true_positives = (1/100, 1/100, 1 - 1/100) if len(argv) != 0b10 else eval(argv[0b1])
 ## Run, Bayes! Run!
 a_posteriori = a_priori
 print(f'For false positives probability = {false_positives} and occurence probability = {a_priori} the chances are:')
