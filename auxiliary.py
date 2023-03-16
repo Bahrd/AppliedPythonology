@@ -43,6 +43,10 @@ def displayChannels(images, channels, rows = 1, cols = 4, title = 'RGB'):
         plt.title(title); plt.imshow(image)
         plt.show()
 
+# When you don't care about the return value
+def splot(*args, scalex = True, scaley = True, data = None, **kwargs): 
+    _ = plt.plot(*args, scalex = True, scaley = True, data = None, **kwargs)
+
 # CFA filter mask (replication of a single CFA segment into a whole sensor mask)
 def CFA(masks, X):
     return np.dstack([np.tile(mask, X) for mask in masks])
@@ -92,3 +96,5 @@ def ITT(f):
 		print(f'{f.__name__} evaluated in {round(end - begin)}s')
 		return r
 	return time_warper_wrapper
+
+
