@@ -6,7 +6,7 @@ from numpy import zeros, array
 from sys import argv
 
 ''' In principle, a 2D interpolation, for a separable interpolation function, that is,
-the function that is a product of 1D interpolation functions, 
+the function that is a product of 1D interpolation ones, 
                      ψ(x, y) = ψ(x)ψ(y)  # Π, Λ, ϕ, ξ 
 can be implemented as a successive application of the 1D interpolation 
 procedure to each row and then to each column of the image. '''
@@ -32,10 +32,10 @@ if את():
 # ... and the more convoluted (snaky, sneaky'n'snacky) version
 else:
     out = array([ΣΣ(img[m, ...], N, φ = ψ) for m in range(M)]).reshape(M, N)
-    DI((img, out), ('Original', f'{nomina}-scaled rows'), cmp = Cu)
+    DI((img, out), ('Original', f'{nomina}-scaled rows II'), cmp = Cu)
 
     out = array([ΣΣ(out[..., n], N, φ = ψ) for n in range(N)]).reshape(N, N).T
-    DI((img, out), ('Original', f'{nomina}-scaled rows & columns'), cmp = Cu)
+    DI((img, out), ('Original', f'{nomina}-scaled rows & columns II'), cmp = Cu)
 
 ## A pretty scary stuff... Will you dare? 
 #  (Or rather yet another aliasing-related effect ;)
