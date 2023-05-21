@@ -10,13 +10,21 @@ from pywt import (wavedec as fwt, waverec as ifwt, threshold as thrsd,
 from itertools import repeat; from more_itertools import flatten
 import numpy as np
 import math
+
 ## Signal (PPG-like) generation 
 L, rng = 0o2000, np.random.default_rng()
 X, rpt, (f1, f2) = np.linspace(-1.0, 1.0, L), 0b11, (0b10, 0b100) #Hz
 
+'''
 S, ε  = (3 + np.sqrt(2)*np.sin(f1 * math.pi * X) + 2*np.sin(f2 * math.pi * X), 
          rng.standard_normal(L * rpt))
 s = list(flatten(repeat(S, rpt)))
+S = s + ε/0b100
+'''
+
+# A chirp-like signal (https://www.youtube.com/watch?v=TWqhUANNFXw [LIGO] ;)
+X = np.linspace(0.05, 1.0, L * rpt)
+s, ε = np.sin(1/X), rng.standard_normal(L * rpt)/0b100
 S = s + ε/0b100
 
 # A FWT wrapper (transform → operation on coefficients → inverse transform)
@@ -67,7 +75,7 @@ def display():
     plt.cla()
     plt.xticks([]); plt.yticks([])
     plt.title(f'{wn} @ λ = {h}')
-    _ = plt.plot(S, color ='gray', marker = '.', markersize = 1, linewidth = 0), plt.plot(dft, 'k', s, 'r'), plt.show()
+    _ = plt.plot(S, color ='gray', marker = '.', markersize = 1, linewidth = 0), plt.plot(dft, 'k', s, 'r'),     plt.plot(s - dft, 'k'), plt.show()
 def thresh_live(λ):
     global h; h = λ
     display()

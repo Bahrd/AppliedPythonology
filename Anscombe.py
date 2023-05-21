@@ -5,7 +5,7 @@ from numpy import sqrt, ones
 ## Mathemagically...
 anscombe = lambda p: 2 * sqrt(p + .375)
     
-λ, N = randint(0x20), 0x400
+λ, N = randint(0x20, 0x40), 0x400
 Λ = λ * ones(N)
 
 P = poisson(Λ)
