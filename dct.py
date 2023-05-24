@@ -7,7 +7,7 @@ from more_itertools import flatten
 
 L, intervals = 0x100, 1
 X, (f1, f2) = np.linspace(0, 1.0, L), (0b101, 0b111) #Hz
-_s = np.cos(f1 * math.pi * X) - np.sqrt(0b10)*np.cos(f2 * math.pi * X)
+_s = np.sqrt(1/0b101)*np.cos(f1 * math.pi * X) - np.sqrt(1/0b101)*np.cos(f2 * math.pi * X)
 rng = np.random.default_rng()
 
 s, ε = list(flatten(repeat(_s, intervals))), rng.standard_normal(L * intervals)/0b100
@@ -40,4 +40,4 @@ plot(Hz, __, 'k', linewidth = .25); plot(Hz, -__, 'k', linewidth = .25)
 
 #Checkpoint III: IDCT 
 IS = idct(FS, norm = 'ortho')
-subplot(2, 2, 3); plot(IS, 'k'); plot(IS - s, color = 'gray'); plot(s, color = 'red'); title('Smooth PPG'); show()
+subplot(2, 2, 3); plot(IS, 'k'); plot(IS - s, color = 'lightgray'); plot(s, color = 'red'); title('Smooth PPG'); show()
