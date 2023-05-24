@@ -86,7 +86,7 @@ def mode_live(_mode):
     mode = _mode; Th = lambda x, h: thrsd(x, h, mode = mode)
     display()
 
-fig, _ = plt.subplots(); plt.subplots_adjust(left = .1, bottom = .16)
+_ = plt.subplots(); plt.subplots_adjust(left = .1, bottom = .16)
 axTh, axWn, axM  = plt.axes([.57, .01, .33, .03]), plt.axes([.1, .01, .3, .12]), plt.axes([.31, .01, .15, .12])
 slTh = Slider(axTh, 'λ = ', 0.0, np.ceil(2*sh), valinit = sh, valstep = 0.03125 * sh)
 rbWn = RadioButtons(axWn, wns, active = 0); rbM = RadioButtons(axM, modes, active = 0)
