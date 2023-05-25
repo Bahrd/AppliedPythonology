@@ -5,10 +5,10 @@ from matplotlib.pyplot import plot, subplot, show, title, xlabel, bar
 from itertools import repeat
 from more_itertools import flatten
 
-L, intervals = 0x100, 1
+## PPG-like signal
+L, intervals, rng = 0x100, 1, np.random.default_rng()
 X, (f1, f2) = np.linspace(0, 1.0, L), (0b101, 0b111) #Hz
 _s = np.sqrt(1/0b101)*np.cos(f1 * math.pi * X) - np.sqrt(1/0b101)*np.cos(f2 * math.pi * X)
-rng = np.random.default_rng()
 
 s, ε = list(flatten(repeat(_s, intervals))), rng.standard_normal(L * intervals)/0b100
 ## Magic pencils! 
@@ -17,8 +17,7 @@ s, ε = list(flatten(repeat(_s, intervals))), rng.standard_normal(L * intervals)
 
 '''
 # A chirp-like signal (https://www.youtube.com/watch?v=TWqhUANNFXw [LIGO] ;)
-X, (f1, f2) = np.linspace(0.05, 1.0, L * intervals), (5, 10) #Hz
-rng = np.random.default_rng()
+X = np.linspace(0.05, 1.0, L * intervals)
 s, ε = np.sin(1/X), rng.standard_normal(L * intervals)/0b100
 '''
 

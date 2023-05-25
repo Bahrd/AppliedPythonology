@@ -63,7 +63,8 @@ Th = lambda x, h: thrsd(x, h, mode = 'hard')
 ''' A selection of wavelet filter names 
 https://pywavelets.readthedocs.io/en/latest/ref/wavelets.html for the entire family'''
 
-wns, modes = ['sym8', 'coif8', 'db8', 'bior4.4', 'bior2.2', 'bior1.1'], ['hard', 'soft', 'garrote']
+wns, modes = (['sym8', 'coif8', 'db8', 'bior4.4', 'bior2.2', 'bior1.1'], 
+              ['hard', 'soft', 'garrote'])
 wn, mode = wns[0], modes[0]
 
 # Shrinkage... Live!
@@ -74,7 +75,8 @@ def display():
     plt.cla()
     plt.xticks([]); plt.yticks([])
     plt.title(f'{wn} @ λ = {h:,.2f}')
-    _ = plt.plot(dft, 'k', s, 'r'), plt.plot(s - dft, color ='gray'), plt.plot(S, color ='lightgray', marker = '.', markersize = 1, linewidth = 0), plt.show()
+    _ = (plt.plot(dft, 'k', s, 'r'), plt.plot(s - dft, color ='gray'),
+         plt.plot(S, color ='lightgray', marker = '.', markersize = 1, linewidth = 0), plt.show())
 def thresh_live(λ):
     global h; h = λ
     display()
