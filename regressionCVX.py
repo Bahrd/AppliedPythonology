@@ -4,7 +4,7 @@ from numpy import arange, cos, kron, mat, r_ as rng, round
 from math import pi as π
 
 from cvxpy import Problem, Minimize, Variable
-from cvxpy import norm as cvx_norm
+from cvxpy import norm as cvx_norm, CLARABEL as CLB
 from auxiliary import displayPlotsXY
 
 # Main function stuff                 # MATLAB's origins
@@ -22,12 +22,12 @@ Y = m(X, α) + Z
 ## Regressors matrix (note L >> N - the other way around...) 
 L  = 512; Φ = cos(kron(X, arange(L))) # Φ = cos(kron(X, 1:L)); 
 
-#Python CVX                           # MATLAB CVX
-                                      # cvx_begin quiet
-A = Variable((L, 1))                  #  variable A(L) 
-o = Minimize(cvx_norm(Φ @ A - Y, 2))  #  minimize(norm(Φ * A - Y, 2)) 
-c = [cvx_norm(A, 1) <= ρ]             #  subject to norm(A, 1) <= ρ
-p = Problem(o, c); p.solve()          # cvx_end
+#Python CVX                                 # MATLAB CVX
+                                            # cvx_begin quiet
+A = Variable((L, 1))                        #  variable A(L) 
+o = Minimize(cvx_norm(Φ @ A - Y, 2))        #  minimize(norm(Φ * A - Y, 2)) 
+c = [cvx_norm(A, 1) <= ρ]                   #  subject to norm(A, 1) <= ρ
+p = Problem(o, c); p.solve(solver = CLB)    # cvx_end
 
 ## Presentation stuff
 Q = mat(rng[-3: 3: 3e-3]).T; YY = m(Q, A.value)
