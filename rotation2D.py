@@ -52,7 +52,7 @@ OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)],
 nomina = argv[0b11] if len(argv) > 0b11 else ϕ.__name__; ψ = eval(nomina) 
 ToF = lambda: choice([True, False]) 
 
-f = ft if ToF() else fl
+f = fl if ToF() else ft
 if ToF(): 
     # Omloop Het...
     for n in range(N):
