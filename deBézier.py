@@ -2,47 +2,42 @@
 # https://www.pbr-book.org/4ed/Shapes/Curves
 
 import matplotlib.pyplot as plt
-from numpy import linspace as lp, outer as op
+from numpy import linspace as lp, outer as op, tensordot as td
 from matplotlib.widgets import Button, Slider
 
 def bézier(p0, p1, p2, p3, n = 128):
     u = lp(0, 1, n)
-    b = ( op(p0, (1 - u)**3)       + op(p1, 3*u * (1 - u)**2) 
-        + op(p2, 3*(1 - u) * u**2) + op(p3, u**3))
-    return b
+    b = ( op(p0, (1 - u)**3),   op(p1, u*(1 - u)**2), 
+          op(p2, (1 - u)*u**2), op(p3, u**3))
+    return td([1, 3, 3, 1], b, 1)
+    # Or just...
+    # return (op(p0, (1 - u)**3) + op(p1, 3*u * (1 - u)**2) + op(p2, 3*(1 - u) * u**2) + op(p3, u**3))
 
 # A pair of pairs of the end- and control-points
-P = [[0, 0], [.25, -.5], [.75, .75], [1, 0]]
+P = [[0, 0], [1/4, -1/2], [3/4, 3/4], [1, 0]]
 pp, cp = bézier(*P), tuple(zip(*P))
 
 # Create the figure and a Bézier curve that we will manipulate
-fig, ax = plt.subplots(num="de Bézier curve demo")
+fig, ax = plt.subplots(num = "de Bézier curve demo")
 curve, points, = ax.plot(pp[0], pp[1], '-', cp[0], cp[1], 'k.')
 ax.set_xlabel('X'), ax.set_ylabel('Y')
-# ax.set_xlim(0, 1), ax.set_ylim(-1, 1)
 
 # adjust the main plot to make room for the sliders
-fig.subplots_adjust(left = 0.25, bottom = 0.25)
-# Make a horizontal slider to control the p1.X
-x_ax = fig.add_axes([0.25, 0.1, 0.65, 0.03])
+fig.subplots_adjust(left = 1/4, bottom = 1/4)
+# Make a horizontal slider to control the p₁.X
+x_ax = fig.add_axes([0.25, 0.06125, 0.6125, 0.0125])
 x_slider = Slider(
     ax = x_ax,
     label = 'p₁.X',
-    valmin = -1,
-    valmax = 2,
-    valinit = P[1][0],
-    valstep = 0.01
+    valmin = -1, valmax = 2, valinit = P[1][0], valstep = 0.01
 )
-# Make a vertically oriented slider to control p1.Y
-y_ax = fig.add_axes([0.1, 0.25, 0.03, 0.65])
+# Make a vertically oriented slider to control p₁.Y
+y_ax = fig.add_axes([0.06125, 0.25, 0.0125, 0.6125])
 y_slider = Slider(
     ax = y_ax,
     label = 'p₁.Y',
-    valmin = -1,
-    valmax = 2,
-    valinit = P[1][1],
     orientation = "vertical",
-    valstep = 0.01
+    valmin = -1, valmax = 2, valinit = P[1][1], valstep = 0.01
 )
 
 # The function to be called anytime a slider's value changes
@@ -58,7 +53,7 @@ def update(_):
 x_slider.on_changed(update), y_slider.on_changed(update)
 
 # Create a `matplotlib.widgets.Button` to reset the sliders to initial values.
-resetax = fig.add_axes([0.8, 0.025, 0.1, 0.04])
+resetax = fig.add_axes([0.03125, 0.05, 0.1, 0.04])
 button = Button(resetax, 'Reset', hovercolor = '0.975')
 
 def reset(_):
