@@ -50,8 +50,7 @@ show()
 ## Polygon Lp circles for specific values of $p$
 #  p ~ 1.7915 (= 3583/2000) yields π ~ 3
 #  p = 2 makes π = π again!
-pp = (2, 1, 0.5, 0.25, 2048, 3583/2000)
-#for p in pp:
+#for p in (2, 1, 0.5, 0.25, 2048, 3583/2000):
 #    x = lsp(0, pow(0o1/0b10, 1/p), 0x10)
 #    y = pow(1 - pow(x, p), 1/p)
 #    gca().set_aspect('equal')
