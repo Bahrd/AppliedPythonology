@@ -19,7 +19,7 @@ def Lp_quadrant(p):
     return x, y
 
 # Create a figure...
-fig, ax = subplots(num = "Circles in various Lp norms")
+fig, ax = subplots(num = "Circles in various Lp distances")
 ax.set_aspect('equal')
 # Place a horizontal slider to control $p$ in $L_p$
 fig.subplots_adjust(bottom = 1/6)
@@ -30,12 +30,10 @@ p = 2; x, y = Lp_quadrant(p)
 for x, y in ((x, y), (x, -y), (-x, -y), (-x, y)):
     _ = ax.plot(x, y, y, x)
 
-p_slider = Slider(
+p_slider = Slider(label = 'Lp',
     ax = p_ax,
-    label = 'Lp',
-    valmin = 0.001, valmax = 16, valinit = 2, valstep = 0.01
+    valmin = 0.001, valmax = 0x10, valinit = 0b10, valstep = 0.01
 )
-
 # Let's run circles around themselves...
 def Lp_circle(p):
     x, y = Lp_quadrant(p)
@@ -47,18 +45,18 @@ def Lp_circle(p):
 p_slider.on_changed(Lp_circle)
 show()
 
-## Polygon Lp circles for specific values of $p$
-#  p ~ 1.7915 (= 3583/2000) yields π ~ 3
-#  p = 2 makes π = π again!
-#for p in (2, 1, 0.5, 0.25, 2048, 3583/2000):
-#    x = lsp(0, pow(0o1/0b10, 1/p), 0x10)
-#    y = pow(1 - pow(x, p), 1/p)
-#    gca().set_aspect('equal')
-#    for x, y in ((x, y), (x, -y), (-x, -y), (-x, y)):
-#        _ = plot(x, y, y, x)
-#    _ = title(f'Polygon Lp, p = {p} circle'), show()
-
 ''' 
+# Polygon Lp circles for specific values of $p$
+# p ~ 1.7915 (= 3583/2000) yields π ~ 3
+# p = 2 makes π = π again!
+for p in (2, 1, 0.5, 0.25, 2048, 3583/2000):
+    x = lsp(0, pow(0o1/0b10, 1/p), 0x10)
+    y = pow(1 - pow(x, p), 1/p)
+    gca().set_aspect('equal')
+    for x, y in ((x, y), (x, -y), (-x, -y), (-x, y)):
+        _ = plot(x, y, y, x)
+    _ = title(f'Polygon Lp, p = {p} circle'), show()
+
 Source(s):
 1. https://en.wikipedia.org/wiki/Parametric_equation#Some_sophisticated_functions
 2. https://www.youtube.com/watch?v=AoOv6bWg9lk - "Polar Equations of Polygons"
