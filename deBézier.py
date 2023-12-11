@@ -1,26 +1,23 @@
 ﻿# https://matplotlib.org/stable/gallery/widgets/slider_demo.html
-# https://www.pbr-book.org/4ed/Shapes/Curves
 # https://en.wikipedia.org/wiki/B%C3%A9zier_curve
 
 import matplotlib.pyplot as plt
 from numpy import linspace as lp, outer as op, tensordot as td
 from matplotlib.widgets import Button, Slider
 
-# https://stackoverflow.com/questions/26560726/python-binomial-coefficient
-def binomial(n, k):  
-    if k == 0: return 1
-    if n == k: return 1
-    return binomial(n - 1, k - 1) + binomial(n - 1, k)
-
+# See e.g. https://stackoverflow.com/questions/26560726/python-binomial-coefficient
+#          https://en.wikipedia.org/wiki/Binomial_coefficient
+#          https://en.wikipedia.org/wiki/Bernstein_polynomial #Approximating_continuous_functions
 def bézier(P, p = 128):
+    def binomial(n, k):  
+       return 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
+    
     n, u = len(P), lp(0, 1, p)
-    
-    b = [op(P[i], (1 - u)**(n - 1 - i) * u**(i)) for i in range(n)]
-    c = [binomial(n - 1, i) for i in range(0, n)]
-    
+    b, c = zip(*[[op(P[i], (1 - u)**(n - i - 1) * u**i), binomial(n - 1, i)] for i in range(n)])
     return td(c, b, 1)
 
 ##  Special case: (cubic polynomial) Bézier curve
+# https://www.pbr-book.org/4ed/Shapes/Curves
 def bézier3(P, p = 128):
     u, (p0, p1, p2, p3), = lp(0, 1, p), P
     

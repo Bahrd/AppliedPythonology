@@ -2,6 +2,8 @@ import numpy as np; import matplotlib.pyplot as plt
 from interpolation import Π, Λ, ϕ, ξ, interpolate
 from auxiliary import displayPlots
 
+# Compare with: https://en.wikipedia.org/wiki/Lagrange_polynomial#Definition
+
 #Some shortcuts...
 Σψ, κ = interpolate, 'Π, Λ, ϕ, ξ'
 ψ, ψψ = list(eval(κ)), κ.split(',')  
