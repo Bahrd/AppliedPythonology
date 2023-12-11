@@ -20,11 +20,10 @@ def bézier(P, p = 128):
 # https://www.pbr-book.org/4ed/Shapes/Curves
 def bézier3(P, p = 128):
     u, (p0, p1, p2, p3), = lp(0, 1, p), P
-    
     return (op(p0, (1 - u)**3) + op(p1, 3*u * (1 - u)**2) + op(p2, 3*(1 - u) * u**2) + op(p3, u**3))
 
-# A pair of pairs of the end- and control-points, that is (p₀, p₁, p₂, p₃)
-P = [[0, 0], [1/4, -1/2], [1/2, 0], [3/4, 3/4], [1, 0]]
+# A pair of the endpoints and the control ones (between them)
+P = [[0, 0], [1/8, 1/2], [1/4, -1/2], [1/2, 0], [3/4, 3/4], [1, 0]]
 pp, cp = bézier(P), tuple(zip(*P))
 
 # Create the figure and a Bézier curve that we will manipulate
