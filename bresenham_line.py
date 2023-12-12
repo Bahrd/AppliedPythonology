@@ -2,8 +2,8 @@
 #  https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 #  with our variations on an anti-aliasing theme...
 
-from numpy import clip, zeros, maximum, flipud
-from matplotlib.pyplot import imshow, show, subplots
+from numpy import clip, concatenate, zeros, maximum, flipud
+from matplotlib.pyplot import imshow, show
 
 def bresenham_line(x0: int, y0: int, x1: int, y1: int, AA:tuple or list = None):
     def clp(y: int):
@@ -38,7 +38,7 @@ X, Y, AA = 0x163, 0o61, (1/2, 1/1, 2/3, 1/3)        # 'Odd' AAA (asymmetric AA) 
 noa, aa = bresenham_line(0, 0, X, Y, AA = AA), bresenham_line(0, 0, X, Y)
 
 # A helper...
-duo_show = lambda data:tuple ((imshow(d, cmap='gray', interpolation = 'none'), 
+duo_show = lambda data:tuple ((imshow(d, cmap = 'gray', interpolation = 'none'), 
                                show()) for d in data)
 bresenhams = maximum.reduce((flipud(noa), aa))
 duo_show((1 - bresenhams.T, bresenhams.T))          # ... must go on and gone!

@@ -13,7 +13,7 @@ _ = title('A square on a pole...'), show()
 
 ## Lp circles are real weirdos... https://youtu.be/n8lYKa8YGKw?t=514
 #  like "a square peg in a round hole..."
-def Lp_quadrant(p):
+def Lp_octant(p):
     x = lsp(0, pow(0o1/0b10, 1/p), 0x10) # Hexadecaphilia!
     y = pow(1 - pow(x, p), 1/p)
     return x, y
@@ -26,7 +26,7 @@ fig.subplots_adjust(bottom = 1/6)
 p_ax = fig.add_axes([.125, .06125, .8125, 0.0125])
 
 # ...  and an L₂ circle (the round one!) to start with...
-p = 2; x, y = Lp_quadrant(p)
+p = 2; x, y = Lp_octant(p)
 for x, y in ((x, y), (x, -y), (-x, -y), (-x, y)):
     _ = ax.plot(x, y, y, x)
 
@@ -36,7 +36,7 @@ p_slider = Slider(label = 'Lp',
 )
 # Let's run circles around themselves...
 def Lp_circle(p):
-    x, y = Lp_quadrant(p)
+    x, y = Lp_octant(p)
     ax.clear()    
     for x, y in ((x, y), (x, -y), (-x, -y), (-x, y)):
         _ = ax.plot(x, y, y, x)
