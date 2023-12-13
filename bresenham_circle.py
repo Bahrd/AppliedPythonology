@@ -40,17 +40,22 @@ canvas[2:2 + w, 2:2 + w] = bc
 canvas[1:1 + w, v:v + w] = flipud(fliplr(bc))
 
 im = imshow(canvas, cmap = 'gray', interpolation = 'none')
-# Fill the void(s)...
+# Fill the void(s)... A kindergarten version
 # https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
+
 def flood_fill(x:int, y:int, u = (0, 1)):
-    if canvas[x, y] != 1: return
+    global canvas 
+    Φ = lambda x, y, u: flood_fill(x, y, u) # just a shortcut
+    
+    if canvas[x, y] != 1: 
+        return
     canvas[x, y] = uniform(*u)  
     
     # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
     im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
     
-    flood_fill(x - 1, y, u), flood_fill(x + 1, y, u)
-    flood_fill(x, y - 1, u), flood_fill(x, y + 1, u)
+    Φ(x - 1, y, u), Φ(x + 1, y, u)
+    Φ(x, y - 1, u), Φ(x, y + 1, u)
     return
 
 flood_fill(2, 2, u = (0, .33))

@@ -1,13 +1,13 @@
-﻿from numpy import cos, sqrt, linspace as lsp, reciprocal as rp
+﻿from numpy import cos, linspace as lsp, reciprocal as rp
 from matplotlib.pyplot import subplots, polar, title, show, Slider
-from math import pi as π
 from random import uniform as U
+from math import pi as π
 
 # A square on a pole ♪♫...and the byenary 100 all!♫♪
 θ, ρ = lsp(0, π/0b100, 0b10), U(π/0o10, π*0o1) # ... or for octoplus!
-r = rp(cos(θ))   
+secant = rp(cos(θ))   
 for θ in (θ + n*π/0b10 for n in range(0b100)): 
-    _ = polar(θ + ρ, r, θ + (π/0b100 + ρ), r[::-1]) 
+    _ = polar(θ + ρ, secant, θ + (π/0b100 + ρ), secant[::-1]) 
 _ = title('A square on a pole...'), show()
 
 
