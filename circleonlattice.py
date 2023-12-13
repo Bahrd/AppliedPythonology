@@ -2,7 +2,7 @@
 It ain't easy to find the area of the circle on a screen...
 https://mathworld.wolfram.com/GausssCircleProblem.html
 '''
-from matplotlib.pyplot import plot, show, MarkerStyle
+from matplotlib.pyplot import plot, show
 from math import floor, sqrt, pi as π
 from numpy import add
 
