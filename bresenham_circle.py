@@ -6,35 +6,33 @@ from matplotlib.pyplot import imshow, show, figure, pause
 from random import uniform
 
 def bresenham_circle(r: int):
-    circle = ones((2*r + 1, 2*r + 1))
-    xm, ym, x, y, err = r, r , -r, 0, 2 - 2*r
-
-    while x <= 0:
-        circle[xm-x, ym+y] = .0
-        circle[xm-y, ym-x] = .2
-        circle[xm+x, ym-y] = .4
-        circle[xm+y, ym+x] = .6
-
-        r = err;
+    Φ = ones((2*r + 1, 2*r + 1))
+    ζ, ξ, x, y, ε = r, r , -r, 0, 2 - 2*r
+    
+    while x <= 0:                         ## https://en.wikipedia.org/wiki/One_for_the_Money
+        Φ[ζ-x, ξ+y], Φ[ζ-y, ξ-x] = .0, .25 # "One for the money, two for the show; 
+        Φ[ζ+x, ξ-y], Φ[ζ+y, ξ+x] = .5, .75 #  Three to make ready, and four to go!"
+        
+        r = ε;
         if r <= y:
             y += 1
-            err += y*2 + 1
-        if r > x or err > y: 
+            ε += y*2 + 1
+        if r > x or ε > y: 
             x += 1
-            err += x*2 + 1
-    return circle
+            ε += x*2 + 1
+    return Φ
 
 r = 0o10; bc = bresenham_circle(r)
 fig = figure()
 imshow(bc, cmap = 'gray', interpolation = 'none'), show()
 
-# A bit of low-level bit-blitting...
+## A bit of low-level bit-blitting...
 # https://en.wikipedia.org/wiki/Blitter
 v, w = 2*r + 4, 2*r + 1
 
 canvas = ones((v, 2*v - 1))
-canvas[:,  0] = canvas[:, -1] = 0
-canvas[-1, :] = canvas[0,  :] = 0
+canvas[:,  0] = canvas[:, -1] = 0   # "One for the money, two...
+canvas[-1, :] = canvas[0,  :] = 0   # ... go!"
 
 canvas[2:2 + w, 2:2 + w] = bc
 canvas[1:1 + w, v:v + w] = flipud(fliplr(bc))
@@ -54,8 +52,8 @@ def flood_fill(x:int, y:int, u = (0, 1)):
     # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
     im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
     
-    Φ(x - 1, y, u), Φ(x + 1, y, u)
-    Φ(x, y - 1, u), Φ(x, y + 1, u)
+    Φ(x - 1, y, u), Φ(x + 1, y, u) # "One...
+    Φ(x, y - 1, u), Φ(x, y + 1, u) # o°.°.o
     return
 
 flood_fill(2, 2, u = (0, .33))
