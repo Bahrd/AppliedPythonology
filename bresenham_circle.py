@@ -2,7 +2,7 @@
 #  http://members.chello.at/~easyfilter/bresenham.html
 
 from numpy import ones, fliplr, flipud
-from matplotlib.pyplot import imshow, show, figure, pause 
+from matplotlib.pyplot import imshow, show, figure, pause, subplot
 from random import uniform
 
 def bresenham_circle(r: int):
@@ -23,7 +23,9 @@ def bresenham_circle(r: int):
     return Φ
 
 r = 0o13; bc = bresenham_circle(r)
-fig = figure(); imshow(bc, cmap = 'gray', interpolation = 'none'), show()
+
+fig = figure()
+subplot(211); imshow(bc, cmap = 'gray', interpolation = 'none')
 
 ## A bit of low-level bit-blitting...
 # https://en.wikipedia.org/wiki/Blitter
@@ -35,8 +37,7 @@ canvas[-1, :] = canvas[0,  :] = 0   # ... go!"
 
 canvas[2:2 + w, 2:2 + w] = bc
 canvas[1:1 + w, v:v + w] = flipud(fliplr(bc))
-
-im = imshow(canvas, cmap = 'gray', interpolation = 'none')
+subplot(212); im = imshow(canvas, cmap = 'gray', interpolation = 'none')
 # Fill the void(s)... A kindergarten version
 # https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
 
@@ -50,8 +51,8 @@ def flood_fill(x:int, y:int, u = (0, 1)):
     # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
     im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
     
-    Φ(x - 1, y, u), Φ(x + 1, y, u) # "One...
-    Φ(x, y - 1, u), Φ(x, y + 1, u) # o°.°.o
+    Φ(x, y + 1, u), Φ(x + 1, y, u) # "One...
+    Φ(x, y - 1, u), Φ(x - 1, y, u) # o°.°.o
     return
 
 flood_fill(2, 2, u = (0, .33))
