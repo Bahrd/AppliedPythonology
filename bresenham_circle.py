@@ -2,7 +2,7 @@
 #  http://members.chello.at/~easyfilter/bresenham.html
 
 from numpy import ones, fliplr, flipud
-from matplotlib.pyplot import imshow, show, figure, pause, subplot
+from matplotlib.pyplot import imshow, show, figure, pause, subplot, tight_layout
 from numpy.random import choice, uniform
 
 def bresenham_circle(r: int):
@@ -24,7 +24,7 @@ def bresenham_circle(r: int):
 
 r = 0o13; bc = bresenham_circle(r)
 
-fig = figure()
+fig = figure(figsize = (9, 3))
 subplot(1, 3, 1); imshow(bc, cmap = 'gray', interpolation = 'none')
 
 ## A bit of low-level bit-blitting...
@@ -41,7 +41,6 @@ canvas[1:1 + w, v:v + w] = flipud(fliplr(bc))
 subplot(1, 3, (2, 3)); im = imshow(canvas, cmap = 'gray', interpolation = 'none')
 # Fill the void(s)... A kindergarten version
 # https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
-
 u = 0, .33
 
 def flood_fill(x:int, y:int):
@@ -53,8 +52,8 @@ def flood_fill(x:int, y:int):
     
     # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
     im.set_array(canvas), fig.canvas.draw_idle(), pause(0.01)
-    lr, ud = choice([False,True], (2, 1)) #    ← ↓ ↑ →
-    # A fourfold recurrence
+    lr, ud = choice([True, False], (2, 1))    
+    # A fourfold ← ↓ ↑ → recurrence
     if(lr): Φ(x, y + 1), Φ(x + 1, y) # ♪♫ [Never] the same, 
     else:   Φ(x + 1, y), Φ(x, y + 1) # Playin' your game.
     if(ud): Φ(x, y - 1), Φ(x - 1, y) # Drive me insane,
