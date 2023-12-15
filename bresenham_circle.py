@@ -22,7 +22,7 @@ def bresenham_circle(r: int):
             ε += x*2 + 1
     return Φ
 
-r = 0o13; bc = bresenham_circle(r)
+r = 0o14; bc = bresenham_circle(r)
 
 fig = figure(figsize = (9, 3))
 subplot(1, 3, 1); imshow(bc, cmap = 'gray', interpolation = 'none')
@@ -39,7 +39,7 @@ canvas[2:2 + w, 2:2 + w] = bc
 canvas[1:1 + w, v:v + w] = flipud(fliplr(bc))
 
 subplot(1, 3, (2, 3)); im = imshow(canvas, cmap = 'gray', interpolation = 'none')
-# Fill the void(s)... A kindergarten version
+# Fill the void(s)... A kindergarten random walk version
 # https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
 u = 0, .33
 
@@ -52,15 +52,16 @@ def flood_fill(x:int, y:int):
     
     # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
     im.set_array(canvas), fig.canvas.draw_idle(), pause(0.01)
-    lr, ud = choice([True, False], (2, 1))    
-    # A fourfold ← ↓ ↑ → recurrence
-    if(lr): Φ(x, y + 1), Φ(x + 1, y) # ♪♫ [Never] the same, 
-    else:   Φ(x + 1, y), Φ(x, y + 1) # Playin' your game.
-    if(ud): Φ(x, y - 1), Φ(x - 1, y) # Drive me insane,
-    else:   Φ(x - 1, y), Φ(x, y - 1) # Trouble is gonna come to you... ♫♪
-
+    # A fourfold (←, ↓, ↑, →) randomly ordered recurrence 
+    Δ = choice((1, 0)); Λ = Δ - 1
+    
+    Φ(x + Δ, y - Λ) # ♪♫ [Never] the same, 
+    Φ(x - Δ, y + Λ) # Playin' your game.
+    Φ(x + Λ, y - Δ) # Drive me insane,
+    Φ(x - Λ, y + Δ) # Trouble is gonna come to you... ♫♪
+    
 flood_fill(2, 2)
-## ♪♫ When the levee breaks...♫♪ 
+## ... and ♪♫ when the levee breaks...♫♪ 
 #  https://www.youtube.com/watch?v=JM3fodiK9rY
 #flood_fill(25, 25), flood_fill(25, 50)
 show()
