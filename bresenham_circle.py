@@ -1,9 +1,9 @@
-﻿## A Bresenham (flooded) circle... edu version!
+﻿## A Bresenham (flooded) circle... a random edu version!
 #  http://members.chello.at/~easyfilter/bresenham.html
 
 from numpy import ones, fliplr, flipud
 from matplotlib.pyplot import imshow, show, figure, pause, subplot
-from random import uniform
+from numpy.random import choice, uniform
 
 def bresenham_circle(r: int):
     Φ = ones((2*r + 1, 2*r + 1))
@@ -25,7 +25,7 @@ def bresenham_circle(r: int):
 r = 0o13; bc = bresenham_circle(r)
 
 fig = figure()
-subplot(211); imshow(bc, cmap = 'gray', interpolation = 'none')
+subplot(1, 3, 1); imshow(bc, cmap = 'gray', interpolation = 'none')
 
 ## A bit of low-level bit-blitting...
 # https://en.wikipedia.org/wiki/Blitter
@@ -37,26 +37,31 @@ canvas[-1, :] = canvas[0,  :] = 0   # ... go!"
 
 canvas[2:2 + w, 2:2 + w] = bc
 canvas[1:1 + w, v:v + w] = flipud(fliplr(bc))
-subplot(212); im = imshow(canvas, cmap = 'gray', interpolation = 'none')
+
+subplot(1, 3, (2, 3)); im = imshow(canvas, cmap = 'gray', interpolation = 'none')
 # Fill the void(s)... A kindergarten version
 # https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
 
-def flood_fill(x:int, y:int, u = (0, 1)):
-    global canvas 
-    Φ = lambda x, y, u: flood_fill(x, y, u) # just a shortcut
+u = 0, .33
+
+def flood_fill(x:int, y:int):
+    global canvas, u
+    Φ = lambda x, y: flood_fill(x, y) # just a shortcut
     
     if canvas[x, y] != 1: return
-    else: canvas[x, y] = uniform(*u)  
+    else: canvas[x, y] = uniform(*u)
     
     # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
-    im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
-    
-    Φ(x, y + 1, u), Φ(x + 1, y, u) # "One...
-    Φ(x, y - 1, u), Φ(x - 1, y, u) # o°.°.o
-    return
+    im.set_array(canvas), fig.canvas.draw_idle(), pause(0.01)
+    lr, ud = choice([False,True], (2, 1)) #    ← ↓ ↑ →
+    # A fourfold recurrence
+    if(lr): Φ(x, y + 1), Φ(x + 1, y) # ♪♫ [Never] the same, 
+    else:   Φ(x + 1, y), Φ(x, y + 1) # Playin' your game.
+    if(ud): Φ(x, y - 1), Φ(x - 1, y) # Drive me insane,
+    else:   Φ(x - 1, y), Φ(x, y - 1) # Trouble is gonna come to you... ♫♪
 
-flood_fill(2, 2, u = (0, .33))
+flood_fill(2, 2)
 ## ♪♫ When the levee breaks...♫♪ 
 #  https://www.youtube.com/watch?v=JM3fodiK9rY
-#flood_fill(25, 25, u = (.33, .66)), flood_fill(25, 50, u = (.66, 1))
+#flood_fill(25, 25), flood_fill(25, 50)
 show()
