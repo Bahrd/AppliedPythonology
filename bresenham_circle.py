@@ -45,12 +45,12 @@ u = 0, .33
 def flood_fill(x:int, y:int):
     global canvas, u
     def Φ(x:int, y:int):
-        canvas[x, y] = uniform(*u)  # Just to illustrate that each point is (likely) marked once    
+        canvas[x, y] = uniform(*u)  # Just to show each pixel is changed once
     
         # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
         im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
         
-        # A fourfold (←, ↓, ↑, →) randomly ordered recurrence
+        # A fourfold (↑, ←, ↓, →) randomly ordered recurrence
         for (x, y) in rpr(((x - 1, y), (x, y - 1),   # ♪♫ [Never] the same, playin' your game.
                            (x + 1, y), (x, y + 1))): # Drive me insane,trouble is gonna come to you... ♫♪
             if canvas[x, y] == 1: Φ(x , y)            
