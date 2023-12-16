@@ -2,7 +2,7 @@
 #  http://members.chello.at/~easyfilter/bresenham.html
 
 from numpy import ones, fliplr, flipud
-from matplotlib.pyplot import imshow, show, figure, pause, subplot, tight_layout
+from matplotlib.pyplot import imshow, show, pause, subplot, figure
 from numpy.random import choice, uniform
 
 def bresenham_circle(r: int):
@@ -22,9 +22,8 @@ def bresenham_circle(r: int):
             ε += x*2 + 1
     return Φ
 
-r = 0o14; bc = bresenham_circle(r)
-
-fig = figure(figsize = (9, 3))
+r = choice(range(0o3, 0o17)); bc = bresenham_circle(r)
+fig = figure(figsize = (10, 3))
 subplot(1, 3, 1); imshow(bc, cmap = 'gray', interpolation = 'none')
 
 ## A bit of low-level bit-blitting...
@@ -45,23 +44,43 @@ u = 0, .33
 
 def flood_fill(x:int, y:int):
     global canvas, u
-    Φ = lambda x, y: flood_fill(x, y) # just a shortcut
+    def Φ(x:int, y:int):
+        canvas[x, y] = uniform(*u)  ## Just to check whether each point is only once    
     
-    if canvas[x, y] != 1: return
-    else: canvas[x, y] = uniform(*u)
+        # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
+        im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
+        
+        ## A fourfold (←, ↓, ↑, →) randomly ordered recurrence
+        Δ = choice((0, 1)); Λ = Δ - 1
+        
+        # Call when necessary...
+        if canvas[x + Δ, y - Λ] == 1: Φ(x + Δ, y - Λ) # ♪♫ [Never] the same, 
+        if canvas[x - Δ, y + Λ] == 1: Φ(x - Δ, y + Λ) # Playin' your game.
+        if canvas[x + Λ, y - Δ] == 1: Φ(x + Λ, y - Δ) # Drive me insane,
+        if canvas[x - Λ, y + Δ] == 1: Φ(x - Λ, y + Δ) # Trouble is gonna come to you... ♫♪
     
-    # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
-    im.set_array(canvas), fig.canvas.draw_idle(), pause(0.01)
-    # A fourfold (←, ↓, ↑, →) randomly ordered recurrence 
-    Δ = choice((1, 0)); Λ = Δ - 1
-    
-    Φ(x + Δ, y - Λ) # ♪♫ [Never] the same, 
-    Φ(x - Δ, y + Λ) # Playin' your game.
-    Φ(x + Λ, y - Δ) # Drive me insane,
-    Φ(x - Λ, y + Δ) # Trouble is gonna come to you... ♫♪
-    
+    # ♪♫ The Razor's Edge? ♫♪ 
+    if canvas[x, y] == 1: Φ(x, y)
+
 flood_fill(2, 2)
 ## ... and ♪♫ when the levee breaks...♫♪ 
 #  https://www.youtube.com/watch?v=JM3fodiK9rY
 #flood_fill(25, 25), flood_fill(25, 50)
 show()
+
+''' #'Run with the hare and hunt with the hounds'
+    # https://sl.bing.net/hmIR3ZJE4a
+    
+def flood_fill(x:int, y:int):
+    global canvas, u
+    Φ = lambda x, y: flood_fill(x, y) # just a shortcut
+    
+    if canvas[x, y] != 1: return
+    canvas[x, y] = uniform(*u)
+    
+    # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
+    im.set_array(canvas), fig.canvas.draw_idle(), pause(0.01)
+    # A fourfold ← ↓ ↑ → recurrence
+    Φ(x, y + 1), Φ(x + 1, y)
+    Φ(x, y - 1), Φ(x - 1, y)
+ '''
