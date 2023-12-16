@@ -3,7 +3,7 @@
 
 from numpy import ones, fliplr, flipud
 from matplotlib.pyplot import imshow, show, pause, subplot, figure
-from numpy.random import choice, uniform
+from numpy.random import choice, uniform, permutation as rpr
 
 def bresenham_circle(r: int):
     Φ = ones((2*r + 1, 2*r + 1))
@@ -45,21 +45,17 @@ u = 0, .33
 def flood_fill(x:int, y:int):
     global canvas, u
     def Φ(x:int, y:int):
-        canvas[x, y] = uniform(*u)  ## Just to check whether each point is only once    
+        canvas[x, y] = uniform(*u)  # Just to illustrate that each point is (likely) marked once    
     
         # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
         im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
         
-        ## A fourfold (←, ↓, ↑, →) randomly ordered recurrence
-        Δ = choice((0, 1)); Λ = Δ - 1
-        
-        # Call when necessary...
-        if canvas[x + Δ, y - Λ] == 1: Φ(x + Δ, y - Λ) # ♪♫ [Never] the same, 
-        if canvas[x - Δ, y + Λ] == 1: Φ(x - Δ, y + Λ) # Playin' your game.
-        if canvas[x + Λ, y - Δ] == 1: Φ(x + Λ, y - Δ) # Drive me insane,
-        if canvas[x - Λ, y + Δ] == 1: Φ(x - Λ, y + Δ) # Trouble is gonna come to you... ♫♪
+        # A fourfold (←, ↓, ↑, →) randomly ordered recurrence
+        for (x, y) in rpr(((x - 1, y), (x, y - 1),   # ♪♫ [Never] the same, playin' your game.
+                           (x + 1, y), (x, y + 1))): # Drive me insane,trouble is gonna come to you... ♫♪
+            if canvas[x, y] == 1: Φ(x , y)            
     
-    # ♪♫ The Razor's Edge? ♫♪ 
+    # ♪♫ Livin' on the [razor's] edge? ♫♪ 
     if canvas[x, y] == 1: Φ(x, y)
 
 flood_fill(2, 2)
@@ -78,9 +74,9 @@ def flood_fill(x:int, y:int):
     if canvas[x, y] != 1: return
     canvas[x, y] = uniform(*u)
     
-    # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
     im.set_array(canvas), fig.canvas.draw_idle(), pause(0.01)
-    # A fourfold ← ↓ ↑ → recurrence
-    Φ(x, y + 1), Φ(x + 1, y)
-    Φ(x, y - 1), Φ(x - 1, y)
+    Φ(x, y + 1) # →
+    Φ(x, y - 1) # ←
+    Φ(x + 1, y) # ↓
+    Φ(x - 1, y) # ↑
  '''
