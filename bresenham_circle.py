@@ -43,7 +43,7 @@ u = 0, .33
 ## Fill the void(s)... - a kindergarten random walk version
 #  https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
 def flood_fill(x:int, y:int):
-    global canvas, u
+    global im, canvas, u
     
     canvas[x, y] = uniform(*u)  # Each pixel is changed once    
     im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)

@@ -28,7 +28,7 @@ def scotophotopic(label):
     poissonimg(slEV.val)
 
 # GUI elements
-fig, _ = subplots(); subplots_adjust(left = .25, bottom = .25)
+fig, _ = subplots(num = "Nihil novi sub stella..."); subplots_adjust(left = .25, bottom = .25)
 
 axEV, axc = axes([.25, .1, .65, .03]), axes([.025, .5, .15, .15])
 slEV = Slider(axEV, 'EV', 0.0, 16.0, valinit = 8.0, valstep = 1.0)
