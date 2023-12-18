@@ -27,7 +27,7 @@ fig = figure(figsize = (10, 3))
 subplot(1, 3, 1); imshow(bc, cmap = 'gray', interpolation = 'none')
 
 ## A bit of low-level bit-blitting...
-# https://en.wikipedia.org/wiki/Blitter
+#  https://en.wikipedia.org/wiki/Blitter
 v, w = 2*r + 4, 2*r + 1
 
 canvas = ones((v, 2*v - 1))
@@ -38,27 +38,25 @@ canvas[2:2 + w, 2:2 + w] = bc
 canvas[1:1 + w, v:v + w] = flipud(fliplr(bc))
 
 subplot(1, 3, (2, 3)); im = imshow(canvas, cmap = 'gray', interpolation = 'none')
-# Fill the void(s)... A kindergarten random walk version
-# https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
 u = 0, .33
 
+## Fill the void(s)... - a kindergarten random walk version
+#  https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
 def flood_fill(x:int, y:int):
     global canvas, u
-    def Φ(x:int, y:int):
-        canvas[x, y] = uniform(*u)  # Just to show each pixel is changed once
     
-        # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
-        im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
+    canvas[x, y] = uniform(*u)  # Each pixel is changed once    
+    im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
         
-        # A fourfold (↑, ←, ↓, →) randomly ordered recurrence
-        for (x, y) in rpr(((x - 1, y), (x, y - 1),   # ♪♫ [Never] the same, playin' your game.
-                           (x + 1, y), (x, y + 1))): # Drive me insane,trouble is gonna come to you... ♫♪
-            if canvas[x, y] == 1: Φ(x , y)            
+    # A fourfold (↑, ←, ↓, →) randomly ordered recurrence
+    for (x, y) in rpr(((x - 1, y), (x, y - 1),   # ♪♫ [Never] the same, playin' your game.
+                       (x + 1, y), (x, y + 1))): # Drive me insane, trouble is gonna come to you... ♫♪
+        if canvas[x, y] == 1: flood_fill(x , y)            
     
-    # ♪♫ Livin' on the [razor's] edge? ♫♪ 
-    if canvas[x, y] == 1: Φ(x, y)
 
-flood_fill(2, 2)
+## "Sī fuerīs Rōmae, Rōmānō vīvitō mōre; sī fuerīs alibī, vīvitō sīcut ibī..."
+#  Or... just make sure the starting point (x, y) is inside the area
+flood_fill(x = 2, y = 2) 
 ## ... and ♪♫ when the levee breaks...♫♪ 
 #  https://www.youtube.com/watch?v=JM3fodiK9rY
 #flood_fill(25, 25), flood_fill(25, 50)
@@ -74,6 +72,7 @@ def flood_fill(x:int, y:int):
     if canvas[x, y] != 1: return
     canvas[x, y] = uniform(*u)
     
+    # https://stackoverflow.com/questions/51520143/update-matplotlib-image-in-a-function 
     im.set_array(canvas), fig.canvas.draw_idle(), pause(0.01)
     Φ(x, y + 1) # →
     Φ(x, y - 1) # ←
