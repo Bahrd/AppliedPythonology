@@ -40,12 +40,14 @@ canvas[1:1 + w, v:v + w] = flipud(fliplr(bc))
 subplot(1, 3, (2, 3)); im = imshow(canvas, cmap = 'gray', interpolation = 'none')
 u = 0, .33
 
-## Fill the void(s)... - a kindergarten random walk version
+## Fill the void(s)... (kinda exhaustive search?)
 #  https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
+#  A kindergarten random walk version: ♪♫Viva, Las Vegas!♫♪ https://youtu.be/uxmx9AV1GKU
+#  https://www.pbr-book.org/4ed/Monte_Carlo_Integration
 def flood_fill(x:int, y:int):
     global im, canvas, u
     
-    canvas[x, y] = uniform(*u)  # Each pixel is changed once    
+    canvas[x, y] = uniform(*u)  # Each pixel is "drowned" once    
     im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
         
     # A fourfold (↑, ←, ↓, →) randomly ordered recurrence
@@ -58,7 +60,7 @@ def flood_fill(x:int, y:int):
 #  Or... just make sure the starting point (x, y) is inside the area
 flood_fill(x = 2, y = 2) 
 ## ... and ♪♫ when the levee breaks...♫♪ 
-#  https://www.youtube.com/watch?v=JM3fodiK9rY
+#  https://youtu.be/JM3fodiK9rY
 #flood_fill(25, 25), flood_fill(25, 50)
 show()
 
