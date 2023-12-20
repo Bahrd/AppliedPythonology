@@ -13,8 +13,7 @@ A simple animation demonstrating Poisson distribution of faint images...
 '''
 
 ## A (vanila) animation
-intensity, brightness = 8, 0
-# An alone callback function
+#  A.k.a. alone callback function
 def animate(_):
     global intensity, im, img, brightness
     
@@ -22,9 +21,8 @@ def animate(_):
     imp = 2**brightness * clip(poisson(img * λ)/λ, 0x0, 0xff)
     im.set_array(imp.astype(int))
 
-
 ## A GUI part
-# A couple of event handlers
+#  A couple of event handlers
 def poissonimg(_i):
     global intensity
     intensity = _i
@@ -45,7 +43,9 @@ def photoscotopic(label):
     img = cvtColor(jovi, RGB if label == 'RGB' else GRAY)
 
 ## The main content: Jupiter and Io, Europa, Ganymede & Callisto... 
-#                    [without the remaining (~0.003%) plankton]
+#                    [sans the remaining (~0.003%) plankton]
+intensity, brightness = 8, 0
+
 fig, _ = plt.subplots(num = "Nihil novi sub Jovi... [3.12.23 at 21:16:18]")
 plt.subplots_adjust(bottom = .25)
 
@@ -55,14 +55,14 @@ im = plt.imshow(img, cmap = 'gray', interpolation = 'none')
 
 ## And a handful of elements
 #  A pair of sliders...
-axEV, axB, axc = (plt.axes(dims) for dims in ([.25, .1, .65, .03], [.92, .25, .03, .65], [.025, .01, .15, .15]))
+axEV, axB, axc = (plt.axes(dims) for dims in ((.25, .1, .65, .03), (.92, .25, .03, .65), (.025, .01, .15, .15)))
 slEV, slB = (Slider(axEV, 'EV', 0, 16, valinit = intensity, valstep = 1), 
-             Slider(axB, 'Brightness', -4, 1, orientation = 'vertical', valinit = brightness, valstep = 0.25))
+             Slider(axB, 'Brightness', -4, 1, valinit = brightness, valstep = 0.25, orientation = 'vertical'))
 slEV.on_changed(poissonimg), slB.on_changed(brightnimg)
-
 # ... and a switch
 radio = RadioButtons(axc, ('RGB', 'B&W'), active = 1)
 radio.on_clicked(photoscotopic)
+
 
 ## "Lights, Camera, Action" https://en.wikipedia.org/wiki/Clapperboard#Construction
 anim = animation.FuncAnimation(fig, animate, cache_frame_data = False)
