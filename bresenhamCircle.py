@@ -1,30 +1,52 @@
-﻿## A Bresenham (flooded) circle... a random edu version!
+﻿## A Bresenh`am (flooded) circle... a random edu version!
 #  http://members.chello.at/~easyfilter/bresenham.html
 
-from numpy import ones, fliplr, flipud
-from matplotlib.pyplot import imshow, show, pause, subplot, figure
+from numpy import ones, fliplr, flipud, arange
+from matplotlib.pyplot import imshow, show, pause, subplot, figure, grid
 from numpy.random import choice, uniform, permutation as rpr
 
-def bresenham_circle(r: int):
+def bresenham_circle(_r: int):
+    r = _r
     Φ = ones((2*r + 1, 2*r + 1))
     ζ, ξ, x, y, ε = r, r , -r, 0, 2 - 2*r
     
-    while x < 0:                           ## https://en.wikipedia.org/wiki/One_for_the_Money
-        Φ[ζ-x, ξ+y], Φ[ζ-y, ξ-x] = .0, .25 # "One for the money, two for the show; 
-        Φ[ζ+x, ξ-y], Φ[ζ+y, ξ+x] = .5, .75 #  Three to make ready, and four to go!"
+    c, _c = 0, False                        #  Bookkeeping Q1
+    while x <= 0:                           ## https://en.wikipedia.org/wiki/One_for_the_Money
+        for n, m, o in ((ζ-x, ξ+y, 0),   (ζ-y, ξ-x, .75),   # "One for the money, two for the show; 
+                        (ζ+x, ξ-y, .25), (ζ+y, ξ+x, .5)):   #  Three to make ready, and four to go!"
+            Φ[n, m] = o
+
+        c += _c; _c = False                 #  Bookkeeping Q2
         
-        r = ε;
+        r = ε
         if r <= y:
-            y += 1
-            ε += y*2 + 1
+            y += 1; ε += y*2 + 1
+            _c = True                       #  Bookkeeping Q3
         if r > x or ε > y: 
-            x += 1
-            ε += x*2 + 1
+            x += 1; ε += x*2 + 1
+            _c = True                       #  Bookkeeping Q4
+            
+    ## An annual balance...
+    # https://youtu.be/yAEveAH2KwI?t=96 - where π == 4...
+    print(f'For r = {_r}, we have 2πr = {4*c} and π = {2*c/_r:.2f}...',
+          f'Or d = {2*_r + 1}, πd = {4*c} and thus π = {4*c/(2*_r + 1):.2f} ;)')
+    
     return Φ
 
-r = choice(range(0o3, 0o17)); bc = bresenham_circle(r)
+r = choice(range(0o1, 0o17))
+bc = bresenham_circle(r)
+
 fig = figure(figsize = (10, 3))
-subplot(1, 3, 1); imshow(bc, cmap = 'gray', interpolation = 'none')
+subplot(1, 3, 1); 
+
+## Drawing on a grid...
+#  https://www.tutorialspoint.com/remove-the-x-axis-ticks-while-keeping-the-grids-matplotlib    
+ax = fig.gca()
+ax.set_xticks(arange(.5, 2*r + 1, 1)), ax.set_yticks(arange(.5, 2*r + 1, 1))
+ax.set_xticklabels([]), ax.set_yticklabels([])
+ax.grid(True)
+
+imshow(bc, cmap = 'gray', interpolation = 'none')
 
 ## A bit of low-level bit-blitting...
 #  https://en.wikipedia.org/wiki/Blitter
@@ -58,7 +80,8 @@ def flood_fill(x:int, y:int):
 
 ## "Sī fuerīs Rōmae, Rōmānō vīvitō mōre; sī fuerīs alibī, vīvitō sīcut ibī..."
 #  Or... just make sure the starting point (x, y) is inside the area
-flood_fill(x = 2, y = 2) 
+flood_fill(x = 0b10, y = 0o10) 
+
 ## ... and ♪♫ when the levee breaks...♫♪ 
 #  https://youtu.be/JM3fodiK9rY
 #flood_fill(25, 25), flood_fill(25, 50)
