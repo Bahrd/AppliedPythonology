@@ -6,19 +6,17 @@ from matplotlib.pyplot import imshow, show, pause, subplot, figure, grid
 from numpy.random import choice, uniform, permutation as rpr
 
 def bresenham_circle(_r: int):
-    r = _r
-    Φ = ones((2*r + 1, 2*r + 1))
-    ζ, ξ, x, y, ε = r, r , -r, 0, 2 - 2*r
+    Φ = ones((2*_r + 1, 2*_r + 1))
+    ζ, ξ, x, y, ε = _r, _r , -_r, 0, 2 - 2*_r
     
-    c, _c = 0, False                        #  Bookkeeping Q1
-    while x <= 0:                           ## https://en.wikipedia.org/wiki/One_for_the_Money
-        for n, m, o in ((ζ-x, ξ+y, 0),   (ζ-y, ξ-x, .75),   # "One for the money, two for the show; 
-                        (ζ+x, ξ-y, .25), (ζ+y, ξ+x, .5)):   #  Three to make ready, and four to go!"
-            Φ[n, m] = o
+    c, _c = 0, False                        #  Bookkeeping Q1 [counting points of a circumference]
+    while x <= 0:                                       
+        for n, m, o in ((ζ - x, ξ + y, 0),   (ζ - y, ξ - x, .75),   # "One for the money, two for the show; 
+                        (ζ + x, ξ - y, .25), (ζ + y, ξ + x, .5)):   #  Three to make ready, and four to go!"
+            Φ[n, m] = o                                   # https://en.wikipedia.org/wiki/One_for_the_Money
 
-        c += _c; _c = False                 #  Bookkeeping Q2
-        
         r = ε
+        c += _c; _c = False                 #  Bookkeeping Q2       
         if r <= y:
             y += 1; ε += y*2 + 1
             _c = True                       #  Bookkeeping Q3
@@ -26,11 +24,10 @@ def bresenham_circle(_r: int):
             x += 1; ε += x*2 + 1
             _c = True                       #  Bookkeeping Q4
             
-    ## An annual balance...
+    ## And the annual balance... [circumference/diameter = π, right?]
     # https://youtu.be/yAEveAH2KwI?t=96 - where π == 4...
     print(f'For r = {_r}, we have 2πr = {4*c} and π = {2*c/_r:.2f}...',
-          f'Or d = {2*_r + 1}, πd = {4*c} and thus π = {4*c/(2*_r + 1):.2f} ;)')
-    
+          f'(or d = {2*_r + 1}, πd = {4*c} and thus π = {4*c/(2*_r + 1):.2f} ;)')  
     return Φ
 
 r = choice(range(0o1, 0o17))
@@ -66,7 +63,7 @@ u = 0, .33
 #  https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
 #  A kindergarten random walk version: ♪♫Viva, Las Vegas!♫♪ https://youtu.be/uxmx9AV1GKU
 #  https://www.pbr-book.org/4ed/Monte_Carlo_Integration
-def flood_fill(x:int, y:int):
+def flood_fill(x: int, y: int):
     global im, canvas, u
     
     canvas[x, y] = uniform(*u)  # Each pixel is "drowned" once    
@@ -90,7 +87,7 @@ show()
 ''' #'Run with the hare and hunt with the hounds'
     # https://sl.bing.net/hmIR3ZJE4a
     
-def flood_fill(x:int, y:int):
+def flood_fill(x: int, y: int):
     global canvas, u
     Φ = lambda x, y: flood_fill(x, y) # just a shortcut
     
