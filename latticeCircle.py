@@ -28,6 +28,6 @@ def Gauss_circle_area_II(r: float):
     area = 1 + 4*add.reduce(rs)
     return area
 
-for r in range(10,12):
+for r in (10, 13):
     print(f'{Gauss_circle_area_II(r)} sq. pixels vs. {π*r**2:.2f} sq. whatevers')   
 plot([Gauss_circle_area(r) - π*r**2 for r in range(0x400)], 'ko', ls='-', ms = 0o4, markerfacecolor = 'r' ), show()

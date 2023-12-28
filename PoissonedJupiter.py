@@ -1,5 +1,4 @@
 from cv2 import imread, cvtColor, COLOR_BGR2RGB as RGB, COLOR_BGR2GRAY as GRAY, resize
-## https://matplotlib.org/3.2.1/gallery/widgets/slider_demo.html
 from matplotlib.widgets import Slider, RadioButtons
 from matplotlib import pyplot as plt, animation
 from numpy.random import poisson
@@ -46,7 +45,7 @@ def photoscotopic(label):
 #                    [sans the remaining (~0.003%) plankton]
 intensity, brightness = 8, 0
 
-fig, _ = plt.subplots(num = "Nihil novi sub Jovi... [3.12.23 at 21:16:18]")
+fig, _ = plt.subplots(num = 'Nihil novi sub Jovi... [3.12.23 at 21:16:18]')
 plt.subplots_adjust(bottom = .25)
 
 jovi = resize(imread('Jovi et consortes.JPG'), (0x140, 0o310)) # Good' ol' CGA...
