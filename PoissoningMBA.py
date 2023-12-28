@@ -1,5 +1,5 @@
 ## Cite as: https://link.springer.com/chapter/10.1007/978-3-030-12450-2_29 
-from cv2 import imread, cvtColor, COLOR_BGR2RGB as RGB, COLOR_BGR2GRAY as GRAY
+from cv2 import imread, cvtColor, COLOR_BGR2RGB as RGB, COLOR_BGR2GRAY as BW
 from matplotlib.pyplot import subplots, subplots_adjust, axes, show
 from matplotlib.widgets import Slider, RadioButtons
 ## https://matplotlib.org/3.2.1/gallery/widgets/slider_demo.html
@@ -24,7 +24,7 @@ def poissonimg(val):
 
 def scotophotopic(label):
     global img, mb, slEV
-    img = cvtColor(imread(mb), RGB if label == 'RGB' else GRAY)
+    img = cvtColor(imread(mb), RGB if label == 'RGB' else BW)
     poissonimg(slEV.val)
 
 # GUI elements

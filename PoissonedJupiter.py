@@ -3,7 +3,7 @@ from cv2 import imread, cvtColor, COLOR_BGR2RGB as RGB, COLOR_BGR2GRAY as GRAY, 
 from matplotlib.widgets import Slider, RadioButtons
 from matplotlib import pyplot as plt, animation
 from numpy.random import poisson
-from numpy import NaN, clip
+from numpy import clip
 '''
 A simple animation demonstrating Poisson distribution of faint images...
  https://stackoverflow.com/questions/33193696/matplotlib-animation-in-for-loop/41648966#41648966

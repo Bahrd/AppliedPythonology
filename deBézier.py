@@ -46,6 +46,7 @@ y_slider = Slider(label = 'p₁.Y',
 
 # The function to be called anytime a slider's value changes
 def update(_):
+    global fig, x_slider, y_slider, P, curve, points
     P[1][0], P[1][1] = x_slider.val, y_slider.val
     pp, cp = bézier(P), tuple(zip(*P))
 
