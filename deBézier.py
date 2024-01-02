@@ -13,21 +13,21 @@ def bézier(P, p = 128):
        return 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
     
     n, u = len(P), lp(0, 1, p)
-    b, c = zip(*[[op(P[i], (1 - u)**(n - i - 1) * u**i), binomial(n - 1, i)] for i in range(n)])
+    c, b = zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
     return td(c, b, 1)
 
-##  Special case: (cubic polynomial) Bézier curve
+##  Special case: a (cubic polynomial) Bézier curve
 # https://www.pbr-book.org/4ed/Shapes/Curves
 def bézier3(P, p = 128):
     u, (p0, p1, p2, p3), = lp(0, 1, p), P
-    return (op(p0, (1 - u)**3) + op(p1, 3*u * (1 - u)**2) + op(p2, 3*(1 - u) * u**2) + op(p3, u**3))
+    return op(p0, (1 - u)**3) + op(p1, 3*u * (1 - u)**2) + op(p2, 3*(1 - u) * u**2) + op(p3, u**3)
 
 # A pair of the endpoints and the control ones ((usually) between them)
 P = [[0, 0], [1/4, -1/2], [1/2, 1/2], [1, 0]]#, [1/8, -1/2]]
 pp, cp = bézier(P), tuple(zip(*P))
 
 # Create the figure and a Bézier curve that we will manipulate
-fig, ax = plt.subplots(num = "de Bézier curve demo"); plt.tight_layout()
+fig, ax = plt.subplots(num = "[de]* Bézier curve demo"); plt.tight_layout()
 curve, points, = ax.plot(pp[0], pp[1], '-', cp[0], cp[1], 'k.')
 ax.set_xlabel('X'), ax.set_ylabel('Y')
 
