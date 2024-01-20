@@ -24,10 +24,10 @@
         _scf_(1, x - n)
 '''
 
-from math import pi
-from math import floor, sqrt
-import string
 from sys import float_info as fi
+from math import floor, sqrt, pi
+from sys import argv
+import fileinput, string
 
 def scf(x: float) -> string: 
     ε, ltx = 1e3 * fi.epsilon, ''       # At hoc Deus ex machina!
@@ -48,22 +48,20 @@ def scf(x: float) -> string:
     _scf_(1, x - n)   
     return ltx
 
-from sys import argv
-import fileinput
-
+# Decimal quantizer (n: number of digits after a decimal point)
 qnz = lambda x, n: floor(x * 10**n)/10**n
 
-### CLI: <path-to-python-env\>python.exe .\continuedFraction.py whatever
-if(len(argv) != 1): # "Demo" mode (with any arguments)
-    #Dare 4 more π & φ...
-    φ, π, q = .5*(1 + sqrt(5)), pi, -1/4
-    cfs = (('π', qnz(π, 4)), ('φ', qnz(φ, 3)), ('-1/4', qnz(q, 4)))
-
-    for n, x in cfs: 
-        print(f'{n}: {scf(x)} = {x}')
-else:
+##  Pipeline/command line mode:   
+#   echo '(1 + sqrt(5))/2, 2**2' | <path-to-python-env\>python.exe .\continuedFraction.py
+if(len(argv) == 1): 
     for line in fileinput.input():
-        x, n = (eval(s) for s in line.split(', '))
-        print(f'{scf(qnz(x, n))}')
-### CLI: echo '(1 + sqrt(5))/2, 4' | <path-to-python-env\>python.exe .\continuedFraction.py
+        x = (eval(s) for s in line.split(', '))
+        print(scf(qnz(*x)))
+## "Demo" mode 
+#  <path-to-python-env\>python.exe .\continuedFraction.py --demo
+else:              
+    φ, π, q = .5*(1 + sqrt(5)), pi, -1/4    # Dare 4 more than π & φ?
+    cfs = (('π ~', qnz(π, 4)), ('φ ~', qnz(φ, 3)), ('-1/4 =', qnz(q, 4)))
+    for n, x in cfs: 
+        print(f'{n} {scf(x)} = {x}')
     
