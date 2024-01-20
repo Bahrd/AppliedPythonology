@@ -26,20 +26,20 @@ def dbresenham_circle(_r: int):
     Φ = ones((2*_r + 1, 2*_r + 1))
     ζ, ξ, x, y, ε = _r, _r , -_r, 0, 2 - 2*_r
     
-    c, _c = 0, False                        #  Bookkeeping Q1 [counting points of a circumference]
+    c, _c = 0, False                #  Bookkeeping Q1 [counting points of a circumference]
     while x <= 0:                                       
         for n, m, o in ((ζ - x, ξ + y, 0),   (ζ - y, ξ - x, .75),   # "One for the money, two for the show; 
                         (ζ + x, ξ - y, .25), (ζ + y, ξ + x, .5)):   #  Three to make ready, and four to go!"
             Φ[n, m] = o                                   # https://en.wikipedia.org/wiki/One_for_the_Money
 
         r = ε
-        c += _c; _c = False                #  Bookkeeping Q2 
+        c += _c; _c = False         #  Bookkeeping Q2 
         if r <= y:
             y += 1; ε += y*2 + 1
-        _c = True                       #  Bookkeeping Q3
+        _c = True                   #  Bookkeeping Q3
         if r > x or ε > y: 
             x += 1; ε += x*2 + 1
-        _c = True                       #  Bookkeeping Q4
+        _c = True                   #  Bookkeeping Q4
             
     ## And the annual balance... [circumference/diameter = π, right?]
     # https://youtu.be/yAEveAH2KwI?t=96 - where π == 4...
@@ -67,7 +67,7 @@ imshow(bc, cmap = 'gray', interpolation = 'none')
 v, w = 2*r + 4, 2*r + 1
 
 canvas = ones((v, 2*v - 1))
-canvas[:,  0] = canvas[:, -1] = 0   # "One for the money, two...
+canvas[ :, 0] = canvas[:, -1] = 0   # "One for the money, two...
 canvas[-1, :] = canvas[0,  :] = 0   # ... go!"
 
 canvas[2:2 + w, 2:2 + w] = bc
@@ -88,10 +88,9 @@ def flood_fill(x: int, y: int):
         
     # A fourfold (↑, ←, ↓, →) randomly ordered recurrence
     for (x, y) in rpr(((x - 1, y), (x, y - 1),   # ♪♫ [Never] the same, playin' your game.
-                       (x + 1, y), (x, y + 1))): # Drive me insane, trouble is gonna come to you... ♫♪
+                       (x + 1, y), (x, y + 1))): #    Drive me insane, trouble is gonna come to you... ♫♪
         if canvas[x, y] == 1: flood_fill(x , y)            
     
-
 ## "Sī fuerīs Rōmae, Rōmānō vīvitō mōre; sī fuerīs alibī, vīvitō sīcut ibī..."
 #  Or... just make sure the starting point (x, y) is inside the area
 flood_fill(x = 0b10, y = 0o10) 

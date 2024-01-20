@@ -4,6 +4,8 @@ from numpy import linspace as ls, power as pwr, mat as mt, log, e
 ## An approximate Mandelbrot set function (accuracy grows with ν)
 #       M = {ω ∈ Ω: mandelbrot(ω, ∞) < 2}
 # see e.g. https://en.wikipedia.org/wiki/Mandelbrot_set
+#          https://www.youtube.com/watch?v=Oh1AiiPpoTo
+#          https://link.springer.com/book/10.1007/b97624
 def mandelbrot(c, ν = 0x42):
     ω = complex() 
     for _ in range(ν):
