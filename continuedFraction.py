@@ -10,46 +10,60 @@
         ltx = lambda str: print(str, end = '')
         ε = float_info.epsilon * 1000 
     
-        def _cfc_(p, q):
+        def _scf_(p, q):
             an, n = flr(p/q), p%q
 
             ltx(r'\frac{1}{' + f'{an}')
             if (n >= ε):    
                 ltx('+')
-                _cfc_(q, n)
+                _scf_(q, n)
             ltx('}')
 
         n = flr(x)
         if(n): ltx(f'{n}+')
-        _cfc_(1, x - n)
+        _scf_(1, x - n)
 '''
 
-from math import pi as π
-from math import floor as flr, sqrt
+from math import pi
+from math import floor, sqrt
+import string
 from sys import float_info as fi
 
-def cfc2ltx(x): 
+def scf(x: float) -> string: 
     ε, ltx = 1e3 * fi.epsilon, ''       # At hoc Deus ex machina!
     
-    def _cfc_(p, q):
+    def _scf_(p: int, q: int):
         nonlocal ltx, ε;
-        an, n = flr(p/q), p%q
+        an, n = floor(p/q), p%q
         
         ltx += r'\frac{1}{' + f'{an}'   # Either raw or interpolated...
         if (n >= ε):    
             ltx += '+'
-            _cfc_(q, n)
+            _scf_(q, n)
         ltx += '}'
 
-    n = flr(x)
+    n = floor(x)
     if(n): 
         ltx += f'{n}+'
-    _cfc_(1, x - n)   
+    _scf_(1, x - n)   
     return ltx
 
-#Dare 4 more: π or φ!
-scf = ((flr(π * 1e4)/10000,              'π'), 
-       (-3/4,                            '-3/4'), 
-       (flr((1 + sqrt(5))/2 * 1e3)/1000, 'φ'))
+from sys import argv
+import fileinput
 
-for x, n in scf: print(f'{n}: {x} = {cfc2ltx(x)}')
+qnz = lambda x, n: floor(x * 10**n)/10**n
+
+### CLI: <path-to-python-env\>python.exe .\continuedFraction.py whatever
+if(len(argv) != 1): # "Demo" mode (with any arguments)
+    #Dare 4 more π & φ...
+    φ, π, q = .5*(1 + sqrt(5)), pi, -1/4
+    cfs = (('π', qnz(π, 4)), ('φ', qnz(φ, 3)), ('-1/4', qnz(q, 4)))
+
+    for n, x in cfs: 
+        print(f'{n}: {scf(x)} = {x}')
+else:
+    for line in fileinput.input():
+        x, n = (eval(s) for s in line.split(', '))
+        print(f'{scf(qnz(x, n))}')
+### CLI: echo '(1 + sqrt(5))/2, 4' | <path-to-python-env\>python.exe .\continuedFraction.py
+    
