@@ -3,7 +3,7 @@ from random import choice
 
 # A probability p = P(X = '1') and the resulting entropy 'H = -∑ pi⋅lg2(pi)'  
 p = 1/0o100; H = (p - 1) * lg2(1 - p) - p * lg2(p) #[bit/smbl]
-# A 'random' message...
+# A 'random' message... (with a 50% chance of having '1' at either end)
 msg = '1' + 0o100 * '0'; msg = msg[:: choice([-0o1, 0o1])]
 print(f'P(X = \'1\') = 1/{1/p:,.0f}\nEntropy:{H:,.2f} [bit/symbol]\n\nMessage:{msg}')
 
@@ -23,5 +23,5 @@ for _ in range(len(msg)):
     print(bin(enc))     # Enlightening II
 
 ## Presentation         # Enlightening III
-ly, lc = len(msg), floor(lg2(code) + 1); rly = lc/ly
-print(f'Encoded:{bin(code)}\nBits:\t{ly} vs {lc} ({rly:,.0%})\nDecoded:{dec}')
+ly, lc = len(msg), floor(lg2(code) + 1); rlcy = lc/ly
+print(f'Encoded:{bin(code)}\nBits:\t{ly} vs {lc} ({rlcy:,.0%})\nDecoded:{dec}')
