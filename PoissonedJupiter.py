@@ -17,7 +17,7 @@ def animate(_):
     global intensity, im, img, brightness
     
     λ = 2**(intensity - 8.0)        
-    imp = 2**brightness * clip(poisson(img * λ)/λ, 0x0, 0xff)
+    imp = clip(2**brightness * poisson(img * λ)/λ, 0x0, 0xff)
     im.set_array(imp.astype(int))
 
 ## A GUI part
@@ -63,6 +63,6 @@ radio = RadioButtons(axc, ('RGB', 'B&W'), active = 1)
 radio.on_clicked(photoscotopic)
 
 
-## "Lights, Camera, Action" https://en.wikipedia.org/wiki/Clapperboard#Construction
+## "Lights, Camera, Action!" https://en.wikipedia.org/wiki/Clapperboard#Construction
 anim = animation.FuncAnimation(fig, animate, cache_frame_data = False)
 plt.show()

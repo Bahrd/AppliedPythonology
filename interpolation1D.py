@@ -18,7 +18,7 @@ displayPlots(Fx.T, ψψ); plt.plot(Fx); plt.title(κ); plt.show()
 #  User-defined...
 while True:
     rawFn = input("Samples: ").split()
-    if len(rawFn) > 1:
+    if rawFn != None:
         N = int(input("Output size (N): ")); Fn = [float(n) for n in rawFn]        
         # 2in1: computations and presentation 
         displayPlots(Σψ(Fn, N), ψψ)        

@@ -1,4 +1,5 @@
 ﻿##  https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface
+#   https://realpython.com/primer-on-python-decorators/
 
 from flask import Flask, request, send_file
 import json
