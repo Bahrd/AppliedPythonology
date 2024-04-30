@@ -4,10 +4,12 @@ from numpy import linspace as ls, power as pwr, mat as mt, log, e
 ## An approximate Mandelbrot set function (accuracy grows with ν)
 #       M = {ω ∈ Ω: mandelbrot(ω, ∞) < 2}
 # see e.g. https://en.wikipedia.org/wiki/Mandelbrot_set
+#          https://www.youtube.com/watch?v=Oh1AiiPpoTo
+#          https://link.springer.com/book/10.1007/b97624
 def mandelbrot(c, ν = 0x42):
     ω = complex() 
     for _ in range(ν):
-        ω = pwr(ω, 2) + c        
+        ω = pwr(ω, 2) + c  
         # Overflow prevention makes NaN-check superfluous...
         # ω[any([isnan(ω), abs(ω) > 0x2], axis = 0)] = 0x2
         ω[abs(ω) > 0x2] = 0x2 

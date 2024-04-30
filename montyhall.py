@@ -2,6 +2,7 @@
 
 ## There is a famous and (supposedly) counterintuitive no-problem: 
 #   https://en.wikipedia.org/wiki/Monty_Hall_problem
+#   https://youtu.be/Y-MOGLJLlnY - for a simple proof
 #   "El sueño de la razón produce experimentos!" F. Goya would have said...
 
 trialsNo, trial, wins = 100, 0, 0

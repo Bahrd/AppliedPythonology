@@ -10,14 +10,21 @@ from pywt import (wavedec as fwt, waverec as ifwt, threshold as thrsd,
 from itertools import repeat; from more_itertools import flatten
 import numpy as np
 import math
+
 ## Signal (PPG-like) generation 
 L, rng = 0o2000, np.random.default_rng()
 X, rpt, (f1, f2) = np.linspace(-1.0, 1.0, L), 0b11, (0b10, 0b100) #Hz
 
 S, ε  = (3 + np.sqrt(2)*np.sin(f1 * math.pi * X) + 2*np.sin(f2 * math.pi * X), 
-         rng.standard_normal(L * rpt))
+         rng.standard_normal(L * rpt)/0b100)
 s = list(flatten(repeat(S, rpt)))
-S = s + ε/0b100
+
+#'''
+# A chirp-like signal (https://www.youtube.com/watch?v=TWqhUANNFXw [LIGO] ;)
+X = np.linspace(0.05, 1.0, L * rpt)
+s, ε = np.sin(1/X), rng.standard_normal(L * rpt)/0b100
+#'''
+S = s + ε
 
 # A FWT wrapper (transform → operation on coefficients → inverse transform)
 def wc_op(c, wn, lvl, h, op = lambda x, h: x, dsply = False):
@@ -56,7 +63,8 @@ Th = lambda x, h: thrsd(x, h, mode = 'hard')
 ''' A selection of wavelet filter names 
 https://pywavelets.readthedocs.io/en/latest/ref/wavelets.html for the entire family'''
 
-wns, modes = ['bior4.4', 'db8', 'sym8', 'coif8'], ['hard', 'soft', 'garrote']
+wns, modes = (['sym8', 'coif8', 'db8', 'bior4.4', 'bior2.2', 'bior1.1'], 
+              ['hard', 'soft', 'garrote'])
 wn, mode = wns[0], modes[0]
 
 # Shrinkage... Live!
@@ -66,8 +74,9 @@ def display():
     plt.subplot(1, 1, 1)
     plt.cla()
     plt.xticks([]); plt.yticks([])
-    plt.title(f'{wn} @ λ = {h}')
-    _ = plt.plot(S, color ='gray', marker = '.', markersize = 1, linewidth = 0), plt.plot(dft, 'k', s, 'r'), plt.show()
+    plt.title(f'{wn} @ λ = {h:,.2f}')
+    _ = (plt.plot(dft, 'k', s, 'r'), plt.plot(s - dft, color ='gray'),
+         plt.plot(S, color ='lightgray', marker = '.', markersize = 1, linewidth = 0), plt.show())
 def thresh_live(λ):
     global h; h = λ
     display()
@@ -79,7 +88,7 @@ def mode_live(_mode):
     mode = _mode; Th = lambda x, h: thrsd(x, h, mode = mode)
     display()
 
-fig, _ = plt.subplots(); plt.subplots_adjust(left = .1, bottom = .16)
+_ = plt.subplots(); plt.subplots_adjust(left = .1, bottom = .16)
 axTh, axWn, axM  = plt.axes([.57, .01, .33, .03]), plt.axes([.1, .01, .3, .12]), plt.axes([.31, .01, .15, .12])
 slTh = Slider(axTh, 'λ = ', 0.0, np.ceil(2*sh), valinit = sh, valstep = 0.03125 * sh)
 rbWn = RadioButtons(axWn, wns, active = 0); rbM = RadioButtons(axM, modes, active = 0)

@@ -5,7 +5,7 @@ Whatchamacallit this thingamajig:
 * The Keys' cubic interpolating function (b'cause: https://realpython.com/python-lambda/#syntax)'''
 
 def Π(x, l = -.5, r = .5): return (x >= l) * (x < r)
-def Λ(x): return (1 - abs(x)) * (abs(x) < 1)
+def Λ(x): return (1 - abs(x)) * Π(x, -1, 1)
 def ϕ(x): 
     x, α = abs(x), -.5
     return (((α + 2) * x**3 - (α + 3) * x**2 + 1)             * Π(x, 0, 1) 
