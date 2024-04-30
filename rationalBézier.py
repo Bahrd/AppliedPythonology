@@ -9,20 +9,14 @@ from matplotlib.widgets import Button, Slider
 def rationalBézier(P, w, p = 128):
     def binomial(n, k):  
        return 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
+    def BernsteinPoly(u, n , P):
+        return zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
     
     n, u = len(P), lp(0, 1, p)
-    
-    Pw = hp(P, w)
-    c, b = zip(*((binomial(n - 1, i), op(Pw[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
-    pp = tp(c, b, 1)
-    
-    '''
-    Rationale = Bézier/deBézier
-    '''
-    e, d = zip(*((binomial(n - 1, i), op(w[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
-    dp = tp(e, d, 1)
-    pp[0], pp[1] = hp(pp[0], rp(dp[0])), hp(pp[1], rp(dp[0]))
-    return pp
+    Bézier, deBézier = tp(*BernsteinPoly(u, n, hp(P, w)), 1), tp(*BernsteinPoly(u, n, w), 1)
+
+    '''  Rationale = Bézier/deBézier '''
+    return hp(Bézier[0], rp(deBézier[0])), hp(Bézier[1], rp(deBézier[0]))
 
 # A pair of the endpoints and the control one between them)
 P = [[0.0, 0], [1/2, 1], [1, 0]]
@@ -55,8 +49,8 @@ w_slider = Slider(label = 'p₁.w',
 # The function to be called anytime a slider's value changes
 def update(_):
     global fig, x_slider, y_slider, P, curve, points
-    P[1][0], P[1][1], w[1][1] = x_slider.val, y_slider.val, w_slider.val
-    w[0][1] = w[1][1]
+    P[1][0],  P[1][1] = x_slider.val, y_slider.val
+    w[0][1] = w[1][1] = w_slider.val
    
     pp, cp = rationalBézier(P, w), tuple(zip(*P))
         
@@ -73,7 +67,7 @@ resetax = fig.add_axes([0.03125, 0.05, 0.1, 0.04])
 button = Button(resetax, 'Reset', hovercolor = '0.975')
 
 def reset(_):
-    x_slider.reset(), y_slider.reset()
+    x_slider.reset(), y_slider.reset(), w_slider.reset()
     
 button.on_clicked(reset)
 plt.show() #... must go on!
