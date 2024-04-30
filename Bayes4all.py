@@ -29,20 +29,21 @@ from sys import argv      # .\Bayes4all.py '(1/100, 1/100, 1 - 1/100)' # a.k.a f
 a_priori, false_positives, true_positives = (1/100, 1/100, 1 - 1/100) if len(argv) != 0b10 else eval(argv[0b1])
 ## Run, Bayes! Run!
 a_posteriori = a_priori
-print(f'For false positives probability = {false_positives} and occurence probability = {a_priori} the chances are:')
-while(a_posteriori <= 1 - 1/10000):
+print(f'For false positives probability = {false_positives} and occurrence probability = {a_priori} the chances are:')
+while(a_posteriori < 1 - 1/10_000):
     a_posteriori = Bayes_formula(a_posteriori, false_positives, true_positives)
     print(f'{100 * a_posteriori:.4g}%')
 
 '''
+A single (almost) perfect classifier:
+For false positives rate = 0.0001 and occurence probability = 0.001 the chances are:
+90.92%
+100%
+
 A tandem of mediocre classifiers:
 For false positives rate = 0.01 and occurence probability = 0.001 the chances are:
 9.099%
 90.92%
 99.9%
-100%
-A single (almost) perfect classifier:
-For false positives rate = 0.0001 and occurence probability = 0.001 the chances are:
-90.92%
 100%
 '''

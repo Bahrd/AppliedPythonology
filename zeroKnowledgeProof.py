@@ -1,6 +1,7 @@
 ﻿## Zero-knowledge-proof (not a mathematical one!)
 #  Discrete logarithm application ($p$ is prime and $g$ is a generator of the multiplicative group $mod p$)
 #  https://en.wikipedia.org/wiki/Zero-knowledge_proof#Discrete_log_of_a_given_value
+#  https://www.youtube.com/watch?v=FfeXX6OLq8w
 
 from numpy import unique as unq
 from numpy.random import randint, choice
@@ -15,7 +16,7 @@ p, g = 0x61, 0x56
 # Alice's secret password x and its public 'signature' y
 x = 101; y = g ** x % p
 
-## Proof's loop (Victors verifies Alice's knowledge of the secret (more than) a few times)
+## Proof's loop (Victor verifies Alice's knowledge of the secret (more than) a few times)
 for _ in range(0x10):
     #  Alice pick a random r
     r = randint(p - 1)

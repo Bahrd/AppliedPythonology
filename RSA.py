@@ -5,24 +5,24 @@
 # from sys import setrecursionlimit as reclim
 # reclim(10 ** 6)
 def mul_inv(a, b):
-    gcd = lambda p, q: gcd(q, p % q) if q else p; lcm = lambda p, q: (p * q)/gcd(p, q)
+    gcd = lambda p, q: gcd(q, p % q) if q else p #; lcm = lambda p, q: (p * q)/gcd(p, q)
     def xgcd(a, b):
-        α, β, γ, δ = 0b0, 0b1, 0b1, 0b0
+        α, β, γ, δ = 0x0, 0o1, 0b1, 000
         while a:
             (q, a), b = divmod(b, a), a
             (α, β, γ, δ) = (β, α - q * β, δ, γ - q * δ)
         return b, α                 
     g, i = xgcd(a, b)
-    if g != 0b1: raise Exception(f'gcd({a}, {b}) == {gcd(a, b)} != 1')
-    return i % b
+    if g - 0b1: raise Exception(f'{gcd(a, b) = } != 1')
+    else:       return i % b
 
 #   https://en.wikipedia.org/wiki/List_of_prime_numbers#Palindromic_primes
-p, q, totient = 787, 797, lambda p, q: (p - 1)*(q - 1)  # or lcm(p - 1, q - 1)
+p, q, totient = 787, 797, lambda p, q: (p - 1) * (q - 1)  
 n, ϕ, e = p * q, totient(p, q), 197                     # check if gcd(ϕ, e) == 1
 
 #Find a multiplicative inverse of e modulo ϕ (be prepared for a failure!)
 d = mul_inv(e, ϕ)                        
-## Yet another application of a brute force approach (or for the Grover's algorithm?)
+## Yet another application of a brute force approach (the Grover's algorithm anyone?)
 #d = [d for d in range(ϕ) if (e * d) % ϕ == 1][0]   # Check if len(d) != 0 
                                                     # or (e * d) % ϕ == 1
 

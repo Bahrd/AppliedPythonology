@@ -28,7 +28,7 @@ from sys import float_info as fi
 from math import floor, sqrt, pi
 from sys import argv
 import fileinput, string
-
+import re
 def scf(x: float) -> string: 
     ε, ltx = 1e3 * fi.epsilon, ''       # At hoc Deus ex machina!
     
@@ -48,20 +48,18 @@ def scf(x: float) -> string:
     _scf_(1, x - n)   
     return ltx
 
-# Decimal quantizer (n: number of digits after a decimal point)
-qnz = lambda x, n: floor(x * 10**n)/10**n
+# A scalar quantizer (n: number of digits of the fractional part in b-nary system)
+qnz = lambda x, n, b = 10, ε = 1/2: floor(x * b**n + ε)/b**n
 
 ##  Pipeline/command line mode:   
 #   echo '(1 + sqrt(5))/2, 2**2' | <path-to-python-env\>python.exe .\continuedFraction.py
 if(len(argv) == 1): 
     for line in fileinput.input():
-        x = (eval(s) for s in line.split(', '))
-        print(scf(qnz(*x)))
-## "Demo" mode 
+        n, x = re.sub(',[ 0-9*+-]*$', '', line.rstrip()), (eval(s) for s in line.rstrip().split(', '))
+        print(f'{n} = {scf(qnz(*x))}')
+## 'Demo'mode ♪♫ If you dare... ♫♪ https://youtu.be/5dvMRYuPnEI 4 more [than φ or π...?]
 #  <path-to-python-env\>python.exe .\continuedFraction.py --demo
-else:              
-    φ, π, q = .5*(1 + sqrt(5)), pi, -1/4    # Dare 4 more than π & φ?
-    cfs = (('π ~', qnz(π, 4)), ('φ ~', qnz(φ, 3)), ('-1/4 =', qnz(q, 4)))
-    for n, x in cfs: 
-        print(f'{n} {scf(x)} = {x}')
+else:         
+    for n, x in ('φ', ((1 + sqrt(5))/2, 3)), ('π', (pi, 4)), ('-1/4', (-1/4, 2)): 
+        print(f'{n} = {scf(qnz(*x))}')
     

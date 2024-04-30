@@ -15,4 +15,3 @@ ec = [(i**2)%q != (j**3 + 3*j + 7)%q for (i, j) in product(range(q), range(q))]
 ec = reshape(ec, (q, q))
 
 imshow(ec, cmap = 'gray'); show()
-
