@@ -9,11 +9,13 @@ from matplotlib.widgets import Button, Slider
 def rationalBézier(P, w, p = 128):
     def binomial(n, k):  
        return 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
-    def BernsteinPoly(u, n , P):
+    def BernsteinPoly(u, P):
+        n = len(P)
         return zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
     
-    n, u = len(P), lp(0, 1, p)
-    Bézier, deBézier = tp(*BernsteinPoly(u, n, hp(P, w)), 1), tp(*BernsteinPoly(u, n, w), 1)
+
+    u, Pw = lp(0, 1, p), hp(P, w)
+    Bézier, deBézier = tp(*BernsteinPoly(u, Pw), 1), tp(*BernsteinPoly(u, w), 1)
 
     '''  Rationale = Bézier/deBézier '''
     return hp(Bézier[0], rp(deBézier[0])), hp(Bézier[1], rp(deBézier[0]))

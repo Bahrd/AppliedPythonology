@@ -11,9 +11,12 @@ from matplotlib.widgets import Button, Slider
 def bézier(P, p = 128):
     def binomial(n, k):  
        return 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
+    def BernsteinPoly(u, P):
+       n = len(P)
+       return zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n))) 
     
-    n, u = len(P), lp(0, 1, p)
-    c, b = zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
+    u = lp(0, 1, p)
+    c, b = BernsteinPoly(u, P)
     return td(c, b, 1)
 
 ##  Special case: a (cubic polynomial) Bézier curve
