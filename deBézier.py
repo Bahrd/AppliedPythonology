@@ -22,9 +22,9 @@ def bézier3(P, p = 128):
     u, (p0, p1, p2, p3), = lp(0, 1, p), P
     return op(p0, (1 - u)**3) + op(p1, 3*u * (1 - u)**2) + op(p2, 3*(1 - u) * u**2) + op(p3, u**3)
 
-# A pair of the endpoints and the control ones ((usually) between them)
-P = [[0, 0], [1/4, -1/2], [1/2, 1/2], [1, 0]] if len(controlPoints) < 2 else eval(controlPoints[1])
-pp, cp = bézier(P), tuple(zip(*P))
+## User-defined control points:  python ./deBézier.py '[[0, 0], [1/8, -1], [1/4, 1], [1/2, -2], [3/4, 1], [7/8, -1], [1, 0]]'
+P = [[0, 0], [1/2, 1/2], [1, 0]] if len(controlPoints) < 2 else eval(controlPoints[1])
+pp, cp, hP = bézier(P), tuple(zip(*P)), len(P) >> 1
 
 # Create the figure and a Bézier curve that we will manipulate
 fig, ax = plt.subplots(num = "[de]* Bézier curve demo"); plt.tight_layout()
@@ -37,17 +37,17 @@ fig.subplots_adjust(top = 11/12, right = 11/12, left = 1/6, bottom = 1/6)
 x_ax = fig.add_axes([0.25, 0.06125, 0.6125, 0.0125])
 x_slider = Slider(label = 'p₁.X',
     ax = x_ax,
-    valmin = -1, valmax = 2, valinit = P[1][0], valstep = 0.01)
+    valmin = -2, valmax = 2, valinit = P[hP][0], valstep = 0.01)
 
 y_ax = fig.add_axes([0.04, 0.25, 0.0125, 0.6125])
 y_slider = Slider(label = 'p₁.Y',
     ax = y_ax, orientation = "vertical",
-    valmin = -1, valmax = 2, valinit = P[1][1], valstep = 0.01)
+    valmin = -2, valmax = 2, valinit = P[hP][1], valstep = 0.01)
 
 # The function to be called anytime a slider's value changes
 def update(_):
-    global fig, x_slider, y_slider, P, curve, points
-    P[1][0], P[1][1] = x_slider.val, y_slider.val
+    global fig, x_slider, y_slider, P, hP, curve, points
+    P[hP][0], P[hP][1] = x_slider.val, y_slider.val
     pp, cp = bézier(P), tuple(zip(*P))
 
     curve.set_xdata(pp[0]),  curve.set_ydata(pp[1])

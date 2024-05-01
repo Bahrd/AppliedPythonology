@@ -1,5 +1,5 @@
 ﻿## See e.g. https://en.wikipedia.org/wiki/B%C3%A9zier_curve #Rational_B%C3%A9zier_curves
-# TBI (to be implemented)...
+#  Has just been implemented here! [  ]
 
 import matplotlib.pyplot as plt
 from numpy import linspace as lp, outer as op, tensordot as tp, multiply as hp, reciprocal as rp
