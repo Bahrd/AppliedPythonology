@@ -7,22 +7,19 @@ from matplotlib.widgets import Button, Slider
 
 
 def rationalBézier(P, w, p = 128):
-    def binomial(n, k):  
-       return 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
-    def BernsteinPoly(u, P):
-        n = len(P)
-        return zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
+    # A couple of helper internal/secretly anynomous functions
+    binomial = lambda n, k: 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
+    BernsteinPoly = lambda P, u = lp(0, 1, p), n = len(P): zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
     
-
-    u, Pw = lp(0, 1, p), hp(P, w)
-    Bézier, deBézier = tp(*BernsteinPoly(u, Pw), 1), tp(*BernsteinPoly(u, w), 1)
+    # The main function body
+    Bézier, deBézier = tp(*BernsteinPoly(hp(P, w)), 1), tp(*BernsteinPoly(w), 1)
 
     '''  Rationale = Bézier/deBézier '''
     return hp(Bézier[0], rp(deBézier[0])), hp(Bézier[1], rp(deBézier[0]))
 
-# A pair of the endpoints and the control one between them)
-P = [[0.0, 0], [1/2, 1], [1, 0]]
-w = [[1, 1], [1, 1], [1, 1]]
+# A pair of the endpoints and the control singleton between them)
+P = [[0.0, 0], [1/2, 1/2], [1, 0]]
+w = [[1, 1], [0, 0], [1, 1]]
 pp, cp = rationalBézier(P, w), tuple(zip(*P))
 
 # Create the figure and a Bézier curve that we will manipulate
@@ -44,7 +41,7 @@ y_slider = Slider(label = 'p₁.Y',
     valmin = -1, valmax = 2, valinit = P[1][1], valstep = 0.01)
 
 w_ax = fig.add_axes([0.96, 0.25, 0.0125, 0.6125])
-w_slider = Slider(label = 'p₁.w',
+w_slider = Slider(label = 'w₁',
     ax = w_ax, orientation = "vertical",
     valmin = -2, valmax = 2, valinit = w[1][1], valstep = 0.01)
 

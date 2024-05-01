@@ -2,31 +2,28 @@
 # https://en.wikipedia.org/wiki/B%C3%A9zier_curve
 
 import matplotlib.pyplot as plt
-from numpy import linspace as lp, outer as op, tensordot as td
+from numpy import linspace as lp, outer as op, tensordot as tp
 from matplotlib.widgets import Button, Slider
+from sys import argv as controlPoints
 
 # See e.g. https://stackoverflow.com/questions/26560726/python-binomial-coefficient
 #          https://en.wikipedia.org/wiki/Binomial_coefficient
 #          https://en.wikipedia.org/wiki/Bernstein_polynomial #Approximating_continuous_functions
 def bézier(P, p = 128):
-    def binomial(n, k):  
-       return 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
-    def BernsteinPoly(u, P):
-       n = len(P)
-       return zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n))) 
+    binomial = lambda n, k: 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
+    BernsteinPoly = lambda u = lp(0, 1, p), P = P, n = len(P): zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n))) 
     
-    u = lp(0, 1, p)
-    c, b = BernsteinPoly(u, P)
-    return td(c, b, 1)
+    c, b = BernsteinPoly()
+    return tp(c, b, 1)
 
-##  Special case: a (cubic polynomial) Bézier curve
+##  Special case: a (cubic polynomial) Bézier curve (see also 'rationalBézier.py')
 # https://www.pbr-book.org/4ed/Shapes/Curves
 def bézier3(P, p = 128):
     u, (p0, p1, p2, p3), = lp(0, 1, p), P
     return op(p0, (1 - u)**3) + op(p1, 3*u * (1 - u)**2) + op(p2, 3*(1 - u) * u**2) + op(p3, u**3)
 
 # A pair of the endpoints and the control ones ((usually) between them)
-P = [[0, 0], [1/4, -1/2], [1/2, 1/2], [1, 0]]#, [1/8, -1/2]]
+P = [[0, 0], [1/4, -1/2], [1/2, 1/2], [1, 0]] if len(controlPoints) < 2 else eval(controlPoints[1])
 pp, cp = bézier(P), tuple(zip(*P))
 
 # Create the figure and a Bézier curve that we will manipulate
