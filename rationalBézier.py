@@ -1,25 +1,28 @@
 ﻿## See e.g. https://en.wikipedia.org/wiki/B%C3%A9zier_curve #Rational_B%C3%A9zier_curves
-#  Has just been implemented here! [  ]
+#  It's just been implemented here! [cf. https://youtu.be/SoL3hPQHMqA?t=2094  ]
 
 import matplotlib.pyplot as plt
 from numpy import linspace as lp, outer as op, tensordot as tp, multiply as hp, reciprocal as rp
 from matplotlib.widgets import Button, Slider
-
 
 def rationalBézier(P, w, p = 128):
     # A couple of helper internal/secretly anynomous functions
     binomial = lambda n, k: 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
     BernsteinPoly = lambda P, u = lp(0, 1, p), n = len(P): zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
     
+    def bézier3(u = lp(0, 1, p), w = w, p = p):
+        return (op(w[0], (1 - u)**2) + op(w[1], 2*(1 - u)*u) + op(w[2], u**2))[0]
+    
     # The main function body
-    Bézier, deBézier = tp(*BernsteinPoly(hp(P, w)), 1), tp(*BernsteinPoly(w), 1)
-
+    deBézier = bézier3()
+    w = list(zip(w, w))
+    Bézier = tp(*BernsteinPoly(hp(P, w)), 1)
     '''  Rationale = Bézier/deBézier '''
-    return hp(Bézier[0], rp(deBézier[0])), hp(Bézier[1], rp(deBézier[0]))
+    return hp(Bézier[0], rp(deBézier)), hp(Bézier[1], rp(deBézier))
 
 # A pair of the endpoints and the control singleton between them)
 P = [[0.0, 0], [1/2, 1/2], [1, 0]]
-w = [[1, 1], [0, 0], [1, 1]]
+w = [1, 0, 1]
 pp, cp = rationalBézier(P, w), tuple(zip(*P))
 
 # Create the figure and a Bézier curve that we will manipulate
@@ -43,13 +46,13 @@ y_slider = Slider(label = 'p₁.Y',
 w_ax = fig.add_axes([0.96, 0.25, 0.0125, 0.6125])
 w_slider = Slider(label = 'w₁',
     ax = w_ax, orientation = "vertical",
-    valmin = -2, valmax = 2, valinit = w[1][1], valstep = 0.01)
+    valmin = -2, valmax = 2, valinit = w[1], valstep = 0.01)
 
 # The function to be called anytime a slider's value changes
 def update(_):
     global fig, x_slider, y_slider, P, curve, points
     P[1][0],  P[1][1] = x_slider.val, y_slider.val
-    w[0][1] = w[1][1] = w_slider.val
+    w[1] = w_slider.val
    
     pp, cp = rationalBézier(P, w), tuple(zip(*P))
         
