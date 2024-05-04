@@ -37,12 +37,12 @@ fig.subplots_adjust(top = 11/12, right = 11/12, left = 1/6, bottom = 1/6)
 x_ax = fig.add_axes([0.25, 0.06125, 0.6125, 0.0125])
 x_slider = Slider(label = 'p₁.X',
     ax = x_ax,
-    valmin = -2, valmax = 2, valinit = P[hP][0], valstep = 0.01)
+    valmin = -2, valmax = 2, valinit = P[hP][0], valstep = 0.1)
 
 y_ax = fig.add_axes([0.04, 0.25, 0.0125, 0.6125])
 y_slider = Slider(label = 'p₁.Y',
     ax = y_ax, orientation = "vertical",
-    valmin = -2, valmax = 2, valinit = P[hP][1], valstep = 0.01)
+    valmin = -2, valmax = 2, valinit = P[hP][1], valstep = 0.1)
 
 # The function to be called anytime a slider's value changes
 def update(_):
