@@ -6,26 +6,25 @@ from numpy import linspace as lp, outer as op, tensordot as tp, multiply as hp, 
 from matplotlib.widgets import Button, Slider
 
 def rationalBézier3(P, w, p = 128):
-    assert len(P) == 3 and len(w) == 3, 'Works for three control points ONLY!'
+    assert len(P) == 3 and len(w) == 3, 'Works for a triplet of control points ¡ONLY!'
     
     u, n = lp(0, 1, p), len(P)
-    # A couple of helper internal/secretly anynomous functions
+    # A triplet of internal helper functions for the triplet of control points
     binomial = lambda n, k: 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
     BernsteinPoly = lambda P: zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
-    deBézier3 = lambda: op(w[0], (1 - u)**2) + op(w[1], 2*(1 - u)*u) + op(w[2], u**2)
+    deBézier = lambda: rp(w[0]*(1 - u)**2 + w[1]*2*(1 - u)*u + w[2] * u**2)
     
     # The main function body
-    Bézier = tp(*BernsteinPoly(hp(P, list(zip(w, w)))), 1)
-    deBézier = rp(deBézier3()[0])
+    nuBézier, deBézier = tp(*BernsteinPoly(hp(P, list(zip(w, w)))), 1), deBézier()
     '''  Rationale = Bézier/deBézier '''
-    return hp(Bézier[0], deBézier), hp(Bézier[1], deBézier)
+    return hp(nuBézier[0], deBézier), hp(nuBézier[1], deBézier)
 
 # A pair of the endpoints and the control singleton between them)
 P, w = [[0.0, 0], [1/2, 1/2], [1, 0]], [1, 0, 1]
 pp, cp = rationalBézier3(P, w), tuple(zip(*P))
 
 # Create the figure and a Bézier curve that we will manipulate
-fig, ax = plt.subplots(num = "Rational Bézier curve demo"); plt.tight_layout()
+fig, ax = plt.subplots(num = "Rational 3-point Bézier curve demo"); plt.tight_layout()
 curve, points = ax.plot(pp[0], pp[1], '-', cp[0], cp[1], 'k.')
 ax.set_xlabel('X'), ax.set_ylabel('Y')
 
