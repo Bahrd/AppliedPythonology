@@ -19,7 +19,7 @@ x = 101; y = g ** x % p
 
 ## Proof's loop (Victor verifies Alice's knowledge of the secret (more than) a few times)
 for _ in range(0x10):
-    #  Alice pick a random r
+    #  Alice picks a random r
     r = randint(p - 1)
     # ... and publishes equally random C
     C = g ** r % p
