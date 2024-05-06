@@ -8,12 +8,12 @@ from more_itertools import flatten
 L, intervals, rng = 0x100, 1, np.random.default_rng()
 X, (f1, f2) = np.linspace(0, 1.0, L), (0b101, 0b111) #Hz
 
-'''
+#'''
 ## PPG-like signal
 _s = np.sqrt(1/0b101)*np.cos(f1 * math.pi * X) - np.sqrt(1/0b101)*np.cos(f2 * math.pi * X)
 s = list(flatten(repeat(_s, intervals))); ε = (np.abs(s) - rng.poisson(np.abs(s)))/0b10
 T = 1
-'''
+#'''
 
 '''
 ## A square wave (a.k.a. digital signal?) 
@@ -22,12 +22,12 @@ s, ε = list(flatten(repeat(_s, intervals))), np.zeros(L * intervals)
 T = 5 
 '''
 
-#'''
+'''
 ## A chirp-like signal (https://www.youtube.com/watch?v=TWqhUANNFXw [LIGO] ;)
 X = np.linspace(0.05, 1.0, L * intervals)
 s, ε = np.sin(1/X), rng.standard_normal(L * intervals)/0b100
 T = 2.5
-#'''
+'''
 
 S = s + ε
 

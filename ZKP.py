@@ -2,6 +2,7 @@
 #  Discrete logarithm application ($p$ is prime and $g$ is a generator of the multiplicative group $mod p$)
 #  https://en.wikipedia.org/wiki/Zero-knowledge_proof#Discrete_log_of_a_given_value
 #  https://www.youtube.com/watch?v=FfeXX6OLq8w
+#  https://www.youtube.com/watch?v=HUs1bH85X9I - Computerphile
 
 from numpy import unique as unq
 from numpy.random import randint, choice
