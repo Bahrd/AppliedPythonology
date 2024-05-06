@@ -3,7 +3,8 @@
   Private key public distribution (for e.g. a symmetric-key cipher)
   *  https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange#Cryptographic_explanation
   *  https://youtu.be/NmM9HA2MQGI?t=52 and https://youtu.be/Yjrfm_oRO0w - Computerphile (they say it's unbelievable difficult [to understand or to crack?])
-  *  https://www.youtube.com/watch?v=ESPT_36pUFc - PBS Infinite Series (they just explain it)
+  *  https://www.youtube.com/watch?v=ESPT_36pUFc - PBS Infinite Series (neatly explained in a "one-way" fashion)
+  *  https://youtu.be/F3zzNa42-tQ [or just go for what looks like a source of the video: https://link.springer.com/book/10.1007/978-3-642-04101-3]
   
   See also: https://www.youtube.com/watch?v=NCuiwCM-AQ8 "Why are periodic systems so unpredictable?"
 '''
