@@ -39,7 +39,7 @@ y_slider = Slider(label = 'p₁.Y',
     ax = y_ax, orientation = "vertical",
     valmin = -2, valmax = 2, valinit = P[hP][1], valstep = 0.1)
 
-# The function to be called anytime a slider's value changes
+# The event handler - called each time the sliders are moved
 def update(_):
     global fig, x_slider, y_slider, P, hP, curve, points
     P[hP][0], P[hP][1] = x_slider.val, y_slider.val
@@ -52,12 +52,11 @@ def update(_):
 # Register the update function with each slider
 x_slider.on_changed(update), y_slider.on_changed(update)
 
-# Create a `matplotlib.widgets.Button` to reset the sliders to initial values.
+# A `matplotlib.widgets.Button` that sets the sliders' initial values back to their defaults
 resetax = fig.add_axes([0.03125, 0.05, 0.1, 0.04])
 button = Button(resetax, 'Reset', hovercolor = '0.975')
-
 def reset(_):
     x_slider.reset(), y_slider.reset()
-    
 button.on_clicked(reset)
+    
 plt.show() #... must go on!
