@@ -1,4 +1,4 @@
-﻿## Zero-knowledge-proof (not a mathematical one!)
+﻿## Zero-knowledge-proof (not quite a mathematical one!)
 #  Discrete logarithm application ($p$ is prime and $g$ is a generator of the multiplicative group $mod p$)
 #  https://en.wikipedia.org/wiki/Zero-knowledge_proof#Discrete_log_of_a_given_value
 #  https://www.youtube.com/watch?v=FfeXX6OLq8w
@@ -27,14 +27,14 @@ for _ in range(0x10):
     #  with a random choice of the question...
     flip = choice(['trick', 'threat'])
     if(flip == 'trick'):
-        #  Alice 
+        #  Alice (with the little help of the Little Fermat's Theorem)
         c = (x + r) % (p - 1)
-        v, V = (C * y) % p, g ** c % p
         #  Victor
+        v, V = (C * y) % p, g ** c % p
         print(f"{v} == {V}. Trick's OK!" if (v == V) else f"{v} != {V}. Ain't OK!")
     else:
-        v, V = C, g ** r % p
         #  Victor
+        v, V = C, g ** r % p
         print(f"{v} == {V}. Threat's OK!" if (v == V) else f"{v} != {V}. Ain't OK!")
 
 ## Now Alice knows in advance that (silly) Victor will always (love her and) ask for r only... 
