@@ -21,6 +21,8 @@ s = list(flatten(repeat(S, rpt)))
 
 #'''
 # A chirp-like signal (https://www.youtube.com/watch?v=TWqhUANNFXw [LIGO] ;)
+# https://www.youtube.com/watch?v=iphcyNWFD10 - Veritasium's take on it
+# https://www.youtube.com/watch?v=B4XzLDM3Py8 - MIT
 X = np.linspace(0.05, 1.0, L * rpt)
 s, ε = np.sin(1/X), rng.standard_normal(L * rpt)/0b100
 #'''

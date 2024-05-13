@@ -24,6 +24,8 @@ T = 5
 
 '''
 ## A chirp-like signal (https://www.youtube.com/watch?v=TWqhUANNFXw [LIGO] ;)
+#  https://www.youtube.com/watch?v=iphcyNWFD10 - Veritasium's take on it
+#  https://www.youtube.com/watch?v=B4XzLDM3Py8 - MIT
 X = np.linspace(0.05, 1.0, L * intervals)
 s, ε = np.sin(1/X), rng.standard_normal(L * intervals)/0b100
 T = 2.5
