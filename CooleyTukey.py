@@ -1,5 +1,7 @@
 ﻿from matplotlib.pyplot import bar, plot, subplot, figure, tight_layout, show, xlabel, ylabel, title
-from numpy import exp, sin, concatenate, arange, abs, pi as π, linspace as lp
+from numpy import exp, sin, concatenate, arange, abs, pi as π, linspace as lp, sum
+from random import random as rr, randrange as ri
+
 def CooleyTukey(x):
     """
     A recursive implementation of the 1D Cooley-Tukey FFT
@@ -16,24 +18,23 @@ def CooleyTukey(x):
         return x
     
 N = 0x100
-# time, frequencies and phases
-# t, (f1, f2, f3), (φ1, φ2, φ3) = lp(0, 1, N), (1<<3, 1<<4, 1<<5), (π/2, π/3, π/4)
-from random import random as rr, randrange as ri
-t, (f1, f2, f3), (φ1, φ2, φ3) = lp(0, 1, N), (1<<ri(3), 1<<ri(4), 1<<ri(5)), (2*rr()*π, 2*rr()*π, 2*rr()*π)
-
-# A slow signal... 
-x = sin(2*f1*π*t + φ1) + sin(2*f2*π*t + φ2) + sin(2*f3*π*t + φ3)
+# time, frequencies & phases
+t, f, φ = lp(0, 1, N), (1<<ri(3), 1<<ri(4), 1<<ri(5)), (2*rr()*π, 2*rr()*π, 2*rr()*π)
+# A slow signal (see https://stackoverflow.com/a/26283381/17524824)
+x = sum([sin(2*_f*π*t + _φ) for _f, _φ in zip(f, φ)], axis = 0)
 # ... and its fast transform
 X = CooleyTukey(x)
 
 # Plotting
 figure(figsize = (10, 6))
 subplot(2, 1, 1)
-plot(t, x)
+plot(t, x, color = 'brown')
 title("Input Signal"); xlabel("Time"); ylabel("Amplitude")
 
 subplot(2, 1, 2)
-bar(arange(N//2), abs(X[:N//2]), color = 'red', width = 1.0)
+N = N >> 1
+bar(arange(N), abs(X[:N]), color = 'red', width = 1.0)
+bar(arange(N), abs(X[N:]), color = 'black', width = 1.0)
 title("FFT Spectrum"); xlabel("Frequency Bin"); ylabel("Magnitude")
 
 tight_layout(); show()
