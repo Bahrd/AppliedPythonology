@@ -1,22 +1,7 @@
 ﻿from matplotlib.pyplot import bar, plot, subplot, figure, tight_layout, show, xlabel, ylabel, title
-from numpy import exp, sin, concatenate as ConcaTenate, arange, abs, pi as π, linspace as lp, sum, outer
+from numpy import exp, sin, concatenate as ConcaTenate, arange, abs, pi as π, linspace as lp, sum, outer, roll, arctan2 
 from random import random as rr
 from auxiliary import ITT
-
-def didacticFourierTransform(x):
-    N = len(x)
-    # <didactic part>
-    assert N <= 8, "The input signal is too long for a didactic Fourier transform"
-    from numpy import set_printoptions, inf
-    set_printoptions(formatter={'all': lambda x: f'{x:1.1f}'})
-    # </didactic part>
-
-    ω = outer(arange(N), arange(N))
-    W = exp(-2j * π * ω/N)    
-    # <didactic part>
-    print(f'{W = }')
-    # </didactic part>
-    return W @ x
 
 @ITT
 def dft(x, s = 1):
@@ -26,6 +11,13 @@ def dft(x, s = 1):
     ω = outer(arange(N), arange(N))
     W = exp(-s*2j * π * ω/N)
     
+    ##<didactics>
+    # assert N <= 8, "The input signal is too long for a didactic Fourier transform"
+    # from numpy import set_printoptions
+    # set_printoptions(formatter={'all': lambda x: f'{x:1.1f}'})
+    # print(f'{W = }')
+    ## </didactics>
+
     return W @ x
 
 idft = lambda x: dft(x, -1)/len(x)
@@ -46,36 +38,38 @@ def CooleyTukey(x):
             return x
     return _CooleyTukey(x)
     
-## Usage example (look for some invariances...)        
-N = 0x100; t = lp(0, 1, N)
-f = 0x20 >> 1, 0x20, 0x20 << 1  # 8, 32, 128 Hz (for 256 Hz sampling rate)
-φ = 2*rr()*π, -π/2, 2*rr()*π    # Do phase matter?
-
+## Examples (randomized). Spot some invariances, will ya?
+N = 0x1000; t = lp(0, 1, N)
+f = 0x20 >> 2, 0x20, 0x20 << 2  # 8, 32, 128 Hz - YFMV ;)
+φ = 2*rr()*π, -π/2, 2*rr()*π    # Phases...
 # A slow signal (see https://stackoverflow.com/a/26283381/17524824)
 x = sum([sin(2*_f*π*t + _φ) for _f, _φ in zip(f, φ)], axis = 0)
-# ... and its standard and fast transforms
+# ... its standard and fast transforms
 _X, X =  dft(x), CooleyTukey(x)
-# ... and itself (from standard inverse transform)
-_x    = idft(X).real
+# ... and it'self again (restored by the standard inverse transform)
+_x = idft(X).real
 
 ## Plotting
+#  https://stackoverflow.com/questions/22408237/named-colors-in-matplotlib
+υ, β = N >> 1, 0x168/π
+Λ = arange(-υ, υ)
 figure(figsize = (10, 0b110))
 
-# A signal
-subplot(4, 1, 1); plot(t, x, color = 'red')
+# The signal
+subplot(4, 1, 1); plot(t, x, color = 'darkred')
 title("Slow signal"); xlabel("Time"); ylabel("Amplitude")
 
-# Its fast transform
-subplot(4, 1, 2); bar(arange(N), abs(X), color = 'brown', width = 1.0)
-title("Fast transform"); ylabel("Magnitude")
+# Its fast transform (magnitude, two sides)
+subplot(4, 1, 1+1); bar(Λ, roll(abs(X), υ), color = 'goldenrod', width = 4.0)
+title("Fast transform"); xlabel("Frequencies [Hz]"); ylabel("Magnitude")
 
-# Its transform
-subplot(4, 1, 3); bar(arange(N), abs(_X), color = 'black', width = 1.0)
-title("Slow transform"); xlabel("Frequencies [Hz]"); ylabel("Magnitude")
+# Its transform (real and (amplified by β) args parts, one side)
+subplot(4, 1, 1+1+1); bar(Λ[υ:], (_X[:υ]).real, color = 'orange', width = 4.0)
+plot(Λ[υ:], β*arctan2((_X[:υ]).imag, (_X[:υ]).real), color = 'brown')
+title("Slow transform"); xlabel("Freqs [Hz] and phases [°]"); ylabel("Re/Arg parts")
 
-# Itself
-subplot(4, 1, 4); plot(arange(N), _x, color = 'red')
-plot(arange(N), _x - x, color = 'grey')
+# Itself (stripped of the residual imaginary part)
+subplot(4, 1, 1+1+1+1); plot(t, _x, color = 'darkred'); plot(t, _x - x, 'k')
 title("Slow signal"); xlabel("Time"); ylabel("Amplitude")
 
 tight_layout(); show()

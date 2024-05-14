@@ -45,7 +45,7 @@ def displayChannels(images, channels, rows = 1, cols = 4, title = 'RGB'):
 
 # When you don't care about the return value
 def splot(*args, scalex = True, scaley = True, data = None, **kwargs): 
-    _ = plt.plot(*args, scalex = True, scaley = True, data = None, **kwargs)
+    _ = plt.plot(*args, scalex = scalex, scaley = scaley, data = data, **kwargs)
 
 # CFA filter mask (replication of a single CFA segment into a whole sensor mask)
 def CFA(masks, X):
