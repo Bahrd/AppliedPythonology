@@ -93,7 +93,7 @@ def ITT(f):
 		begin = TT() # from time import time as TT
 		r = f(*args, **kwargs) 
 		end = TT()
-		print(f'{f.__name__} evaluated in {round(end - begin)}s')
+		print(f'{f.__name__} evaluated in {end - begin:2.4}s')
 		return r
 	return time_warper_wrapper
 

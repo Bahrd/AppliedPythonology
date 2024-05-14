@@ -1,40 +1,61 @@
 ﻿from matplotlib.pyplot import bar, plot, subplot, figure, tight_layout, show, xlabel, ylabel, title
-from numpy import exp, sin, concatenate, arange, abs, pi as π, linspace as lp, sum
+from numpy import exp, sin, concatenate as ConcaTenate, arange, abs, pi as π, linspace as lp, sum
 from random import random as rr, randrange as ri
+from auxiliary import ITT
 
+
+## DFT (Discrete Fourier Transform) without FFT
+# https://pythonnumericalmethods.studentorg.berkeley.edu/notebooks/chapter24.02-Discrete-Fourier-Transform.html
+@ITT
+def DFT(x):
+    N = len(x)
+    n = arange(N); ω = n.reshape((N, 1))
+    W = exp(-2j * π * ω * n / N)
+    
+    return W @ x
+
+@ITT
 def CooleyTukey(x):
     """
-    A recursive implementation of the 1D Cooley-Tukey FFT
+    A neat recursive implementation of Cooley'n'Tukey's 1D FFT
     https://pythonnumericalmethods.studentorg.berkeley.edu/notebooks/chapter24.03-Fast-Fourier-Transform.html 
     [via Copilot]
     """
-    N = len(x)
-    if N > 1:
-        E, O = CooleyTukey(x[::2]), CooleyTukey(x[1::2])
-        t = exp(-2j * π * arange(N)/N)
-        N = N >> 1
-        return concatenate([E + t[:N] * O, E + t[N:] * O])
-    else:
-        return x
+    def _CooleyTukey(x):
+        N = len(x)
+        if N > 1:
+            E, O = _CooleyTukey(x[::2]), _CooleyTukey(x[1::2])
+            n = arange(N)
+            ω = exp(-2j * π * n/N)
+            
+            N = N >> 1
+            return ConcaTenate([E + ω[:N] * O, E + ω[N:] * O])
+        else:
+            return x
+    return _CooleyTukey(x)
     
-N = 0x100
-# time, frequencies & phases
-t, f, φ = lp(0, 1, N), (1<<ri(3), 1<<ri(4), 1<<ri(5)), (2*rr()*π, 2*rr()*π, 2*rr()*π)
+## Usage example (look for some invariances...)        
+N = 0x100; t = lp(0, 1, N)
+f = 0x20 >> 1, 0x20, 0x20 << 1  # 8, 32, 128 Hz (for 256 Hz sampling rate)
+φ = 2*rr()*π, -π/2, 2*rr()*π    # Did phase matter?
+
 # A slow signal (see https://stackoverflow.com/a/26283381/17524824)
 x = sum([sin(2*_f*π*t + _φ) for _f, _φ in zip(f, φ)], axis = 0)
-# ... and its fast transform
-X = CooleyTukey(x)
+# ... and its standard and fast transforms
+_X, X = DFT(x), CooleyTukey(x)
 
 # Plotting
-figure(figsize = (10, 6))
-subplot(2, 1, 1)
-plot(t, x, color = 'brown')
+figure(figsize = (10, 0b110))
+subplot(3, 1, 1)
+plot(t, x, color = 'red')
 title("Input Signal"); xlabel("Time"); ylabel("Amplitude")
 
-subplot(2, 1, 2)
-N = N >> 1
-bar(arange(N), abs(X[:N]), color = 'red', width = 1.0)
-bar(arange(N), abs(X[N:]), color = 'black', width = 1.0)
+subplot(3, 1, 2)
+bar(arange(N), abs(X), color = 'brown', width = 1.0)
 title("FFT Spectrum"); xlabel("Frequency Bin"); ylabel("Magnitude")
+
+subplot(3, 1, 3)
+bar(arange(N), abs(_X), color = 'black', width = 1.0)
+title("DFT Spectrum"); xlabel("Frequency Bin"); ylabel("Magnitude")
 
 tight_layout(); show()
