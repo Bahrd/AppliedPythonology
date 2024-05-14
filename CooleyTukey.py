@@ -1,8 +1,22 @@
 ﻿from matplotlib.pyplot import bar, plot, subplot, figure, tight_layout, show, xlabel, ylabel, title
 from numpy import exp, sin, concatenate as ConcaTenate, arange, abs, pi as π, linspace as lp, sum, outer
-from random import random as rr, randrange as ri
+from random import random as rr
 from auxiliary import ITT
 
+def didacticFourierTransform(x):
+    N = len(x)
+    # <didactic part>
+    assert N <= 8, "The input signal is too long for a didactic Fourier transform"
+    from numpy import set_printoptions, inf
+    set_printoptions(formatter={'all': lambda x: f'{x:1.1f}'})
+    # </didactic part>
+
+    ω = outer(arange(N), arange(N))
+    W = exp(-2j * π * ω/N)    
+    # <didactic part>
+    print(f'{W = }')
+    # </didactic part>
+    return W @ x
 
 @ITT
 def dft(x, s = 1):
@@ -40,7 +54,9 @@ f = 0x20 >> 1, 0x20, 0x20 << 1  # 8, 32, 128 Hz (for 256 Hz sampling rate)
 # A slow signal (see https://stackoverflow.com/a/26283381/17524824)
 x = sum([sin(2*_f*π*t + _φ) for _f, _φ in zip(f, φ)], axis = 0)
 # ... and its standard and fast transforms
-_X, X = dft(x), CooleyTukey(x)
+_X, X =  dft(x), CooleyTukey(x)
+# ... and itself (from standard inverse transform)
+_x    = idft(X).real
 
 ## Plotting
 figure(figsize = (10, 0b110))
@@ -58,7 +74,8 @@ subplot(4, 1, 3); bar(arange(N), abs(_X), color = 'black', width = 1.0)
 title("Slow transform"); xlabel("Frequencies [Hz]"); ylabel("Magnitude")
 
 # Itself
-subplot(4, 1, 4); plot(arange(N), idft(_X).real, color = 'red')
+subplot(4, 1, 4); plot(arange(N), _x, color = 'red')
+plot(arange(N), _x - x, color = 'grey')
 title("Slow signal"); xlabel("Time"); ylabel("Amplitude")
 
 tight_layout(); show()
