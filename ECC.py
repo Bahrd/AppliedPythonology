@@ -57,7 +57,7 @@ def update(_):
     
     # Anonymous poly-formatting 
     sg = lambda a: '+' if a > 0 else '—'
-    ao = lambda a, _: f'{abs(a):1.1f}' if abs(a) != 1 else '' if _ != '' else '1'
+    ao = lambda a, _: f'{abs(round(a) if round(a, 0) == round(a, 1) else round(a, 1))}' if abs(a) != 1 else '' if _ != '' else '1'
     dsp = lambda a, _: f'{ sg(a)} {ao(a, _)}{_}' if a else '' 
     title(f'x³ {dsp(a, "x²")}{dsp(b, "x")}{dsp(c, "")} = y³')
 
