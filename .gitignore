@@ -16,3 +16,5 @@
 /.vs/AppliedPythonology/v17/.wsuo
 /.vs/slnx.sqlite
 /AppliedPythonology.code-workspace
+*.bat
+*.ps1

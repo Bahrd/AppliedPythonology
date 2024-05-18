@@ -4,7 +4,6 @@ import warnings; warnings.filterwarnings('ignore')
 #Live thresholding
 from matplotlib.widgets import Slider, RadioButtons
 import matplotlib.pyplot as plt
-from scipy.fftpack import dct, idct
 from pywt import (wavedec as fwt, waverec as ifwt, threshold as thrsd, 
                   array_to_coeffs as a2c, coeffs_to_array as c2a)
 from itertools import repeat; from more_itertools import flatten
