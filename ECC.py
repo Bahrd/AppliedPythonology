@@ -85,15 +85,16 @@ for q, (a, b), cm in params:
 ## Note thay we start with doubling of G (a point on a curve with integer coordinates) and then adding yet another G
 #  (it remains magic [to me] that the other points are integer, too ("but that's apparently the beauty of elliptic curves" ;))
 #
-#       2G = G + G, 3G = 2G + G, ..., nG = (n-1)G + G, etc.
+#       2G = G + G, 3G = 2G + G, ..., nG = (n - 1)G + G, etc.
 #
 #  nG encrypts the priveta key n with the help of the publicly known quadruplet (a, b, q, G)
 #  They say finding n given nG is infeasible (and we need to believe them...)
 #  Now you can use the ECC in DHM (see p. 250) to the resulting key in the DES/AES scheme
 ##  See pp. 244nn of the book
-a, b, q = 2, 2, 17; _1G = (5, 1)
+a, b, q = 2, 2, 17
 # Not the elegant solution to the problem of default argument values (rather a solution that creates a problem... ;)
-def add(x1, y1, x2, y2, a = a, q = q, _1G = _1G):
+def add(P, Q, a = a, q = q):
+    x1, y1, x2, y2 = *P, *Q
     ## A slope (tangent for doubling, "secant for adding": https://en.wikipedia.org/wiki/Secant_line) - ThnX, Copilot!
     #  There is no need to mess around with arguments here...
     def s(x1 = x1, y1 = y1, x2 = x2, y2 = y2, a = a, q = q): 
@@ -110,17 +111,19 @@ def add(x1, y1, x2, y2, a = a, q = q, _1G = _1G):
     return x3, y3
 
 r'''
+_1G = (5, 1)
 # ♪♫ Gimme more, gimme more...♫♪ [ https://www.youtube.com/watch?v=P51IVqf28Hs or https://www.youtube.com/watch?v=lhdiQ8isyLo ]
-_2G = add(*_1G, *_1G); _3G = add(*_1G, *_2G)
-_4G = add(*_1G, *_3G); _5G = add(*_1G, *_4G)
+_2G = add(_1G, _1G); _3G = add(_1G, _2G)
+_4G = add(_1G, _3G); _5G = add(_1G, _4G)
 # Noch zweimal...
-_6G, _7G = add(*_1G, *_5G), add(*_1G, *add(*_1G, *_5G))
+_6G, _7G = add(_1G, _5G), add(_1G, add(_1G, _5G))
 '''
 
 # But everyone can be "smarter every day"... and "I told you: EVERY!ONE!!" [ https://youtu.be/74BzSTQCl_c?t=4 ]
 # https://stackoverflow.com/questions/46617233/how-to-create-a-varying-variable-name-in-python
-print(f'1G = {_1G}', end = ', ')   # A seed...
-for n in range(2, 19):                                          # ♪♫ You [should] run on for a long time [ https://youtu.be/eJlN9jdQFSc ]
-    globals()[f'_{n}G'] = add(*globals()[f'_{n - 1}G'], *_1G)   #    run on for a long time...♫♪ [ https://youtu.be/9o6RyF9kXoA?t=160 ]
+_1G = (5, 1)  # A seed... (here the first element of the sequence - for educational purposes)
+print(f'1G = {_1G}', end = ', ')   
+for n in range(2, 19):                                      # ♪♫ You [should] run on for a long time [ https://youtu.be/eJlN9jdQFSc ]
+    globals()[f'_{n}G'] = add(globals()[f'_{n - 1}G'], _1G) #    run on for a long time...♫♪ [ https://youtu.be/9o6RyF9kXoA?t=160 ]
     print(f'{n}G = {globals()[f"_{n}G"]}', end = ', ') 
-print('etc...')
+print('19G = 0') # this is the point at infinity (the neutral element of the group)
