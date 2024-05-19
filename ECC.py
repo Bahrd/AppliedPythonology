@@ -42,13 +42,13 @@ fig.subplots_adjust(left = 1/5, bottom = 1/6)
 _sp_ = (([0.25, 0.06125, 0.6125, 0.0125], 'a', 'horizontal'),
         ([0.06125, 0.25, 0.0125, 0.6125], 'b', 'vertical'),
         ([0.93875, 0.25, 0.0125, 0.6125], 'c', 'vertical'))
-x_slider, y_slider, z_slider = (Slider(ax = fig.add_axes(_a), label = _l, orientation = _o,
+a_slider, b_slider, c_slider = (Slider(ax = fig.add_axes(_a), label = _l, orientation = _o,
                                        valmin = -3, valmax = 3, valinit = 0, valstep = .1)
                                 for _a, _l, _o in _sp_)
 # Real curves...
 def update(_):
     global a, b, c, x, y
-    a, b, c = x_slider.val, y_slider.val, z_slider.val
+    a, b, c = a_slider.val, b_slider.val, c_slider.val
     z = x**3 + a*x**2 + b*x + c - y**2
     dx.cla()
 
@@ -62,7 +62,7 @@ def update(_):
     title(f'x³ {dsp(a, "x²")}{dsp(b, "x")}{dsp(c, "")} = y³')
 
 # register the update function with each slider
-for _slider in (x_slider, y_slider, z_slider): _slider.on_changed(update)
+for _slider in (a_slider, b_slider, c_slider): _slider.on_changed(update)
 subplot(1, 1, 1); show() #... must go on!
 
 # Let's move on to the integer solutions of the elliptic curves
