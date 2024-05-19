@@ -62,12 +62,12 @@ def update(_):
     title(f'x³ {dsp(a, "x²")}{dsp(b, "x")}{dsp(c, "")} = y³')
 
 # register the update function with each slider
-x_slider.on_changed(update), y_slider.on_changed(update), z_slider.on_changed(update)
+for _slider in (x_slider, y_slider, z_slider): _slider.on_changed(update)
 subplot(1, 1, 1); show() #... must go on!
 
 
 
-# Now, let's move on to the integer solutions of the elliptic curves
+# Let's move on to the integer solutions of the elliptic curves
 # and the promised [more] rational ones...  
 params = (17, (2, 2), 'cividis'), (331, (3, 3), 'ocean'), (2503, (3, 7), 'twilight')
 for q, (a, b), cm in params:
@@ -79,8 +79,48 @@ for q, (a, b), cm in params:
     # Have you noticed how the plot tickens? ;)
     _ = scat(*xy, c = cc, cmap = cm, alpha = 0.75), title(f'group order = {len(ec)} + 1 for {q = }'), show()
     
-
 # Now, we are talking...
 # https://en.wikipedia.org/wiki/File:ECClines.svg        
 # https://en.wikipedia.org/wiki/Elliptic_curve#Elliptic_curves_over_finite_fields    
-# https://youtu.be/F3zzNa42-tQ?t=722    
+# And again... https://link.springer.com/book/10.1007/978-3-662-69007-9
+
+## Note thay we start with doubling of G (a point on a curve with integer coordinates) and then adding yet another G
+#  (it remains magic to me that the other points are integer, too, "but that's the beauty of elliptic curves")    
+#  2G = G + G
+#  3G = 2G + G
+#  etc.
+#  nG = (n-1)G + G
+#  nG encrypts n with the help of the publicly known quadruplet (a, b, q, G)
+#  They say finding n given nG is infeasible (we need to believe them...)
+
+##  See pp. 244nn of the book (why there is no 'b'?):
+a, b, q = 2, 2, 17; _1G = (5, 1)
+# Not the elegant solution to the problem of default argument values (rather a solution that creates a problem... ;)
+def add(x1, y1, x2, y2, a = a, q = q, _1G = _1G):
+    # A slope (tangent for doubling, "secant for adding": https://en.wikipedia.org/wiki/Secant_line) - ThnX, Copilot!
+    # Observe that 'pow(x, -1, q)' computes the multiplicative inverse of $x mod q$
+    ### <Don't do this at home!...>
+    if x1 == x2 and y1 != y2: return _1G
+    ### </Don't do this at home!...>
+    def s(x1 = x1, y1 = y1, x2 = x2, y2 = y2, a = a, q = q): 
+        return (y2 - y1) * pow(x2 - x1, -1, q) % q if (x1, y1) != (x2, y2) else (3 * x1**2 + a) * pow(2 * y1, -1, q) % q
+
+    m = s()
+    x3 = (m**2 - x1 - x2) % q
+    y3 = (m * (x1 - x3) - y1) % q
+    return x3, y3
+
+r'''
+# ♪♫ Gimme more, gimme more...♫♪ [ https://www.youtube.com/watch?v=P51IVqf28Hs or https://www.youtube.com/watch?v=lhdiQ8isyLo ]
+_2G = add(*_1G, *_1G); _3G = add(*_1G, *_2G)
+_4G = add(*_1G, *_3G); _5G = add(*_1G, *_4G)
+# Noch zweimal...
+_6G, _7G = add(*_1G, *_5G), add(*_1G, *add(*_1G, *_5G))
+# But everyone can be "smarter every day"... and "I told you: EVERY!ONE!!" [ https://youtu.be/74BzSTQCl_c?t=4 ]
+# https://stackoverflow.com/questions/46617233/how-to-create-a-varying-variable-name-in-python
+'''
+
+print(f'1G = {_1G}')
+for n in range(2, 19): # why, oh why only 19?...
+    globals()[f'_{n}G'] = add(*globals()[f'_{n - 1}G'], *_1G)
+    print(f'{n}G = {globals()[f"_{n}G"]}') #... must go on!
