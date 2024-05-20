@@ -4,7 +4,7 @@ https://en.wikipedia.org/wiki/Schoof%27s_algorithm
 https://en.wikipedia.org/wiki/Elliptic_curve#Elliptic_curves_over_finite_fields
 https://link.springer.com/book/10.1007/978-3-642-04101-3 - Chapter 9 [in person: https://youtu.be/vnpZXJL6QCQ?t=111 ]
 '''
-from matplotlib.pyplot import scatter as scat, title, show, contour, subplots, subplot
+from matplotlib.pyplot import scatter as scat, title, show, contour, subplots, subplot, plot
 from itertools import product
 from numpy.random import rand, randint
 from numpy import linspace as lp, meshgrid
@@ -38,14 +38,14 @@ title(f'x³ = y³')
     
 # adjust the main plot to make room for the sliders
 fig.subplots_adjust(left = 1/5, bottom = 1/6)
-# Make sliders to control a, b, and c
+# Insert sliders to control a, b, and c
 _sp_ = (([0.25, 0.06125, 0.6125, 0.0125], 'a', 'horizontal'),
         ([0.06125, 0.25, 0.0125, 0.6125], 'b', 'vertical'),
         ([0.93875, 0.25, 0.0125, 0.6125], 'c', 'vertical'))
 a_slider, b_slider, c_slider = (Slider(ax = fig.add_axes(_a), label = _l, orientation = _o,
                                        valmin = -3, valmax = 3, valinit = 0, valstep = .1)
                                 for _a, _l, _o in _sp_)
-# Real curves...
+# Real el'curves...
 def update(_):
     global a, b, c, x, y
     a, b, c = a_slider.val, b_slider.val, c_slider.val
@@ -67,33 +67,36 @@ subplot(1, 1, 1); show() #... must go on!
 
 # Let's move on to the integer solutions of the elliptic curves
 # and the promised [more] rational ones...  
-params = (17, (2, 2), 'cividis'), (331, (3, 3), 'ocean'), (2503, (3, 7), 'twilight')
+params = (17, (2, 2), 'ocean'), (331, (3, 3), 'cividis'), (2503, (3, 7), 'twilight')
 for q, (a, b), cm in params:
     # Elliptic curve points (x, y) for a given equation
     ec = [(x, y) for (x, y) in product(range(q), range(q)) if 0 == (x**3 + a*x + b - y**2) % q]
     # Scatter plot data (re)arrangement(s)
     cc, ce = rand(len(ec)), tuple(zip(*ec))
     xy = (eval(f'ce[{_}]') for _ in (0, 1))
-    # Have you noticed how the plot tickens? ;)
+    # Have you already noticed how the plot tickens? ;)
     _ = scat(*xy, c = cc, cmap = cm, alpha = 0.75), title(f'group order = {len(ec)} + 1 for {q = }'), show()
-    
-# Now, we are talking...
-# https://en.wikipedia.org/wiki/File:ECClines.svg        
-# https://en.wikipedia.org/wiki/Elliptic_curve#Elliptic_curves_over_finite_fields    
-# And again... https://link.springer.com/book/10.1007/978-3-662-69007-9
 
-## Note thay we start with doubling of G (a point on a curve with integer coordinates) and then adding yet another G
-#  (it remains magic [to me] that the other points are integer, too ("but that's apparently the beauty of elliptic curves" ;))
-#
-#       2G = G + G, 3G = 2G + G, ..., nG = (n - 1)G + G, etc.
-#
-#  nG encrypts the priveta key n with the help of the publicly known quadruplet (a, b, q, G)
-#  They say finding n given nG is infeasible (and we need to believe them...)
-#  Now you can use the ECC in DHM (see p. 250) to the resulting key in the DES/AES scheme
-##  See pp. 244nn of the book
+r'''
+ Now, we are talking...
+ https://en.wikipedia.org/wiki/File:ECClines.svg        
+ https://en.wikipedia.org/wiki/Elliptic_curve#Elliptic_curves_over_finite_fields    
+ And again... https://link.springer.com/book/10.1007/978-3-662-69007-9
+ 
+ See pp. 244nn of the book: Note that we start with doubling of G (a point on a curve with integer coordinates) and then we just add 
+ G's (it remains magic [to me] that the other points are integer, too ("but that's apparently the beauty of elliptic curves" ;))
+
+       2G = G + G, 3G = 2G + G, ..., nG = (n - 1)G + G, etc.
+
+ nG encrypts the private key n with the help of the publicly known quadruplet (a, b, q, G)
+ They say finding n given nG is infeasible (and we need to believe them...)
+'''
+
+### An example taylored to the following parameters:
 a, b, q = 2, 2, 17
-# Not the elegant solution to the problem of default argument values (rather a solution that creates a problem... ;)
-def add(P, Q, a = a, q = q):
+_1G = (5, 1)        # A primitive element... (incidentally - the first element of the sequence - for educational purposes)
+# Not the elegant solution to the problem of default argument values (in fact, a solution to create problems... ;)
+def increment(P, Q = _1G, a = a, q = q):
     x1, y1, x2, y2 = *P, *Q
     ## A slope (tangent for doubling, "secant for adding": https://en.wikipedia.org/wiki/Secant_line) - ThnX, Copilot!
     #  There is no need to mess around with arguments here...
@@ -107,7 +110,7 @@ def add(P, Q, a = a, q = q):
     m = s()
     x3 = (m**2 - x1 - x2) % q
     y3 = (m * (x1 - x3) - y1) % q
-    # Why there is no constant 'b' here?;)
+    # Why there is no constant 'b' anymore here?;)
     return x3, y3
 
 r'''
@@ -121,9 +124,31 @@ _6G, _7G = add(_1G, _5G), add(_1G, add(_1G, _5G))
 
 # But everyone can be "smarter every day"... and "I told you: EVERY!ONE!!" [ https://youtu.be/74BzSTQCl_c?t=4 ]
 # https://stackoverflow.com/questions/46617233/how-to-create-a-varying-variable-name-in-python
-_1G = (5, 1)  # A seed... (here the first element of the sequence - for educational purposes)
 print(f'1G = {_1G}', end = ', ')   
-for n in range(2, 19):                                      # ♪♫ You [should] run on for a long time [ https://youtu.be/eJlN9jdQFSc ]
-    globals()[f'_{n}G'] = add(globals()[f'_{n - 1}G'], _1G) #    run on for a long time...♫♪ [ https://youtu.be/9o6RyF9kXoA?t=160 ]
+for n in range(2, 19):                                          # ♪♫ You [should] run on for a long time [ https://youtu.be/eJlN9jdQFSc ]
+    globals()[f'_{n}G'] = increment(globals()[f'_{n - 1}G'])    #    run on for a long time...♫♪ [ https://youtu.be/9o6RyF9kXoA?t=160 ]
     print(f'{n}G = {globals()[f"_{n}G"]}', end = ', ') 
-print('19G = 0') # this is the point at infinity (the neutral element of the group)
+
+## We manually add the point at infinity (that is, the neutral element of the group - like '0' in the "normal" sense):
+#  because (5, 1) + (5, 16) = 0 and - as "zero" - it naturally denotes "infinity". Yeah, yeah...
+print('19G = 0')    # By the way, how few steps are needed to reach infinity these days...
+
+## Another example... (this time with a different curve)
+a, b, q = 3, 3, 331
+G = (7, 6); GG = [G]
+print(f'{G = }')   
+for n in range(1, 333):
+    GG.append(increment(GG[n - 1], G, a, q))
+    
+
+from matplotlib.pyplot import rcParams, cycler, cm
+rcParams["axes.prop_cycle"] = cycler("color", cm.cividis.colors)
+
+#  Does it look random - at least to the naked eye?...
+for n in range(1, 333 - 1):
+    _ = plot((GG[n - 1][0], GG[n][0]), (GG[n - 1][1], GG[n][1]))
+_ = title('An elliptical Brownian motion - a kind of...'), show()
+
+## From now on, everyone can use the ECC in DHM (see p. 250) to create the 
+#  the private key to use in e.g. the DES/AES scheme. Because:
+#  ♪♫ What's down in the dark will be brought to the light ♫♪ [ https://youtu.be/eJlN9jdQFSc?t=126 ]
