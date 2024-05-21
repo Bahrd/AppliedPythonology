@@ -15,7 +15,7 @@
 - JPEG 'lite' algorithm: [jpglite.py](./jpglite.py)
 - JPEG 2000 'featherlite' algorithm: [J2K.py](./J2K.py)
 - **Hamming's** code: [HammingBird.ipynb](./HammingBird.ipynb) and [HammingBird.py](./HammingBird.py)
-- cryptography: PKI [RSA.py](./RSA.py), key-exchange [DHM.py](./DHM.py) and zero knowledge proof [ZKP.py](./ZKP.py) ([ECC.pl](./ECC.pl) *in statu nascendi*)
+- cryptography: PKI [RSA.py](./RSA.py), key-exchange [DHM.py](./DHM.py), zero knowledge proof [ZKP.py](./ZKP.py) and elliptice curves [ECC.pl](./ECC.pl)
 - **Julia's** and **Mandelbrot's** fractals visualisations: [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
 ### Modeling and identification
 - pseudo-random number generator: [pseudogenerator.py](./pseudogenerator.py)
