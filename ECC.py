@@ -31,10 +31,10 @@ y, x = meshgrid(lp(-3, 3, 0x200), lp(-3, 3, 0x200))
 a, b, c = 0, 0, 0
 z = x**3 + a*x**2 + b*x + c - y**2
 
-fig, dx = subplots(num = 'Elliptic curve demo x³ + ax² + bx¹ + cx⁰ = y³')
+fig, dx = subplots(num = 'Elliptic curve demo x³ + ax² + bx¹ + cx⁰ = y²')
 dx.set_xlabel('X'), dx.set_ylabel('Y')
 dx.contour(x, y, z, [0])
-title(f'x³ = y³')
+title(f'x³ = y²')
     
 # adjust the main plot to make room for the sliders
 fig.subplots_adjust(left = 1/5, bottom = 1/6)
@@ -59,7 +59,7 @@ def update(_):
     sg = lambda a: '+' if a > 0 else '—'
     ao = lambda a, _: f'{abs(round(a) if round(a, 0) == round(a, 1) else round(a, 1))}' if abs(a) != 1 else '' if _ != '' else '1'
     dsp = lambda a, _: f'{ sg(a)} {ao(a, _)}{_}' if a else '' 
-    title(f'x³ {dsp(a, "x²")}{dsp(b, "x")}{dsp(c, "")} = y³')
+    title(f'x³ {dsp(a, "x²")}{dsp(b, "x")}{dsp(c, "")} = y²')
 
 # register the update function with each slider
 for _slider in (a_slider, b_slider, c_slider): _slider.on_changed(update)
@@ -75,7 +75,7 @@ for q, (a, b), cm in params:
     cc, ce = rand(len(ec)), tuple(zip(*ec))
     xy = (eval(f'ce[{_}]') for _ in (0, 1))
     # Have you already noticed how the plot tickens? ;)
-    _ = scat(*xy, c = cc, cmap = cm, alpha = 0.75), title(f'group order = {len(ec)} + 1 for {q = }'), show()
+    _ = scat(*xy, c = cc, alpha = 0.75), title(f'group order = {len(ec)} + 1 for {q = }'), show()
 
 r'''
  Now, we are talking...
