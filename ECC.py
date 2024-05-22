@@ -1,8 +1,8 @@
-﻿r''' ECC, Koblitz & Miller, 1985
-Elliptic-curve cryptography
-https://en.wikipedia.org/wiki/Schoof%27s_algorithm
-https://en.wikipedia.org/wiki/Elliptic_curve#Elliptic_curves_over_finite_fields
-https://link.springer.com/book/10.1007/978-3-642-04101-3 - Chapter 9 [in person: https://youtu.be/vnpZXJL6QCQ?t=111 ]
+﻿r''' ECC (Elliptic-curve cryptography) by Koblitz & Miller, 1985
++ [Silverman, Tate - Rational Points on Elliptic Curves](https://link.springer.com/book/10.1007/978-3-319-18588-0) - Chapter 4
++ [Paar *et al.* - Understanding Cryptography](https://link.springer.com/book/10.1007/978-3-662-69007-9) - Chapter 9
++ https://en.wikipedia.org/wiki/Schoof%27s_algorithm
++ https://en.wikipedia.org/wiki/Elliptic_curve#Elliptic_curves_over_finite_fields
 '''
 from matplotlib.pyplot import scatter as scat, title, show, contour, subplots, subplot, plot
 from itertools import product
@@ -147,7 +147,7 @@ rcParams["axes.prop_cycle"] = cycler("color", cm.cividis.colors)
 #  Does it look random - at least to the naked eye?...
 for n in range(1, 333 - 1):
     _ = plot((GG[n - 1][0], GG[n][0]), (GG[n - 1][1], GG[n][1]))
-_ = title('An elliptical Brownian motion - a kind of...'), show()
+_ = title('A Brownian motion (kind of?) over an elliptical curve...'), show()
 
 ## From now on, everyone can use the ECC in DHM (see p. 250) to create the 
 #  the private key to use in e.g. the DES/AES scheme. Because:
