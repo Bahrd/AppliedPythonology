@@ -96,7 +96,7 @@ r'''
 a, b, q = 2, 2, 17
 _1G = (5, 1)        # A primitive element... (incidentally - the first element of the sequence - for educational purposes)
 # Not the elegant solution to the problem of default argument values (in fact, a solution to create problems... ;)
-def increment(P, Q = _1G, a = a, q = q):
+def add(P, Q = _1G, a = a, q = q):
     x1, y1, x2, y2 = *P, *Q
     ## A slope (tangent for doubling, "secant for adding": https://en.wikipedia.org/wiki/Secant_line) - ThnX, Copilot!
     #  There is no need to mess around with arguments here...
@@ -126,7 +126,7 @@ _6G, _7G = add(_1G, _5G), add(_1G, add(_1G, _5G))
 # https://stackoverflow.com/questions/46617233/how-to-create-a-varying-variable-name-in-python
 print(f'1G = {_1G}', end = ', ')   
 for n in range(2, 19):                                          # ♪♫ You [should] run on for a long time [ https://youtu.be/eJlN9jdQFSc ]
-    globals()[f'_{n}G'] = increment(globals()[f'_{n - 1}G'])    #    run on for a long time...♫♪ [ https://youtu.be/9o6RyF9kXoA?t=160 ]
+    globals()[f'_{n}G'] = add(globals()[f'_{n - 1}G'])    #    run on for a long time...♫♪ [ https://youtu.be/9o6RyF9kXoA?t=160 ]
     print(f'{n}G = {globals()[f"_{n}G"]}', end = ', ') 
 
 ## We manually add the point at infinity (that is, the neutral element of the group - like '0' in the "normal" sense):
@@ -138,7 +138,7 @@ a, b, q = 3, 3, 331
 G = (7, 6); GG = [G]
 print(f'{G = }')   
 for n in range(1, 333):
-    GG.append(increment(GG[n - 1], G, a, q))
+    GG.append(add(GG[n - 1], G, a, q))
     
 
 from matplotlib.pyplot import rcParams, cycler, cm
