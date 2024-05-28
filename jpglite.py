@@ -1,16 +1,11 @@
 import cv2; import numpy as np; import auxiliary as aux
-from scipy.fftpack import dct, idct
+from scipy.fftpack import dctn, idctn
 
 #%% JPG Lite - a (pretty much) simplified version of the standard 
 #   still image transform coding compression algorithm
 
-##  Useful routines
-#   Tile DCT 2D transform
-def dct2(img, nrm = 'ortho'):
-    return dct(dct(img.T, norm = nrm).T, norm = nrm) 
-#   Tile Inverse DCT 2D transform
-def idct2(img, nrm = 'ortho'):
-    return idct(idct(img.T, norm = nrm).T, norm = nrm) 
+##  Forward & inverse DCT2 transform shortcuts
+dct2, idct2 = lambda img, norm = 'ortho': dctn(img, norm = norm), lambda img, norm = 'ortho': idctn(img, norm = norm)
 
 ##  Quantization of the DCT 2D coefficients 
 #   When 'block_size == 8', then the standard JPG luminance channel (Y)
@@ -28,7 +23,7 @@ def quantize(X, Q = 1):
 #   applied (note we assume for simplicity the fixed image size [being a power of two])
 org = cv2.cvtColor(cv2.imread('GrassHopper.PNG'), cv2.COLOR_BGR2YCrCb)
 N = 512; org = cv2.resize(org[..., 0], (N, N))
-B = 32;  tiles, blocks = range(0, N, B), range(int(N/B))
+B = 8;  tiles, blocks = range(0, N, B), range(int(N/B))
 
 ## Transforming each tile/block using DCT 2D
 trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
@@ -38,10 +33,10 @@ trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
 #  means no scalar quantization (other than conversion to the 'int' type). 
 #  For B == 8 the JPG quatization matrix is applied. Then 'Q == 0.1' results 
 #  usually in a poor quality image while 'Q == 10' yields a visually indistinguishable image.
-Q = .1
+Q = 1
 ## Coefficients quantization and inverse transformation
-qntz = [[quantize(trns[n][m], Q)            for n in blocks] for m in blocks]
-img  = [[idct2(qntz[n][m]).astype(np.int16) for n in blocks] for m in blocks]
+qntz = [[quantize(trns[n][m], Q)    for n in blocks] for m in blocks]
+img  = [[idct2(qntz[n][m])          for n in blocks] for m in blocks]
 #  Note that the 'trns' argument is not deep-copied when passed to 
 #  'quantize' function and thus is modified there!
 

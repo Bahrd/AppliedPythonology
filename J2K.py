@@ -16,7 +16,7 @@ def wc_op(c, wn, lvl, Q, op = lambda x, Q: x):
     # on 'de-tupled' wavelet coefficients 'C' 
     C, S = c2a(C); C = list(map(op, C, repeat(Q)))    
     ## In the real JPEG 2000 the coefficients are here encoded, 
-    #  bit layers after bit layers (for instance).
+    #  bit layer after bit layer (for instance).
 
     # Displaying percentage of remaining coefficients
     CC = np.block(C).flat; CCC, CV = sum((CC)!= 0), len(CC)
