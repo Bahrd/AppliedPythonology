@@ -34,7 +34,7 @@ z = x**3 + a*x**2 + b*x + c - y**2
 fig, dx = subplots(num = 'Elliptic curve demo x³ + ax² + bx¹ + cx⁰ = y²')
 dx.set_xlabel('X'), dx.set_ylabel('Y')
 dx.contour(x, y, z, [0])
-title(f'x³ = y²')
+title(f'x³ = y², Δ = {round(-16*(4*a**3 + 27*b**2), 1):.1f}')
     
 # adjust the main plot to make room for the sliders
 fig.subplots_adjust(left = 1/5, bottom = 1/6)
@@ -47,7 +47,7 @@ a_slider, b_slider, c_slider = (Slider(ax = fig.add_axes(_a), label = _l, orient
                                 for _a, _l, _o in _sp_)
 # Real el'curves...
 def update(_):
-    global a, b, c, x, y
+    global x, y
     a, b, c = a_slider.val, b_slider.val, c_slider.val
     z = x**3 + a*x**2 + b*x + c - y**2
     dx.cla()
@@ -59,7 +59,7 @@ def update(_):
     sg = lambda a: '+' if a > 0 else '—'
     ao = lambda a, _: f'{abs(round(a) if round(a, 0) == round(a, 1) else round(a, 1))}' if abs(a) != 1 else '' if _ != '' else '1'
     dsp = lambda a, _: f'{ sg(a)} {ao(a, _)}{_}' if a else '' 
-    title(f'x³ {dsp(a, "x²")}{dsp(b, "x")}{dsp(c, "")} = y²')
+    title(f'x³ {dsp(a, "x²")}{dsp(b, "x")}{dsp(c, "")} = y², Δ = {round(-16*(4*a**3 + 27*b**2), 1):.1f}')
 
 # register the update function with each slider
 for _slider in (a_slider, b_slider, c_slider): _slider.on_changed(update)
@@ -125,8 +125,8 @@ _6G, _7G = add(_1G, _5G), add(_1G, add(_1G, _5G))
 # But everyone can be "smarter every day"... and "I told you: EVERY!ONE!!" [ https://youtu.be/74BzSTQCl_c?t=4 ]
 # https://stackoverflow.com/questions/46617233/how-to-create-a-varying-variable-name-in-python
 print(f'1G = {_1G}', end = ', ')   
-for n in range(2, 19):                                          # ♪♫ You [should] run on for a long time [ https://youtu.be/eJlN9jdQFSc ]
-    globals()[f'_{n}G'] = add(globals()[f'_{n - 1}G'])    #    run on for a long time...♫♪ [ https://youtu.be/9o6RyF9kXoA?t=160 ]
+for n in range(2, 19):                                  # ♪♫ You [should] run on for a long time [ https://youtu.be/eJlN9jdQFSc ]
+    globals()[f'_{n}G'] = add(globals()[f'_{n - 1}G'])  #    run on for a long time...♫♪ [ https://youtu.be/9o6RyF9kXoA?t=160 ]
     print(f'{n}G = {globals()[f"_{n}G"]}', end = ', ') 
 
 ## We manually add the point at infinity (that is, the neutral element of the group - like '0' in the "normal" sense):
@@ -152,3 +152,5 @@ _ = title('A Brownian motion (kind of?) over an elliptical curve...'), show()
 ## From now on, everyone can use the ECC in DHM (see p. 250) to create the 
 #  the private key to use in e.g. the DES/AES scheme. Because:
 #  ♪♫ What's down in the dark will be brought to the light ♫♪ [ https://youtu.be/eJlN9jdQFSc?t=126 ]
+
+## https://datatracker.ietf.org/doc/html/rfc6090 - homogeneous coordinates to avoid multiplicative inverses
