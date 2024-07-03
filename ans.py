@@ -1,12 +1,12 @@
 ﻿from math import floor, ceil, log2 as lg2, log10 as lg10
 from random import randint
 
-# A probability p = P(X = '1') is set quite arbitrarily...
+# A probability p = P(X = '1') is set quite arbitrarily
 L = 0x10; p = 1/L
-# ... and the resulting entropy is just 'H = -∑ᵢpᵢ⋅lg₂pᵢ'  
+# The resulting entropy is just (an) average 'H = -∑ᵢpᵢ⋅lg₂pᵢ'  
 H = -(1 - p) * lg2(1 - p) - p * lg2(p) #[bit/smbl]
 
-# A 'random' message... (with an almost 100% chance of having '1' somewhere...)
+# A 'random' message... (with a fair chance of having a single '1' somewhere...)
 msg, ll = list(L * '0'), randint(0, L)
 if ll < L: msg[ll] = '1' 
 msg = ''.join(msg)
@@ -35,4 +35,3 @@ ly, lc = len(msg), floor(lg2(code) + 1)
 print('—' * 0o100, f'\nP(X = \'1\') = 1/{L} → Entropy = {H:.2f} [bit/symbol]')
 print(f"Message: '{msg}'\nEncoded:  {bin(code)}")
 print(f"Compression: {ly} → {lc} ({lc/ly:,.0%})\nDecoded: '{dec}'")
-print(f'{ll} vs. {L}')
