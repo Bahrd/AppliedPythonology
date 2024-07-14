@@ -1,6 +1,6 @@
 # Applied Pythonology
 ![Laocoön and His Sons](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg/250px-Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg)
-## Basic system identification and image & graphics processing (a.k.a. '*machine learning*' and '*machine vision**') algorithms
+## Basic image & graphics processing (a.k.a. '*machine learning*' and '*machine vision**') algorithms
 ### Low-level image and data processing
 - interpolation
   - 1D: [interpolation1D.ipynb](./interpolation1D.ipynb) & [interpolation1D.py](./interpolation1D.py)
