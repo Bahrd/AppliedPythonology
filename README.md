@@ -1,7 +1,7 @@
 # Applied Pythonology
 ![Laocoön and His Sons](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg/250px-Laocoon_Pio-Clementino_Inv1059-1064-1067.jpg)
-## Basic image & graphics processing (a.k.a. '*machine learning*' and '*machine vision**') algorithms
-### Low-level image and data processing
+## Basic image & graphics processing (a.k.a. '*machine learning*' and '*machine vision*') algorithms
+### Low-level data (image and signal) processing
 - interpolation
   - 1D: [interpolation1D.ipynb](./interpolation1D.ipynb) & [interpolation1D.py](./interpolation1D.py)
   - 2D: [interpolation2D.py](./interpolation2D.py)
@@ -11,7 +11,7 @@
 - low-light image generation: [PoissonedJupiter.py](./PoissonedJupiter.py) and [PoissoningMBA](./PoissoningMBA)
 - Monte Carlo pixel counting/area measurements: [MonteCarlo.py](./MonteCarlo.py)
 - denoising by DCT or wavelet thresholding: [DCT.py](./dct.py) and [WaveletThresholding.py](./WaveletThresholding.py)
-- **Duda's** ANS compression coding: [ans.py](./ans.py)
+- **Duda's** ANS compression coding:  [ans.ipynb](./ans.ipynb) & [ans.py](./ans.py)
 - JPEG 'lite' algorithm: [jpglite.py](./jpglite.py)
 - JPEG 2000 'featherlite' algorithm: [J2K.py](./J2K.py)
 - **Hamming's** code: [HammingBird.ipynb](./HammingBird.ipynb) and [HammingBird.py](./HammingBird.py)
