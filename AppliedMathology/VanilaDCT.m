@@ -10,7 +10,7 @@ function whdcwt
         AA = A;
     end
     %% An image 
-    A = imresize(imread('images\Leopard.jpg'), [512 512]);
+    A = imresize(imread('images\Lampart.jpg'), [512 512]);
     A = rgb2gray(A); % ?All I see turns to brown? - to gray, in fact (for simplicity)
 
     %% GUI Slider

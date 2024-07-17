@@ -34,8 +34,8 @@ module wedge(d, txt)
       is preceded by [a virtual] 
       subtractive† one. */
    r = 1/2*d;
-   translate([0, 0, 21/10*r]) // place the resulting wedge and ...
-   rotate([180, 0, 0]) rotate([0, -20, 0]) // flip it for printing‡
+   translate([0, 0, 205/100*r]) // place the resulting wedge and ...
+   rotate([180, 0, 0]) rotate([0, -25, 0]) // flip it for printing‡
       difference()            // extract† the logo from the wedge
       {
          minkowski()          // cut† all corners of the wedge
@@ -43,22 +43,22 @@ module wedge(d, txt)
             sphere(1/20*r);
             difference()   // drill† a cylinder through a cylinder to...
             {              // get two wedges and remove† the other one
-               rotate([0, 20, 0])
+               rotate([0, 25, 0])   // A bit ticker wedge      
                   cylinder(h = 4*r, r = r, center = true);
                cylinder(h = 5*r, r = 9/8*r, center = true);
                translate([-1, 0, -1]*r)
                   cube([11/5*r, 11/5*r, 11/5*r], true);
             }
          }
-         translate([8/7, 0, 1]*r)
-         rotate([0, 105, 0]) rotate(90, [0, 0, 1])
+         translate([8/7, 0, 0.75]*r)
+         rotate([0, 110, 0]) rotate(90, [0, 0, 1])
             ally(d, txt);
       }
 }
 
 module wedge_twins(d, txt) // or a wedge in a mirror
 {
-   translate([-7, 0, 0]) mirror([1, 0, 0])
+   translate([-12, 0, 0]) mirror([1, 0, 0])
       wedge(d, txt);
    wedge(d, txt);
 }

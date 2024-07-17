@@ -1,5 +1,5 @@
 
-A = imresize(imread('..\Malewicz I.png'), [512 512]);
+A = imresize(imread('images\Lampart.jpg'), [512 512]);
 A = rgb2gray(A); 
 
 wn = 'bior4.4';  % bior1.1 == Haar wavelets; bior2.2 == Le Gal (5/3); bior4.4 == CDF (9/7) 
