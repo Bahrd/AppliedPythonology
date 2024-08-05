@@ -21,7 +21,7 @@ def quantize(X, Q = 1):
 
 ## Image loading (if 'B == 8' then by default a JPG quantization scheme is 
 #   applied (note we assume for simplicity the fixed image size [being a power of two])
-org = cv2.cvtColor(cv2.imread('GrassHopper.PNG'), cv2.COLOR_BGR2YCrCb)
+org = cv2.cvtColor(cv2.imread('./images/GrassHopper.PNG'), cv2.COLOR_BGR2YCrCb)
 N = 512; org = cv2.resize(org[..., 0], (N, N))
 B = 8;  tiles, blocks = range(0, N, B), range(int(N/B))
 

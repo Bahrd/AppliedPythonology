@@ -3,7 +3,7 @@ from numpy import count_nonzero, any
 
 ## Parameters
 f = 'Tesla-M3'
-img = imread(f'./{f}.png')
+img = imread(f'./images/{f}.png')
 gnd_bgr = 0x0, 0x0, 0xff # Change if background isn't pure red
 
 ### A pixel-counting method

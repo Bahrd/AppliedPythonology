@@ -46,7 +46,7 @@ module wedge(d, txt)
                rotate([0, 25, 0])   // A bit ticker wedge      
                   cylinder(h = 4*r, r = r, center = true);
                cylinder(h = 5*r, r = 9/8*r, center = true);
-               translate([-1, 0, -1]*r)
+               translate([-1, 0, -1]*r) // discard the cylinder's remnants
                   cube([11/5*r, 11/5*r, 11/5*r], true);
             }
          }

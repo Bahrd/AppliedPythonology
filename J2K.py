@@ -41,8 +41,7 @@ art = 'GrassHopper'   # pseud. 'Filip'... ;)
 L, wn, Q, qntz = 4, 'bior1.1', -6, lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 
 # Irréversible color transform (ICT)*
-img = cv2.cvtColor(cv2.imread(f'./{art}.png'), cv2.COLOR_BGR2YCrCb)
-#img = cv2.cvtColor(cv2.imread('./{}.png'.format(art)), cv2.COLOR_BGR2RGB)
+img = cv2.cvtColor(cv2.imread(f'./images/{art}.png'), cv2.COLOR_BGR2YCrCb)
 
 ###
 ## YCbCr color space (a digression)

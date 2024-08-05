@@ -18,7 +18,6 @@ dwtmode('per');
 % % ... or for computations!
 L = 8; [B, C] = wavedec2(A, L, wn); %L = 1, ... log_2(N)
     T = 64; B(abs(B) < T) = 0; 
-    %B = QQ(B, -6);
     BB = B ~= 0; BB = sum(BB(:));
 A = waverec2(B, C, wn);
 

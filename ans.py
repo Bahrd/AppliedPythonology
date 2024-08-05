@@ -1,4 +1,4 @@
-﻿from math import floor, ceil, log2 as lg2, log10 as lg10
+﻿from math import floor, ceil, log2 as lg2 
 from random import randint
 
 # A probability p = P(X = '1') is set quite arbitrarily
