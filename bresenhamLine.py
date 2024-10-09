@@ -2,10 +2,11 @@
 #  https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 #  with our variations on an anti-aliasing theme...
 
+from typing import Iterable
 from numpy import clip, fliplr, flipud, zeros, maximum
 from matplotlib.pyplot import imshow, show, subplot, tight_layout
 
-def bresenham_line(x0: int, y0: int, x1: int, y1: int, AA:tuple or list = None):
+def bresenham_line(x0: int, y0: int, x1: int, y1: int, AA:Iterable = None):
     def Γ(y: int):
         return clip(y, y0, y1)
     
