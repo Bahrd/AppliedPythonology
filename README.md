@@ -4,8 +4,10 @@
 ### Low-level data (image and signal) processing
 - interpolation
   - 1D: [interpolation1D.ipynb](./interpolation1D.ipynb) & [interpolation1D.py](./interpolation1D.py)
-  - 2D: [interpolation2D.py](./interpolation2D.py)
-- simple scaling and rotation: [rotatioNN.py](./rotatioNN.py) and [rotation2D.py](./rotation2D.py)
+  - 2D: [interpolation2D.ipynb](./interpolation2D.ipynb) & [interpolation2D.py](./interpolation2D.py)
+- simple 2D scaling and rotation
+- NN:  [rotatioNN.ipynb](./rotatioNN.ipynb) & [rotatioNN.py](./rotatioNN.py)
+- spline: [rotation2D.ipynb](./rotation2D.ipynb) & [rotation2D.py](./rotation2D.py)
 - demosaicking (for **Bayer's** and X-Trans® CFAs): [demosaicking.py](./demosaicking.py) and [demosaickingX.py](./demosaickingX.py)
 - **Cooley-Tukey's** FFT: [CooleyTukey.py](./CooleyTukey.py)
 - low-light image generation: [PoissonedJupiter.py](./PoissonedJupiter.py) and [PoissoningMBA](./PoissoningMBA)
