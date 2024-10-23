@@ -3,18 +3,31 @@ import numpy as np; from numpy.linalg import inv
 import matplotlib.pyplot as plt; from matplotlib.colors import LinearSegmentedColormap as lscm
 
 #Image presentation
-def displayImages(images, titles = '', cmp = 'gray', show = True):
-#    if type(images) is tuple or type(images) is list: 
-    if isinstance(images, (tuple, list)): 
+def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True):
+#    if type(images) is tuple or type(images) is list:
+    if isinstance(images, (tuple, list)):
         number = len(images)
         fig = plt.figure(figsize = (number * 3, 3)); fig.tight_layout()
         for p, (image, title) in enumerate(zip(images, titles)):
             sb = plt.subplot(1, number, p + 1)
+
             sb.set_xticks([]); sb.set_yticks([])
+            if grid:
+                # Ticks... https://stackoverflow.com/questions/38973868/adjusting-gridlines-and-ticks-in-matplotlib-imshow
+                sb.set_xticks(np.arange(-.5, len(image), 1), minor=True)
+                sb.set_yticks(np.arange(-.5, len(image), 1), minor=True)
+                sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
+
             plt.title(title); plt.imshow(image, cmap = cmp)
     else:
         sb = plt.subplot(1, 1, 1)
+
         sb.set_xticks([]); sb.set_yticks([])
+        if grid:
+            sb.set_xticks(np.arange(-.5, len(image), 1), minor=True)
+            sb.set_yticks(np.arange(-.5, len(image), 1), minor=True)
+            sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
+
         plt.title(titles); plt.imshow(images, cmap = cmp)
     if show: plt.show()
 
@@ -44,7 +57,7 @@ def displayChannels(images, channels, rows = 1, cols = 4, title = 'RGB'):
         plt.show()
 
 # When you don't care about the return value
-def splot(*args, scalex = True, scaley = True, data = None, **kwargs): 
+def splot(*args, scalex = True, scaley = True, data = None, **kwargs):
     _ = plt.plot(*args, scalex = scalex, scaley = scaley, data = data, **kwargs)
 
 # CFA filter mask (replication of a single CFA segment into a whole sensor mask)
@@ -60,13 +73,13 @@ JPG_QT_Y = [[16, 11, 10, 16,  24,  40,  51,  61],
             [49, 64, 78, 87, 103, 121, 120, 101],
             [72, 92, 95, 98, 112, 100, 103,  99]]
 
-JPG_QT_CbCr =  [[17, 18, 24, 47, 99, 99, 99, 99], 
-                [18, 21, 26, 66, 99, 99, 99, 99], 
-                [24, 26, 56, 99, 99, 99, 99, 99], 
-                [47, 66, 99, 99, 99, 99, 99, 99], 
+JPG_QT_CbCr =  [[17, 18, 24, 47, 99, 99, 99, 99],
+                [18, 21, 26, 66, 99, 99, 99, 99],
+                [24, 26, 56, 99, 99, 99, 99, 99],
+                [47, 66, 99, 99, 99, 99, 99, 99],
                 [99, 99, 99, 99, 99, 99, 99, 99],
-                [99, 99, 99, 99, 99, 99, 99, 99], 
-                [99, 99, 99, 99, 99, 99, 99, 99], 
+                [99, 99, 99, 99, 99, 99, 99, 99],
+                [99, 99, 99, 99, 99, 99, 99, 99],
                 [99, 99, 99, 99, 99, 99, 99, 99]]
 
 ## Irréversible Color Transform (ICT)
@@ -76,11 +89,11 @@ RGB2YCbCr = [[ .299,     .587,     .114],
 YCbCr2RGB = inv(np.array(RGB2YCbCr))
 
 ## Reversible Color Transform (RCT)
-def RCT(R, G, B): 
+def RCT(R, G, B):
     Y, Cb, Cr = int(np.floor((R + 2*G + B)/4)), B - G, R - G
     return (Y, Cb, Cr)
 
-def invRCT(Y, Cb, Cr): 
+def invRCT(Y, Cb, Cr):
     G = Y - int(np.floor((Cb + Cr)/4))
     R, B = Cr + G, Cb + G
     return (R, G, B)
@@ -89,9 +102,9 @@ def invRCT(Y, Cb, Cr):
 ## A decorative fun... See: https://www.geeksforgeeks.org/decorators-in-python/
 from time import time as TT
 def ITT(f):
-	def time_warper_wrapper(*args, **kwargs): 
+	def time_warper_wrapper(*args, **kwargs):
 		begin = TT() # from time import time as TT
-		r = f(*args, **kwargs) 
+		r = f(*args, **kwargs)
 		end = TT()
 		print(f'{f.__name__} evaluated in {end - begin:2.4}s')
 		return r

@@ -15,7 +15,7 @@ thinks that 'ϑ is θ == True' (and so are 'ϱ' and 'ρ', see ll. 39-40)! '''
 α, Cu = ϱ * pi/180.0, 'copper' # Main and auxiliary variables
 
 #  ... and a source image...  (cf. './rotation2D.py')
-img = eddie; M = len(img); N = int(argv[0b10]) if len(argv) > 0b10 else M << 0b1
+img = eddie; M = len(img); N = int(eval(argv[0b10])) if len(argv) > 0b10 else M << 0b1
 out = empty((N, N)) 
 # ... and rotation of ϑ = [x, y].T, w.r.t. OXY and through that angle: https://youtu.be/eV7UI_WX54c?t=191 
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)],  #              https://youtu.be/eV7UI_WX54c?t=361
@@ -26,5 +26,5 @@ for n in range(N):
         ϑ = array([n/N, m/N]) * M - OXY
         ϑ = Rα @ ϑ + OXY
         x, y = clip(ϑ, 0, M - 1).astype(int) # where the NNs dwell
-        out[n, m] = img[x, y]                # cf. rotation2D.py's '... = f(x, y, img, Π)'
+        out[n, m] = img[x, y]                # again, cf. rotation2D.py's '... = f(x, y, img, Π)'
 DI((img, out), ('Original', f'NN-rotated by {ρ}°'), cmp = Cu)

@@ -42,7 +42,7 @@ def ft(img, x, y, ψ = ϕ, Δ = 0b11):
 α, Cu = ϱ * pi/180.0, 'copper' # Main and auxiliary variables
 
 #  A source image... 
-img = eddie; M = len(img); N = eval(argv[0b10]) if len(argv) > 0b10 else M << 0b1
+img = eddie; M = len(img); N = int(eval(argv[0b10])) if len(argv) > 0b10 else M << 0b1
 out = empty((N, N)) 
 # ... and rotation of ϑ = [x, y].T, w.r.t. OXY and through that angle 
 OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)], 
@@ -66,7 +66,8 @@ else:
                                                  for m in range(N)] 
                                                  for n in range(N)]
 
-DI((img, out), ('Original', f'{nomina}-rotated by {ϱ}°'), cmp = Cu)
+for grid in (False, True):
+    DI((img, out), ('Original', f'{nomina}-rotated by {ϱ}°'), cmp = Cu, grid = grid)
 
 ''' Random users' fun: "python .\rotation2D.py '-RR(44)' '42 + RR(7) - 6' 'lambda x: ϕ(x + RR(9)/12)'"
 44:   "A imię jego..." A. M. Dz. III 
