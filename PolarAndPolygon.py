@@ -5,7 +5,8 @@ from math import pi as π
 
 # A square on a pole ♪♫...and the byenary 100 all!♫♪
 θ, ρ = lsp(0, π/0b100, 0b10), U(π/0o10, π*0o1) # ... or for octoplus!
-secant = rp(cos(θ))   
+# https://en.wikipedia.org/wiki/Trigonometric_functions#Etymology
+secant = rp(cos(θ))   # Secant stems from Latin secans — "cutting" — since the line cuts the circle
 for θ in (θ + n*π/0b10 for n in range(0b100)): 
     _ = polar(θ + ρ, secant, θ + (π/0b100 + ρ), secant[::-1]) 
 _ = title('A square on a pole...'), show()
@@ -18,7 +19,7 @@ def Lp_octant(p):
     y = pow(1 - pow(x, p), 1/p)
     return x, y
 
-# Create a figure...
+# Go (create a) figure...
 fig, ax = subplots(num = "Circles in various Lp distances")
 ax.set_aspect('equal')
 # Place a horizontal slider to control $p$ in $L_p$
@@ -59,5 +60,5 @@ for p in (2, 1, 0.5, 0.25, 2048, 3583/2000):
 
 Source(s):
 1. https://en.wikipedia.org/wiki/Parametric_equation#Some_sophisticated_functions
-2. https://www.youtube.com/watch?v=AoOv6bWg9lk - "Polar Equations of Polygons"
+2. https://youtu.be/AoOv6bWg9lk?t=256 - "Polar Equations of Polygons" 
 '''

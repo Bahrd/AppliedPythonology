@@ -6,7 +6,22 @@ from typing import Iterable
 from numpy import clip, fliplr, flipud, zeros, maximum
 from matplotlib.pyplot import imshow, show, subplot, tight_layout
 
-def bresenham_line(x0: int, y0: int, x1: int, y1: int, AA:Iterable = None):
+def bresenham_line(x0: int, y0: int, x1: int, y1: int):   
+    dx, dy = x1 - x0, y1 - y0
+    D = (dy << 1) - dx
+    
+    Λ = zeros((dx, dy + 1))
+    y = y0
+    for x in range(x0, x1):       
+        Λ[x, y] = 1
+        if D > 0:
+            y = y + 1
+            D = D - (dx << 1)
+
+        D = D + (dy << 1)
+    return Λ
+
+def bresenhamAAline(x0: int, y0: int, x1: int, y1: int, AA:Iterable):
     def Γ(y: int):
         return clip(y, y0, y1)
     
@@ -14,27 +29,23 @@ def bresenham_line(x0: int, y0: int, x1: int, y1: int, AA:Iterable = None):
     D = 2*dy - dx
     
     Λ = zeros((dx, dy + 1))
-    y, L = y0, len(AA) if AA != None else 0
-    c, HL = 1 - (L - 2*int(L/2)), int(L/2)
+    y, L = y0, len(AA)
+    c, HL = 1 - (L - 2*(L//2)), (L//2)
     for x in range(x0, x1):       
         if D > 0:
-            if(AA == None): Λ[x, y] = 1
-            else:
-                for n, w in zip(range(y - HL + c, y - HL + c + L), AA): Λ[x, Γ(n)] = w        
-
+            for n, w in zip(range(y - HL + c, y - HL + c + L), AA): Λ[x, Γ(n)] = w        
             y = y + 1
             D = D - (dx << 1)
         else:
-            if(AA == None): Λ[x, y] = 1
-            else: 
-                for n, w in zip(range(y - HL, y - HL + L), AA[::-1]): Λ[x, Γ(n)] = w
+            for n, w in zip(range(y - HL, y - HL + L), AA[::-1]): Λ[x, Γ(n)] = w
       
         D = D + (dy << 1)
     return Λ
 
 #                       (1/3, 2/3, 1/1, 2/3, 1/3)   # Symmetric AA filters when L is odd...
-X, Y, AA = 0x163, 0o61, (1/2, 1/1, 2/3, 1/3)        # 'Odd' AAA (asymmetric AA) when L is not...
-noa, aa = bresenham_line(0, 0, X, Y, AA = AA), bresenham_line(0, 0, X, Y)
+#                       (1/2, 1/1, 2/3, 1/3)        # 'Odd' AAA (asymmetric AA) when L is not...
+X, Y, AA = 0x161, 0o161, (1/2, 1/1, 1/2)             # A minimal example...
+noa, aa = bresenhamAAline(0, 0, X, Y, AA = AA), bresenham_line(0, 0, X, Y)
 
 # A helper...
 def subshow (data:tuple):

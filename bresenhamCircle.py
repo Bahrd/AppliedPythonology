@@ -2,7 +2,7 @@
 #  http://members.chello.at/~easyfilter/bresenham.html
 
 from numpy import ones, fliplr, flipud, arange
-from matplotlib.pyplot import imshow, show, pause, subplot, figure, grid
+from matplotlib.pyplot import imshow, show, pause, subplot, figure
 from numpy.random import choice, uniform, permutation as rpr
 
 ## A plain version
@@ -12,14 +12,14 @@ def bresenham_circle(_r: int):
     
     while x <= 0:                                       
         for n, m, o in ((ζ - x, ξ + y, 0),   (ζ - y, ξ - x, .75),   # "One for the money, two for the show; 
-                        (ζ + x, ξ - y, .25), (ζ + y, ξ + x, .5)):   #  Three to make ready, and four to go!"
-            Φ[n, m] = o                                   # https://en.wikipedia.org/wiki/One_for_the_Money
-        r = ε
-        if r <= y:
-            y += 1; ε += y*2 + 1
-        if r > x or ε > y: 
-            x += 1; ε += x*2 + 1
-    return Φ
+                        (ζ + x, ξ - y, .25), (ζ + y, ξ + x, .5)):   #  Three to make ready, and four to go!" https://genius.com/Carl-perkins-blue-suede-shoes-lyrics
+            Φ[n, m] = o                     # https://en.wikipedia.org/wiki/One_for_the_Money
+        r = ε                               # https://youtu.be/Bm5HKlQ6nGM?t=8 - by E. Presley '65
+        if r <= y:                          # https://www.youtube.com/watch?v=O6BbL4DrrBo      '68
+            y += 1; ε += y*2 + 1            # https://www.youtube.com/watch?v=RX7hBaoMuT0      '70
+        if r > x or ε > y:                  # https://www.youtube.com/watch?v=VJFz8zZCJZg      '77
+            x += 1; ε += x*2 + 1            # https://www.youtube.com/watch?v=oKQj-RXg3Dk - Carl Perkins 
+    return Φ                                # https://www.youtube.com/watch?v=aSCP_UnzKDk - ... with Johnny Cash
 
 ## A version obscured by debuggin' code (inactive if '-O' option is on)
 def dbresenham_circle(_r: int):
@@ -96,7 +96,7 @@ def flood_fill(x: int, y: int):
 flood_fill(x = 0b10, y = 0o10) 
 
 ## ... and ♪♫ when the levee breaks...♫♪ 
-#  https://youtu.be/JM3fodiK9rY
+# https://youtu.be/JM3fodiK9rY
 #flood_fill(25, 25), flood_fill(25, 50)
 show()
 

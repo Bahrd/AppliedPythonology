@@ -60,3 +60,7 @@ def reset(_):
 button.on_clicked(reset)
     
 plt.show() #... must go on!
+
+## BTW, anyone curious why Apple have patented the iPhone's corners?
+# https://youtu.be/jvPPXbo87ds?t=1762 vs https://youtu.be/jvPPXbo87ds?t=2068 
+# https://www.youtube.com/watch?v=aVwxzDHniEw

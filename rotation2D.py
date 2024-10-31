@@ -49,7 +49,7 @@ OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)],
                                     [sin(α),  cos(α)]]) # turns clockwise when α > 0
 
 # ... and an interpoland...:) Π, Λ, ϕ, ξ, "or else..."
-nomina = argv[0b11] if len(argv) > 0b11 else ϕ.__name__; ψ = eval(nomina) 
+nomina = argv[0b11] if len(argv) > 0b11 else ξ.__name__; ψ = eval(nomina) 
 ToF = lambda: choice([True, False]) 
 
 f = fl if ToF() else ft
