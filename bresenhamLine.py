@@ -3,22 +3,24 @@
 #  with our variations on an anti-aliasing theme...
 
 from typing import Iterable
+from numpy.random import randint
 from numpy import clip, fliplr, flipud, zeros, maximum
 from matplotlib.pyplot import imshow, show, subplot, tight_layout
 
+## See this "esplanation": https://youtu.be/CceepU1vIKo?t=20 first!
 def bresenham_line(x0: int, y0: int, x1: int, y1: int):   
     dx, dy = x1 - x0, y1 - y0
     D = (dy << 1) - dx
     
     Λ = zeros((dx, dy + 1))
     y = y0
+    dx <<= 1; dy <<= 1
     for x in range(x0, x1):       
         Λ[x, y] = 1
         if D > 0:
-            y = y + 1
-            D = D - (dx << 1)
-
-        D = D + (dy << 1)
+            y += 1
+            D -= dx
+        D += dy
     return Λ
 
 def bresenhamAAline(x0: int, y0: int, x1: int, y1: int, AA:Iterable):
@@ -44,7 +46,7 @@ def bresenhamAAline(x0: int, y0: int, x1: int, y1: int, AA:Iterable):
 
 #                       (1/3, 2/3, 1/1, 2/3, 1/3)   # Symmetric AA filters when L is odd...
 #                       (1/2, 1/1, 2/3, 1/3)        # 'Odd' AAA (asymmetric AA) when L is not...
-X, Y, AA = 0x161, 0o161, (1/2, 1/1, 1/2)             # A minimal example...
+X, Y, AA = 0x161, randint(0o161), (1/2, 1/1, 1/2)   # A minimal AA example...
 noa, aa = bresenhamAAline(0, 0, X, Y, AA = AA), bresenham_line(0, 0, X, Y)
 
 # A helper...

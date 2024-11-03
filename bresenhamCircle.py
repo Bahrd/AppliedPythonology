@@ -1,58 +1,84 @@
-﻿## A Bresenh`am (flooded) circle... a random edu version!
-#  http://members.chello.at/~easyfilter/bresenham.html
+﻿## A Bresenh`am (flooded) circle... a bunch of random edu versions!
 
 from numpy import ones, fliplr, flipud, arange
 from matplotlib.pyplot import imshow, show, pause, subplot, figure
-from numpy.random import choice, uniform, permutation as rpr
+from numpy.random import choice, permutation as rpr
 
-## A plain version
-def bresenham_circle(_r: int):
+## Shades of gray... (or pale, if you like Procol Harum): https://www.youtube.com/watch?v=xM_N2O-gzP4
+shades = (0/0x100, 0x69/0x100, 0x80/0x100, 0xd3/0x100, # black, dimgray, gray, lightgray, etc: https://en.wikipedia.org/wiki/Grey#Optics
+          0xc0/0x100, 0xdc/0x100, 0xa9/0x100, 0xbb/0x100) # silver, gainsboro, darkgray, and "pale"...
+
+## A plain (but not quite pale!) quadrant version
+#  http://members.chello.at/~easyfilter/bresenham.html
+def bresenham_quadrant_circle(_r: int):
     Φ = ones((2*_r + 1, 2*_r + 1))
     ζ, ξ, x, y, ε = _r, _r , -_r, 0, 2 - 2*_r
     
-    while x <= 0:                                       
-        for n, m, o in ((ζ - x, ξ + y, 0),   (ζ - y, ξ - x, .75),   # "One for the money, two for the show; 
-                        (ζ + x, ξ - y, .25), (ζ + y, ξ + x, .5)):   #  Three to make ready, and four to go!" https://genius.com/Carl-perkins-blue-suede-shoes-lyrics
-            Φ[n, m] = o                     # https://en.wikipedia.org/wiki/One_for_the_Money
-        r = ε                               # https://youtu.be/Bm5HKlQ6nGM?t=8 - by E. Presley '65
-        if r <= y:                          # https://www.youtube.com/watch?v=O6BbL4DrrBo      '68
-            y += 1; ε += y*2 + 1            # https://www.youtube.com/watch?v=RX7hBaoMuT0      '70
-        if r > x or ε > y:                  # https://www.youtube.com/watch?v=VJFz8zZCJZg      '77
-            x += 1; ε += x*2 + 1            # https://www.youtube.com/watch?v=oKQj-RXg3Dk - Carl Perkins 
-    return Φ                                # https://www.youtube.com/watch?v=aSCP_UnzKDk - ... with Johnny Cash
+    while x <= 0:                   
+        for (n, m), o in zip(((ζ - x, ξ + y), (ζ - y, ξ - x),   
+                              (ζ + x, ξ - y), (ζ + y, ξ + x)), shades):   
+            Φ[n, m] = o                           
+        r = ε                               
+        if r <= y:                          
+            y += 1; ε += 2*y + 1            
+        if r > x or ε > y:                  
+            x += 1; ε += 2*x + 1            
+    return Φ                                
 
+# And an even smarter (octant) one: 
+# https://www.youtube.com/watch?v=hpiILbMkF9w
+def bresenham_octant_circle(_r: int):
+    Φ = ones((2*_r + 1, 2*_r + 1))
+    ζ, ξ = _r, _r
+    x, y, ε = 0, -_r, -_r
+    
+    while x < -y:
+        if ε > 0:
+            y += 1
+            ε += 1 + 2*(x + y)
+        else:
+            ε += 1 + 2*x
+
+        for (n, m), o in zip(((ζ + x, ξ + y), (ζ - x, ξ - y), 
+                              (ζ + x, ξ - y), (ζ - x, ξ + y), 
+                              (ζ + y, ξ + x), (ζ - y, ξ - x), 
+                              (ζ + y, ξ - x), (ζ - y, ξ + x)), 
+                             shades):   
+            Φ[n, m] = o 
+        x += 1
+    return Φ
+    
 ## A version obscured by debuggin' code (inactive if '-O' option is on)
-def dbresenham_circle(_r: int):
+def dbresenham_quadrant_circle(_r: int):
     Φ = ones((2*_r + 1, 2*_r + 1))
     ζ, ξ, x, y, ε = _r, _r , -_r, 0, 2 - 2*_r
     
     c, _c = 0, False                #  Bookkeeping Q1 [counting points of a circumference]
     while x <= 0:                                       
-        for n, m, o in ((ζ - x, ξ + y, 0),   (ζ - y, ξ - x, .75),   # "One for the money, two for the show; 
-                        (ζ + x, ξ - y, .25), (ζ + y, ξ + x, .5)):   #  Three to make ready, and four to go!"
-            Φ[n, m] = o                                   # https://en.wikipedia.org/wiki/One_for_the_Money
-
-        r = ε
-        c += _c; _c = False         #  Bookkeeping Q2 
-        if r <= y:
-            y += 1; ε += y*2 + 1
-        _c = True                   #  Bookkeeping Q3
+        for (n, m), o in zip(((ζ - x, ξ + y),   (ζ - y, ξ - x),         # ♪♫ One for the money, two for the show;  
+                            (ζ + x, ξ - y), (ζ + y, ξ + x)), shades):   #    Three to make ready, and four to go! ♫♪ https://genius.com/Carl-perkins-blue-suede-shoes-lyrics
+            Φ[n, m] = o                                                 # https://en.wikipedia.org/wiki/One_for_the_Money
+                                                                        # https://youtu.be/Bm5HKlQ6nGM?t=8 - by E. Presley '65
+        r = ε                                                           # https://www.youtube.com/watch?v=O6BbL4DrrBo      '68
+        c += _c; _c = False         #  Bookkeeping Q2                     https://www.youtube.com/watch?v=RX7hBaoMuT0      '70
+        if r <= y:                                                      # https://www.youtube.com/watch?v=VJFz8zZCJZg      '77
+            y += 1; ε += y*2 + 1                                        # https://www.youtube.com/watch?v=oKQj-RXg3Dk - Carl Perkins 
+        _c = True                   #  Bookkeeping Q3                     https://www.youtube.com/watch?v=aSCP_UnzKDk - ... with Johnny Cash
         if r > x or ε > y: 
             x += 1; ε += x*2 + 1
         _c = True                   #  Bookkeeping Q4
             
-    ## And the annual balance... [circumference/diameter = π, right?]
+    ## And the annual (periodic anyway!) balance... [circumference/diameter = π, right?]
     # https://youtu.be/yAEveAH2KwI?t=96 - where π == 4...
     print(f'For r = {_r}, we have 2πr = {4*c} and π = {2*c/_r:.2f}...',
             f'(or d = {2*_r + 1}, πd = {4*c} and thus π = {4*c/(2*_r + 1):.2f} ;)')  
     return Φ
 
 r = choice(range(0o1, 0o17))
-bc = dbresenham_circle(r) if __debug__ else bresenham_circle(r)
+bresenham_circle = dbresenham_quadrant_circle if __debug__ else choice((bresenham_quadrant_circle, bresenham_octant_circle))
+bc = bresenham_circle(r)
 
-fig = figure(figsize = (10, 3))
-subplot(1, 3, 1); 
-
+fig = figure(figsize = (10, 3));subplot(1, 3, 1); 
 ## Drawing on a grid...
 #  https://www.tutorialspoint.com/remove-the-x-axis-ticks-while-keeping-the-grids-matplotlib    
 ax = fig.gca()
@@ -78,12 +104,13 @@ u = 0, .33
 
 ## Fill the void(s)... (kinda exhaustive search?)
 #  https://en.wikipedia.org/wiki/Flood_fill #Stack-based_recursive_implementation_(four-way)
+#  Had I been you, I would've used a quad-tree... https://en.wikipedia.org/wiki/Quadtree
 #  A kindergarten random walk version: ♪♫Viva, Las Vegas!♫♪ https://youtu.be/uxmx9AV1GKU
 #  https://www.pbr-book.org/4ed/Monte_Carlo_Integration
 def flood_fill(x: int, y: int):
     global im, canvas, u
     
-    canvas[x, y] = uniform(*u)  # Each pixel is "drowned" once    
+    canvas[x, y] = choice(shades) #uniform(*u)  # For each pixel is "drowned" once    
     im.set_array(canvas), fig.canvas.draw_idle(), pause(0.001)
         
     # A fourfold (↑, ←, ↓, →) randomly ordered recurrence
