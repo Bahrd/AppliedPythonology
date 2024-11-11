@@ -5,29 +5,25 @@ from random import random
 from matplotlib import pyplot as plt
 
 ## Pretentious homonyms mode ON...
-def deBézier_face(samples, u_steps = 128, v_steps = 128):
-   def bernstein_poly(i, n, t):
-      return binomial_coeff(n, i) * (t ** i) * ((1 - t) ** (n - i))
+def deBézierFace(samples, steps = 128):
+   binomial = lambda n, k: 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
+   BernsteinPloy = lambda i, n, t: binomial(n, i) * (t ** i) * ((1 - t) ** (n - i))
 
-   def binomial_coeff(n, k):
-      if k == 0 or k == n: return 1
-      return binomial_coeff(n - 1, k - 1) + binomial_coeff(n - 1, k)
-
-   u, v = np.linspace(0, 1, u_steps), np.linspace(0, 1, v_steps)
-   U, V = np.meshgrid(u, v)
+   uv = np.linspace(0, 1, steps), np.linspace(0, 1, steps)
+   U, V = np.meshgrid(*uv)
    n, m, _ = samples.shape
-
-   sure_face = np.zeros((u_steps, v_steps, 3))
+   
+   sureface = np.zeros((steps, steps, 3))
    for i in range(n):
       for j in range(m):
-         sure_face += np.outer(bernstein_poly(i, n - 1, U) * bernstein_poly(j, m - 1, V),
-                               samples[i, j]).reshape(u_steps, v_steps, 3)
-   return sure_face
+         sureface += np.outer(BernsteinPloy(i, n - 1, U) * BernsteinPloy(j, m - 1, V),
+                              samples[i, j]).reshape(steps, steps, 3)
+   return sureface
 
 # An NxM grid of samples of a surface
 N, M = 8, 16
 samples = np.array([[[i, j, 2*random() - 1] for i in range(N)] for j in range(M)])
-sure_face = deBézier_face(samples)
+sure_face = deBézierFace(samples)
 
 # Go, figure!
 ax = plt.figure().add_subplot(111, projection = '3d')

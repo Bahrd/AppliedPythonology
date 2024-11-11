@@ -1,4 +1,5 @@
 '''Continued fraction [represent|approxim]ation of x (the simple one)
+   See also: https://docs.sympy.org/latest/tutorials/intro-tutorial/simplification.html#example-continued-fractions
    x = a0 + ______1______
             a1 + ___1____
                  a2 + ...
