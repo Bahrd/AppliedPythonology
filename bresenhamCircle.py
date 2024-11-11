@@ -1,24 +1,25 @@
 ﻿## A Bresenh`am (flooded) circle... a bunch of random edu versions!
-
 from numpy import ones, fliplr, flipud, arange
 from matplotlib.pyplot import imshow, show, pause, subplot, figure
 from numpy.random import choice, permutation as rpr
 
 # A shortcut for a square matrix of ones
-sqm = lambda _r: ones((_r, _r))
+_sqm = lambda _r: ones((_r + 1, _r + 1))
 ## Shades of gray... (or pale, if you like Procol Harum): https://www.youtube.com/watch?v=xM_N2O-gzP4
 shades = (0/0x100, 0x69/0x100, 0x80/0x100, 0xd3/0x100,    # black, dimgray, gray, lightgray, etc: https://en.wikipedia.org/wiki/Grey#Optics
           0xc0/0x100, 0xdc/0x100, 0xa9/0x100, 0xbb/0x100) # silver, gainsboro, darkgray, and "pale"...
 
-## A plain (but not quite pale!) quadrant version
+## A plain (but hardly pale!) quadrant version
+#  ... Quartet, quadcopter, quaternion, quarter, quadruped, QB, quartz... 
 #  http://members.chello.at/~easyfilter/bresenham.html
 def bresenham_quadrant_circle(_r: int):
-    Φ = sqm(2*_r + 1)
+    Φ = _sqm(2*_r)
     ζ, ξ, x, y, ε = _r, _r , -_r, 0, 2 - 2*_r
     
-    while x <= 0:                   
-        for (n, m), o in zip(((ζ - x, ξ + y), (ζ - y, ξ - x),   
-                              (ζ + x, ξ - y), (ζ + y, ξ + x)), shades):   
+    _rp = lambda Φ: rpr(Φ) if _r % 2 else Φ # A random order of quadrants (if the (randomy drawn) radius is odd!)
+    while x <= 0:           
+        for (n, m), o in zip(_rp(((ζ - x, ξ + y), (ζ - y, ξ - x),   
+                                  (ζ + x, ξ - y), (ζ + y, ξ + x))), shades):   
             Φ[n, m] = o                           
         r = ε                               
         if r <= y:                          
@@ -52,11 +53,11 @@ def dbresenham_quadrant_circle(_r: int):
             f'(or d = {2*_r + 1}, πd = {4*c} and thus π = {4*c/(2*_r + 1):.2f} ;)')  
     return Φ
 # And an even smarter (octant) one (written in a "binary" style! ;): 
+# ... Octavian, octant, octopus, octet (a.k.a. byte), October(!) for octo(genarians?!)... 
 # https://www.youtube.com/watch?v=hpiILbMkF9w
 def bresenham_octant_circle(_r: int):
-    # A canvas 0b100 the circle...
-    Φ = sqm((_r << 1) + 1)
-    ζ, ξ = _r, _r
+    # A canvas 0b100 the circle centered at Ø = (_r, _r)
+    Φ, Ø = _sqm(_r << 1), _r 
     
     #... and the actual algorithm
     x, y, ε = 0, _r, _r
@@ -66,11 +67,9 @@ def bresenham_octant_circle(_r: int):
             ε -= x - y << 1
         else:
             ε -= x << 1
-        # ... Octavian, octant, octopus, octet (a.k.a. byte), October(!) for octo(genarians?!)... 
-        for (n, m), o in zip(((ζ + x, ξ + y), (ζ - x, ξ - y), (ζ + x, ξ - y), (ζ - x, ξ + y), 
-                              (ζ + y, ξ + x), (ζ - y, ξ - x), (ζ + y, ξ - x), (ζ - y, ξ + x)), 
-                             shades):   
-            Φ[n, m] = o 
+        for (n, m), ø in zip(((Ø + x, Ø + y), (Ø - x, Ø - y), (Ø + x, Ø - y), (Ø - x, Ø + y), 
+                              (Ø + y, Ø + x), (Ø - y, Ø - x), (Ø + y, Ø - x), (Ø - y, Ø + x)), shades):
+            Φ[n, m] = ø 
         x += 1; ε -= 1
     return Φ
     
@@ -97,12 +96,11 @@ imshow(bc, cmap = 'gray', interpolation = 'none')
 #  https://en.wikipedia.org/wiki/Blitter
 v, w = 2*r + 4, 2*r + 1
 
-canvas = ones((v, 2*v - 1))
-canvas[ :, 0] = canvas[:, -1] = 0   # "One for the money, two...
-canvas[-1, :] = canvas[0,  :] = 0   # ... go!"
-
-canvas[2:2 + w, 2:2 + w] = bc
-canvas[1:1 + w, v:v + w] = flipud(fliplr(bc))
+# A canvas, and its borders...
+canvas = ones((v, 2*v - 1))         
+canvas[ :, 0] = canvas[:, -1] = canvas[-1, :] = canvas[0,  :] = 0 
+# ... and the actual blitting
+canvas[2:2 + w, 2:2 + w], canvas[1:1 + w, v:v + w] = bc, flipud(fliplr(bc))
 
 subplot(1, 3, (2, 3)); im = imshow(canvas, cmap = 'gray', interpolation = 'none')
 u = 0, .33

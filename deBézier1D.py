@@ -10,10 +10,10 @@ from sys import argv as controlPoints
 #          https://en.wikipedia.org/wiki/Binomial_coefficient
 #          https://en.wikipedia.org/wiki/Bernstein_polynomial #Approximating_continuous_functions
 def bézier(P, p = 128):
-    # A couple of secretly anynomous functions
+    # A couple of secretly anonymous functions
     binomial = lambda n, k: 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
-    BernsteinPoly = lambda u = lp(0, 1, p), P = P, n = len(P): zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n))) 
-    
+    BernsteinPoly = lambda u = lp(0, 1, p), P = P, n = len(P): zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
+
     c, b = BernsteinPoly()
     return tp(c, b, 1)
 
@@ -58,9 +58,9 @@ button = Button(resetax, 'Reset', hovercolor = '0.975')
 def reset(_):
     x_slider.reset(), y_slider.reset()
 button.on_clicked(reset)
-    
+
 plt.show() #... must go on!
 
 ## BTW, anyone curious why Apple have patented the iPhone's corners?
-# https://youtu.be/jvPPXbo87ds?t=1762 vs https://youtu.be/jvPPXbo87ds?t=2068 
+# https://youtu.be/jvPPXbo87ds?t=1762 vs https://youtu.be/jvPPXbo87ds?t=2068
 # https://www.youtube.com/watch?v=aVwxzDHniEw

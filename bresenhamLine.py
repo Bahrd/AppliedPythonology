@@ -9,11 +9,14 @@ from matplotlib.pyplot import imshow, show, subplot, tight_layout
 
 ## See this "esplanation": https://youtu.be/CceepU1vIKo?t=20 first!
 def bresenham_line(x0: int, y0: int, x1: int, y1: int):   
+    # A canvas 0b100 the line, and its center
+    Λ = zeros((Δx, Δy + 1))
+
+    #... and the actual algorithm
     y = y0
-    Δx, Δy = x1 - x0, y1 - y0   # d([xy]) → Δ$1
+    Δx, Δy = x1 - x0, y1 - y0
     D = (Δy << 1) - Δx
     
-    Λ = zeros((Δx, Δy + 1))
     Δx <<= 1; Δy <<= 1
     for x in range(x0, x1):       
         Λ[x, y] = 1
@@ -21,6 +24,10 @@ def bresenham_line(x0: int, y0: int, x1: int, y1: int):
             y += 1; D -= Δx
         D += Δy
     return Λ
+
+
+
+
 
 ## You should rather prefer a more mature approach to anti-aliasing...
 #  https://www.youtube.com/watch?v=f3Rs20k-hcI

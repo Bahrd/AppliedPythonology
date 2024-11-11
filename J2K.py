@@ -2,6 +2,7 @@
 # (the vanillin one, in fact: neither EBCOT nor BAC whatsoever)
 import cv2; import numpy as np
 from itertools import repeat
+from sys import argv as family
 # https://pywavelets.readthedocs.io/en/latest/ref/dwt-coefficient-handling.html
 from pywt import dwt2, idwt2
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2, threshold as thrsd, 
@@ -38,33 +39,33 @@ art = 'GrassHopper'   # pseud. 'Filip'... ;)
 # https://en.wikipedia.org/wiki/Cohen-Daubechies-Feauveau_wavelet#Numbering
 # 'bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7' 
 #  Hard thresholding:             'lambda x, T: thrsd(x, T, mode = 'hard')' 
-L, wn, Q, qntz = 4, 'bior1.1', -6, lambda x, Q: np.floor(x*2**Q + .5)/2**Q
+L, wn, Q, qntz = 4, 'bior1.1' if len(family) < 2 else family[1], -6, lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 
 # Irréversible color transform (ICT)*
 img = cv2.cvtColor(cv2.imread(f'./images/{art}.png'), cv2.COLOR_BGR2YCrCb)
 
 ###
 ## YCbCr color space (a digression)
-DI([img[..., n] for n in range(3)], ['Y', 'Cb', 'Cr'])
+DI([img[..., n] for n in range(3)], ['Y', 'Cb', 'Cr'], grid = False)
 #DI([img[..., n] for n in range(3)], ['R', 'G', 'B'])
 ## Wavelet multiresolution analysis (MRA) visualization (yet another digression)
 #  See https://pywavelets.readthedocs.io/en/latest/
 titles = [f'{wn} approximation (LL)', 'Horizontal details (HL)', 
            'Vertical details (LH)',   'Diagonal details (HH)']
 Y = img[..., 0] # A luminance (grayscale) channel only
-LL, (HL, LH, HH) = dwt2(Y, wn);    DI([LL, HL, LH, HH], titles)
-Y = idwt2((LL, (HL, LH, HH)), wn); DI(Y, 'DWT⁻¹(DWT(Y)) → ⌊…⌋ ?')
+LL, (HL, LH, HH) = dwt2(Y, wn);    DI([LL, HL, LH, HH], titles, grid = False)
+Y = idwt2((LL, (HL, LH, HH)), wn); DI(Y, 'DWT⁻¹(DWT(Y)) → ⌊…⌋ ?', grid = False)
 ###
 
 ## Back to the JPEG 2000(-ish)...
 Y, Cb, Cr = [wc_op(img[..., n], wn, L, Q, qntz) for n in range(3)]
-DI([Y, Cb, Cr], ['Y', 'Cb', 'Cr'])
+DI([Y, Cb, Cr], ['Y', 'Cb', 'Cr'], grid = False)
 # Housekeeping... 
 img = np.array(np.clip(np.dstack((Y, Cb, Cr)), 0, 0xff), np.uint8)
 # ... the inverse ICT...
 img = cv2.cvtColor(img, cv2.COLOR_YCrCb2RGB)
 # ... and the final presentation
-DI(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})')
+DI(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
 ##* That the J2K's RCT (réversible) algorithm ('⌊x⌋' stands for 'floor(x)'):
 #   RCT:   Y = (R + 2G + B)/4⌋,  Cr = R  - G, Cb = B  - G
 #   RCT⁻¹: G = Y - ⌊(Cr + Cb)/4⌋, R = Cr + G,  B = Cb + G

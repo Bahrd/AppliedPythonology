@@ -56,4 +56,4 @@ channels = ('red', 'green', 'blue')
 # An X-Trans CFA mosaic (aka 'RAW') and the de-mosaicked image (aka 'JPG')
 aux.displayChannels((raw, rgb), channels)
 # Input vs. output image
-aux.displayImages((img, rgb, img - rgb), ('scene', 'image', 'diff'))
+aux.displayImages((img, rgb, img - rgb), ('scene', 'image', 'diff'), grid = False)

@@ -44,4 +44,4 @@ img  = [[idct2(qntz[n][m])          for n in blocks] for m in blocks]
 img, qntz = np.block(img), np.block(qntz)
 nz  = sum((qntz != 0).flat)
 aux.displayImages([org, qntz, img, org - img], 
-                  ['original', 'DCT 2D', f'Q = {Q}', f'{nz} non-zeros'])
+                  ['original', 'DCT 2D', f'Q = {Q}', f'{nz} non-zeros'], grid = False)
