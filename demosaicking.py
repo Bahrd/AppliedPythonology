@@ -1,10 +1,11 @@
 import cv2; import numpy as np; import auxiliary as aux
 
 #### Image 'framing'
-# Note - the example works only for square images (N x N) and for even N 
+# Note - the example works only for square images (N x N) and for even N
 # (the filter segments are 2 x 2)
-img = cv2.cvtColor(cv2.imread('./images/GrassHopper.PNG'), cv2.COLOR_BGR2RGB) 
-N = img.shape[0]; X = [N >> 1]; X *= 2 
+img = cv2.cvtColor(cv2.imread('./images/GrassHopper.PNG'), cv2.COLOR_BGR2RGB)
+img = cv2.resize(img, (128, 128), interpolation = cv2.INTER_LINEAR_EXACT)
+N = img.shape[0]; X = [N >> 1]; X *= 2
 
 
 ## Bayer CFA (Kodak Research Laboratory)
@@ -21,16 +22,13 @@ BayerFilter = aux.CFA(BayerMask, X)
 deBayerMask = np.ones((2, 2))
 deBayerFilter = [deBayerMask * w for w in [1, 1/2, 1]]
 
-
+## Demosaicking 100
 ## Capturing an image with a CFA sensor
 #  Mosaicking, i.e. filtering the image through the CFA
 raw = img * BayerFilter
-
-## Demosaicking 
 # Evaluating the lacking pixels (in a straightforward/naïve approach)
 R, G, B = [cv2.filter2D(raw[..., n], -1, deBayerFilter[n]) for n in range(3)]
 rgb = np.dstack((R, G, B))
-
 ## Presentation
 channels = ('red', 'green', 'blue')
 # The Bayer CFA mosaic (aka 'RAW') and the de-mosaicked image

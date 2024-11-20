@@ -17,8 +17,8 @@ def bézier(P, p = 128):
     c, b = BernsteinPoly()
     return tp(c, b, 1)
 
-## User-defined control points:  python ./deBézier.py '[[0, 0], [1/8, -1], [1/4, 1], [1/2, -2], [3/4, 1], [7/8, -1], [1, 0]]'
-P = [[0, 0], [1/2, 1/2], [1, 0]] if len(controlPoints) < 2 else eval(controlPoints[1])
+## User-defined control points:  python ./deBézier1D.py '[[0, 0], [1/8, -1], [1/4, 1], [1/2, -2], [3/4, 1], [7/8, -1], [1, 0]]'
+P = [[0, 0], [1/2, -1/2], [1, 0]] if len(controlPoints) < 2 else eval(controlPoints[1])
 pp, cp, hP = bézier(P), tuple(zip(*P)), len(P) >> 1
 
 # Create the figure and a Bézier curve that we will manipulate

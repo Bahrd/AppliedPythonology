@@ -1,7 +1,10 @@
-﻿## Copilot'ed... See also: https://www.youtube.com/watch?v=QuY1hfd6zJk for a MATLAB flavor
+﻿''' Copilot'ed...
+See also:
+* "An Introduction to NURBS: With Historical Perspective" by David F. Rogers: https://shop.elsevier.com/books/an-introduction-to-nurbs/rogers/978-1-55860-669-2
+* https://youtu.be/0JYGNH3ZKS8 for a Python implementation (or https://youtu.be/QuY1hfd6zJk for a MATLAB one)
+'''
 
 import numpy as np
-from random import random
 from matplotlib import pyplot as plt
 
 ## Pretentious homonyms/typos mode 0N(E)...
@@ -12,7 +15,7 @@ def deBézierFace(samples, steps = 0x100):
    uv = np.linspace(0, 1, steps), np.linspace(0, 1, steps)
    U, V = np.meshgrid(*uv)
    n, m, _ = samples.shape
-   
+
    sureface = np.zeros((steps, steps, 0b11))
    for i in range(n):
       for j in range(m):
@@ -21,10 +24,15 @@ def deBézierFace(samples, steps = 0x100):
    return sureface
 
 # An NxM grid of samples of a surely random surface
+from random import random
 N, M = 0o10, 0x10
 samples = np.array([[[i, j, random()] for i in range(N)] for j in range(M)])
-sureface = deBézierFace(samples)
+## Bézier skull...
+#from interpolation import eddie
+#N, M = eddie.shape; N <<= 1; M <<= 1
+#samples = np.array([[[i, j, eddie[i >> 1, j >> 1]] for i in range(N)] for j in range(M)])
 
+sureface = deBézierFace(samples)
 # Go, figure!
 ax = plt.figure().add_subplot(111, projection = '3d')
 plt.tight_layout()
