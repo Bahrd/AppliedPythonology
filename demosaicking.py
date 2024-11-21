@@ -7,7 +7,6 @@ img = cv2.cvtColor(cv2.imread('./images/GrassHopper.PNG'), cv2.COLOR_BGR2RGB)
 img = cv2.resize(img, (128, 128), interpolation = cv2.INTER_LINEAR_EXACT)
 N = img.shape[0]; X = [N >> 1]; X *= 2
 
-
 ## Bayer CFA (Kodak Research Laboratory)
 #  Peter Dillon and Albert Brault, 1974 & Bryce E. Bayer, 1976
 #  http://image-sensors-world.blogspot.com/2019/03/technology-emmy-awards-for-color-filter.html
@@ -35,3 +34,55 @@ channels = ('red', 'green', 'blue')
 aux.displayChannels((raw, rgb), channels)
 # Input vs. output image
 aux.displayImages((img, rgb, img - rgb), ('scene', 'image', 'diff'), grid = False)
+
+'''
+A bit more directly interpolation-based demosaicking routines:
+- the lazy one (with no educational value what.so.ever...)
+- the illustrative one (with a bit of educational value)
+'''
+## An interpolation scheme derived from Open CV
+scheme = cv2.INTER_LINEAR_EXACT
+img = cv2.resize(cv2.cvtColor(cv2.imread('./images/GrassHopper.png'), cv2.COLOR_BGR2RGB),
+                 (128, 128),
+                 interpolation = scheme)
+N, M, _ = img.shape
+# Moisaicking (Bayer CFA): take every other pixel in row/column as R (even) and B (odd) 
+# and the remaining ones as GI and GII, respectively
+raws = img[0:N:2, 0:M:2, 0], img[1:N:2, 1:M:2, 2], img[1:N:2, 0:M:2, 1], img[0:N:2, 1:M:2, 1]
+## De-mosaicking (de-Bayering by interpolation)
+#  R   G     R   0     0   G     0   0     0   0
+#         =         +         +         + 
+#  G   B     0   0     0   0     G   0     0   B
+#  where we can exploit linearity/superposition to restore the green channel from GI and GII
+#  using the same scheme as for R and B channels
+R, B, GI, GII = [cv2.resize(channel,  (M, N), interpolation = scheme) for channel in raws]
+G = GI//2 + GII//2  # Note integer averaging... (without normalization the resulting image 
+                    #                            will have greenish tint (or else...))
+channels = ('raw', 'R', 'B', 'GI', 'GII', 'G')
+aux.displayImages((img, R, B, GI, GII, G), channels, grid = False)
+
+rgb = np.dstack((R, G, B))
+channels = ('red', 'green', 'blue')
+aux.displayChannels((img, rgb), channels)
+
+images = ('raw', 'demo\'ed', 'little differences')
+aux.displayImages((img, rgb, img - rgb), images, grid = False)
+
+# Here we reuse our implementation of interpolation scheme
+# in order to demonstrate that our good ol' friend works exactly like the one based on OpenCV
+from interpolation import Π, Λ, ϕ, ξ, interpolate as ΣΣ
+from matplotlib.colors import LinearSegmentedColormap as lscm
+
+# Linear interpolation
+ψ = ϕ; name = ψ.__name__
+
+reds = lscm.from_list('_', ['black', 'red'])
+red_raw, red = raws[0], np.zeros((N, N))
+# Rows first...
+for m in range(M//2):
+   red[m, ...] = np.array(ΣΣ(red_raw[m, ...], N, φ = ψ)).flat
+aux.displayImages((img, red), ('Original', f'{name}-scaled rows'), cmp = reds, grid = False)
+# ...then columns
+for n in range(N):
+   red[..., n] = np.array(ΣΣ(red[:M//2, n], N, φ = ψ)).flat
+aux.displayImages((img, red), ('Original', f'{name}-scaled rows & columns'), cmp = reds, grid = False)
