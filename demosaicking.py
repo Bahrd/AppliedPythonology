@@ -43,7 +43,7 @@ A bit more directly interpolation-based demosaicking routines:
 ## An interpolation scheme derived from Open CV
 scheme = cv2.INTER_LINEAR_EXACT
 img = cv2.resize(cv2.cvtColor(cv2.imread('./images/GrassHopper.png'), cv2.COLOR_BGR2RGB),
-                 (128, 128),
+                 (512, 512),
                  interpolation = scheme)
 N, M, _ = img.shape
 # Moisaicking (Bayer CFA): take every other pixel in row/column as R (even) and B (odd) 
@@ -57,32 +57,32 @@ raws = img[0:N:2, 0:M:2, 0], img[1:N:2, 1:M:2, 2], img[1:N:2, 0:M:2, 1], img[0:N
 #  using the same scheme as for R and B channels
 R, B, GI, GII = [cv2.resize(channel,  (M, N), interpolation = scheme) for channel in raws]
 G = GI//2 + GII//2  # Note integer averaging... (without normalization the resulting image 
-                    #                            will have greenish tint (or else...))
-channels = ('raw', 'R', 'B', 'GI', 'GII', 'G')
+                    #                            would've been greenish (or else...))
+channels = ('Original', 'R', 'B', 'GI', 'GII', 'G')
 aux.displayImages((img, R, B, GI, GII, G), channels, grid = False)
 
 rgb = np.dstack((R, G, B))
 channels = ('red', 'green', 'blue')
 aux.displayChannels((img, rgb), channels)
 
-images = ('raw', 'demo\'ed', 'little differences')
+images = ('Original', 'Demo\'ed', 'Little diff\'s...') # https://youtu.be/ab7eVVG3I8s?t=43
 aux.displayImages((img, rgb, img - rgb), images, grid = False)
 
 # Here we reuse our implementation of interpolation scheme
-# in order to demonstrate that our good ol' friend works exactly like the one based on OpenCV
+# in order to demonstrate that our good ol' friend works exactly (if little more majestic) like the one based on OpenCV
 from interpolation import Π, Λ, ϕ, ξ, interpolate as ΣΣ
 from matplotlib.colors import LinearSegmentedColormap as lscm
 
-# Linear interpolation
-ψ = ϕ; name = ψ.__name__
+# An old school 2D interpolation from a 1D one...
+ψ = Λ; name = ψ.__name__
 
 reds = lscm.from_list('_', ['black', 'red'])
 red_raw, red = raws[0], np.zeros((N, N))
 # Rows first...
-for m in range(M//2):
+for m in range(M >> 1):
    red[m, ...] = np.array(ΣΣ(red_raw[m, ...], N, φ = ψ)).flat
 aux.displayImages((img, red), ('Original', f'{name}-scaled rows'), cmp = reds, grid = False)
-# ...then columns
+# ...then columns:
 for n in range(N):
-   red[..., n] = np.array(ΣΣ(red[:M//2, n], N, φ = ψ)).flat
+   red[:, n] = np.array(ΣΣ(red[:M >> 1, n], N, φ = ψ)).flat
 aux.displayImages((img, red), ('Original', f'{name}-scaled rows & columns'), cmp = reds, grid = False)
