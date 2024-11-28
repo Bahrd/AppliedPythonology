@@ -20,7 +20,7 @@ sqwk = array([[0, 0, 1], [1, 0, 1], [1, 1, 1], [.25, .25, 1], [0, 1, 1]])
 sqwk = transform(I(3), sqwk); vertices = h2e(sqwk)
 polygon = Polygon(vertices, ec = 'green', fc = 'lightgreen', alpha = 0.5)
 
-                        # https://stackoverflow.com/questions/44526364/fill-matplotlib-polygon-with-a-gradient-between-vertices
+# https://stackoverflow.com/questions/44526364/fill-matplotlib-polygon-with-a-gradient-between-vertices
 ax.add_patch(polygon); ax.scatter(vertices[:, 0], vertices[:, 1], color = 'green', s = 25)
 
 # Our square after translation by K and L...
