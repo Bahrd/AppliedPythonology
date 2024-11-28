@@ -87,9 +87,9 @@ ax.add_patch(polygon); ax.scatter(vertices[:, 0], vertices[:, 1], color = 'red',
 
 # And the ♪♫Moonlight shadows♫♪... https://youtu.be/ixExC-Zgyzc and https://youtu.be/e80qhyovOnA of the vertices. 
 # Is that song about Évariste Galois https://en.wikipedia.org/wiki/%C3%89variste_Galois#Final_days?
-for v in sqwk:
+for v, w in zip(sqwk, shdw):
     # Homogeneous to Euclidean coordinates
-    x, y = v[:-1]/v[-1]
+    (x, y), (u, r) = v[:-1]/v[-1], w[:-1]/w[-1]
     ax.plot((0, x), (0, y), c = 'lightgray', lw = .5, ls = 'dashed')
-
+    ax.plot((0, u), (0, r), c = 'gray', lw = .5, ls = 'dotted')
 plt.title('Matrix transforms in 2D: rigid, linear, affine & projective'); plt.show()
