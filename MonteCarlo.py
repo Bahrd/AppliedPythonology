@@ -24,9 +24,7 @@ HxW = 1.443 * 2.089     # Model 3's H and W ([mm], unfolded mirrors)
 
 a_m = HxW/hxw * pixels  # Area in m²
 a_ft = a_m * 10.76      # m² to ft² conversion (1m ~ 3.28ft)
-print('Pixel counted {0}\'s frontal area = {1}m² ({2}ft²)'.format(f,
-                                                    round(a_m, 2),
-                                                    round(a_ft, 2)))
+print(f'Pixel counted {f}\'s frontal area = {a_m:2.2f}m² ({a_ft:2.2f}ft²)')
 
 ### A Monte Carlo approach (random sampling)
 from numpy.random import default_rng as drng
@@ -34,7 +32,7 @@ samples = 1_000         # No. of all samples
 rng = drng()            # Random samples with Numpy 1.17+
 ##Pseudo-Python:
 #pixels = 0             # No. of pixels inside the frontal area
-#for _ in range(all):
+#for _ in range(samples):
 #    x, y = RR(h), RR(w)
 #    bgr = tuple(img[x, y])
 #    pixels += bgr != gnd_bgr
@@ -44,9 +42,7 @@ x, y = rng.integers([h, w], size = [samples, 2]).T
 pixels = count_nonzero(any(img[x, y] != gnd_bgr, axis = 1))
 
 a_m = HxW/samples * pixels; a_ft = a_m * 10.76
-print('Monte Carlo {0}\'s frontal area = {1}m² ({2}ft²)'.format(f,
-                                                    round(a_m, 2),
-                                                    round(a_ft, 2)))
+print(f'Monte Carlo {f}\'s frontal area = {a_m:2.2f}m² ({a_ft:2.2f}ft²)')
 
 '''
 ## In case your image is not a rectangle but a circle (from a fisheye, say),
@@ -65,14 +61,14 @@ R, θ = U(0, 1, N), U(0, 2*π, N)
 
 # Display the motley points
 gca().set_aspect('equal'); title('X = √R⋅cosθ and Y = √R⋅sinθ')
-#  Note that to maintain unifromity of the distribution we need 
-#  the Jacobian of the map (from polar to Carthesian coordinates) constant
+#  Note that to maintain uniformity of the distribution we need
+#  the Jacobian of the map (from polar to Cartesian coordinates) constant
 #
 #         ⌈ ∂X/∂R  ∂X/∂θ ⌉
 #      det|              | = const.
 #         ⌊ ∂Y/∂R  ∂Y/∂θ ⌋
 #
-# Indeed for the maping
+# Indeed for the mapping
 X, Y = sqrt(R) * cos(θ), sqrt(R) * sin(θ)
 # we get
 #

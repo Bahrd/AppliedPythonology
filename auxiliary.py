@@ -24,8 +24,8 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True):
 
         sb.set_xticks([]); sb.set_yticks([])
         if grid:
-            sb.set_xticks(np.arange(-.5, len(image), 1), minor=True)
-            sb.set_yticks(np.arange(-.5, len(image), 1), minor=True)
+            sb.set_xticks(np.arange(-.5, len(images), 1), minor=True)
+            sb.set_yticks(np.arange(-.5, len(images), 1), minor=True)
             sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
 
         plt.title(titles); plt.imshow(images, cmap = cmp)
