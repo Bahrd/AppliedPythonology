@@ -20,9 +20,7 @@ def poissonimg(val):
     λ = 2**(val - 8.0)
     β = λ**bctrl        # Note how "β-smart" we are! ;)
 
-    # Here's the "Poissoning" part... 
-    # The yin-yang, 음양: The darker the image, the brighter the random nature of light... ;)
-    imp = clip(poisson(img * λ)/β, 0b0, 0x100 - 0o1).astype(int)
+    imp = clip(poisson(img * λ)/β, 0, 0x100 - 0o1).astype(int)
 
     # Presentation stuff...
     # https://stackoverflow.com/questions/2265319/how-to-make-an-axes-occupy-multiple-subplots-with-pyplot
@@ -31,7 +29,7 @@ def poissonimg(val):
     oh.axis('off'); ah.axis('off')
 
     data, colors = (imp.flatten(), 'lightgray') if rgbw == BW else ([imp[:, :, _].flatten() for _ in range(0b11)], ('red', 'green', 'blue'))
-    # We ignore both boundary values, 0x0 and 0x100, for a reason. So you don't have to...
+    # we ignore both boundary values, 0 and 255, for a reason... So you don't have to...
     ah.hist(data, 0x100 - 0b10, (0x1, 0x100 - 0b10), color = colors, stacked = True, histtype = 'bar', alpha = 1/0b11)
     oh.imshow(imp, cmap = 'gray' if rgbw == BW else None)
     # https://stackabuse.com/how-to-change-plot-background-in-matplotlib/
