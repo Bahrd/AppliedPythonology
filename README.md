@@ -6,9 +6,11 @@
   - 1D: [interpolation1D.ipynb](./interpolation1D.ipynb) & [interpolation1D.py](./interpolation1D.py)
   - 2D: [interpolation2D.ipynb](./interpolation2D.ipynb) & [interpolation2D.py](./interpolation2D.py)
 - simple 2D scaling and rotation
-- NN:  [rotatioNN.ipynb](./rotatioNN.ipynb) & [rotatioNN.py](./rotatioNN.py)
-- spline: [rotation2D.ipynb](./rotation2D.ipynb) & [rotation2D.py](./rotation2D.py)
-- demosaicking (for **Bayer's** and X-Trans® CFAs): [demosaicking.py](./demosaicking.py) and [demosaickingX.py](./demosaickingX.py)
+    - NN:  [rotatioNN.ipynb](./rotatioNN.ipynb) & [rotatioNN.py](./rotatioNN.py)
+    - spline: [rotation2D.ipynb](./rotation2D.ipynb) & [rotation2D.py](./rotation2D.py)
+- demosaicking CFAs
+  - **Bayer's**): [demosaicking.py](./demosaicking.py)
+  -  and X-Trans®: [demosaickingX.py](./demosaickingX.py)
 - **Cooley-Tukey's** FFT: [CooleyTukey.py](./CooleyTukey.py)
 - low-light image generation: [PoissonedJupiter.py](./PoissonedJupiter.py) and [PoissoningMBA](./PoissoningMBA)
 - Monte Carlo pixel counting/area measurements: [MonteCarlo.py](./MonteCarlo.py)
@@ -17,7 +19,11 @@
 - JPEG 'lite' algorithm: [jpglite.py](./jpglite.py)
 - JPEG 2000 'featherlite' algorithm: [J2K.py](./J2K.py)
 - **Hamming's** code: [HammingBird.ipynb](./HammingBird.ipynb) and [HammingBird.py](./HammingBird.py)
-- cryptography: PKI [RSA.py](./RSA.py), key-exchange [DHM.py](./DHM.py), zero knowledge proof [ZKP.py](./ZKP.py) and elliptice curves [ECC.pl](./ECC.pl)
+- jigsaw pieces of cryptography: 
+  - PKI [RSA.py](./RSA.py), 
+  - key-exchange [DHM.py](./DHM.py), 
+  - zero knowledge proof [ZKP.py](./ZKP.py) and 
+  - elliptic curves [ECC.pl](./ECC.pl)
 ### Modeling and identification
 - pseudo-random number generator: [pseudogenerator.py](./pseudogenerator.py)
 - **Tukey's** potion (sans **Cooley**): [TukeyPotion.py](./TukeyPotion.py)
@@ -31,6 +37,8 @@
 - **Bézier's** 
   - curves: [deBézier1D.py](./deBézier1D.py) and [deBézieRat1D.py](./deBézieRat1D.py) (rational)
   - surfaces: [deBézier2D.py](./deBézier2D.py) 
-- **Bresenham's** line [bresenhamLine.py](./bresenhamLine.py) and circle: [bresenhamCircle.py](./bresenhamCircle.py)
-- CGAL in action: [wedge.scad](./CGAL4All/wedge.scad)
+- **Bresenham's** algorithms:
+  - line [bresenhamLine.py](./bresenhamLine.py)
+  - circle: [bresenhamCircle.py](./bresenhamCircle.py)
+- a little CGAL in action: [wedge.scad](./CGAL4All/wedge.scad)
 - **Julia's** and **Mandelbrot's** fractals visualisations: [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
