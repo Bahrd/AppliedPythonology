@@ -20,7 +20,9 @@ def poissonimg(val):
     λ = 2**(val - 8.0)
     β = λ**bctrl        # Note how "β-smart" we are! ;)
 
-    imp = clip(poisson(img * λ)/β, 0, 0x100 - 0o1).astype(int)
+    # Here's the "Poissoning" part... 
+    # The yin-yang, 음양: The darker the image, the brighter the random nature of light... ;)
+    imp = clip(poisson(img * λ)/β, 0b0, 0x100 - 0o1).astype(int)
 
     # Presentation stuff...
     # https://stackoverflow.com/questions/2265319/how-to-make-an-axes-occupy-multiple-subplots-with-pyplot
@@ -29,7 +31,7 @@ def poissonimg(val):
     oh.axis('off'); ah.axis('off')
 
     data, colors = (imp.flatten(), 'lightgray') if rgbw == BW else ([imp[:, :, _].flatten() for _ in range(0b11)], ('red', 'green', 'blue'))
-    # we ignore both boundary values, 0 and 255, for a reason... So you don't have to...
+    # We ignore both boundary values, 0x0 and 0x100, for a reason. So you don't have to...
     ah.hist(data, 0x100 - 0b10, (0x1, 0x100 - 0b10), color = colors, stacked = True, histtype = 'bar', alpha = 1/0b11)
     oh.imshow(imp, cmap = 'gray' if rgbw == BW else None)
     # https://stackabuse.com/how-to-change-plot-background-in-matplotlib/
@@ -58,9 +60,9 @@ slev, slsp, slbr = (Slider(axs[0], 'EV', 0o0, 0x10, valinit = 0o10, valstep = 0b
 slev.on_changed(poissonimg); slsp.on_clicked(scotophotopic); slbr.on_clicked(bctrl)
 
 # Global variables
-bctrl:bool = True # Unnecessary pedantry...
-rgbw, mb = RGB, f'./images/MB{choice("ABCD")}.png'
-imrgb, imbw = cvtColor(imread(mb), RGB), cvtColor(imread(mb), BW)
+bctrl:bool = True; rgbw:int = RGB  # A double act of superfluous redundancy and unnecessarily exaggerated pedantry?
+mb = f'./images/MB{choice("ABCD")}.png'
+imrgb, imbw = (cvtColor(imread(mb), _) for _ in (RGB, BW))
 
 # Image re/de-generation
 poissonimg(0o10)
