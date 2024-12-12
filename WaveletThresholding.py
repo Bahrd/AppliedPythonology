@@ -3,7 +3,7 @@ import warnings; warnings.filterwarnings('ignore')
 import matplotlib.pyplot as plt
 from numpy import linspace as lp, random, size, sort, sqrt, cumsum, arange, argmin, ceil
 
-#Live thresholding
+#Live thresholding - with a bit of a rehearsal... ;)
 from matplotlib.widgets import Slider, RadioButtons
 from pywt import (wavedec as fwt, waverec as ifwt, threshold as thrsd,
                   array_to_coeffs as a2c, coeffs_to_array as c2a)
@@ -33,6 +33,7 @@ s, ε = sin(1/X), rng.standard_normal(L * rpt)/0b100
 
 S = s + ε
 
+# ... and a real drama: Wavelet Thresholding!
 # An FWT wrapper (transform → operation on coefficients → inverse transform)
 def wc_op(c, wn, lvl, h, op = lambda x, h: x, dsply = False):
     # Applying a wavelet transform

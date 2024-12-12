@@ -1,20 +1,22 @@
-﻿from numpy import linspace as lp, random, ones, arange
+﻿from sys import argv
+from numpy import linspace as lp, random, ones, arange
 from scipy.fftpack import dct, idct
 from math import pi as π
 from matplotlib.pyplot import plot, subplot, show, title, xlabel, bar, subplots, tight_layout
 
+T = eval(argv[1]) if len(argv) > 1 else π/2
 L, intervals, rng = 0x100, 1, random.default_rng()
-X, (f1, f2) = lp(0, 1.0, L), (0b101, 0b111) # ♪♫ I'll be seeing you again!         https://youtu.be/xYQ2rJUT0Vg?t=101
-                                            #    I'll be seeing you in Hertz's! ♫♪ https://youtu.be/0o4yv6Cm_ag
-
+X, (f1, f2) = lp(0, 1.0, L), (0b101, 0b1110) # ♪♫ I'll be seeing you again!         https://youtu.be/xYQ2rJUT0Vg?t=101
+                                             #    I'll be seeing you in Hertz's! ♫♪ https://youtu.be/0o4yv6Cm_ag
 #'''
-## Almost like a PPG signal
-from numpy import abs, sqrt, cos
+## Almost like a photo... pleth... PPG signal 
+#  https://en.wikipedia.org/wiki/Photoplethysmogram#Monitoring_heart_rate_and_cardiac_cycle
+#  See also: https://en.wikipedia.org/wiki/Photoplethysmogram#Monitoring_depth_of_anesthesia
+from numpy import abs, cos
 from itertools import repeat; from more_itertools import flatten
 
-_s = sqrt(1/0b101)*cos(f1 * π*X) - sqrt(1/0b101)*cos(f2 * π*X)
-s = list(flatten(repeat(_s, intervals))); ε = (abs(s) - rng.poisson(abs(s)))/0b10
-T = 1
+_s = 0b100*cos(f1 * π*X) + 0b10*cos(f2 * π*X)
+s = list(flatten(repeat(_s, intervals))); ε = abs(s) - rng.poisson(abs(s))
 #'''
 '''
 ## A square wave (a.k.a. a digital signal?)
@@ -23,7 +25,6 @@ from itertools import repeat; from more_itertools import flatten
 
 _s = sign(sqrt(1/0b101)*cos(f1 * π*X)) - sign(sqrt(1/0b101)*cos(f2 * π*X))
 s, ε = list(flatten(repeat(_s, intervals))), zeros(L * intervals)
-T = 1
 '''
 '''
 ## A chirp-like signal (https://www.youtube.com/watch?v=TWqhUANNFXw [LIGO] ;)
@@ -32,12 +33,12 @@ T = 1
 from numpy import sin, linspace as lp
 X = lp(0.05, 1.0, L * intervals)
 s, ε = sin(1/X), rng.standard_normal(L * intervals)/0b100
-T = π/2
 '''
 
 S = s + ε
 
-subplots(num = "When DCT's and thresholding's paths crossed...")
+_, ax = subplots(num = "When DCT and thresholding crossed paths...")
+ax.axis('off')
 tight_layout()
 
 #Checkpoint I
