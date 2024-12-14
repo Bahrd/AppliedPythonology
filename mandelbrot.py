@@ -32,4 +32,4 @@ X, Y, ε = -1/2, 0, 3/2  # size
 ## ... and act! Iteration numbers, '0x6' and '0x42', are rather arbitrarily
 #               selected to make the compound image look nice(r)...
 M, MM = mandelbrot(Ω), mandelbrother(Ω, 0x6) + mandelbrother(Ω)
-DI((M, log(e + MM)), ('Mandelbrot...', 'Mandelbrothers...'), cmp = 'copper')
+DI((M, log(e + MM)), ('Mandelbrot...', 'Mandelbrothers...'), cmp = 'copper', grid = False)

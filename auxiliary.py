@@ -3,11 +3,11 @@ import numpy as np; from numpy.linalg import inv
 import matplotlib.pyplot as plt; from matplotlib.colors import LinearSegmentedColormap as lscm
 
 #Image presentation
-def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True):
+def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True, title = 'Applied Pythonology [Of] Course'):
 #    if type(images) is tuple or type(images) is list:
     if isinstance(images, (tuple, list)):
         number = len(images)
-        fig = plt.figure(figsize = (number * 3, 3)); fig.tight_layout()
+        fig = plt.figure(figsize = (number * 3, 3), num = title); fig.tight_layout()
         for p, (image, title) in enumerate(zip(images, titles)):
             sb = plt.subplot(1, number, p + 1)
 

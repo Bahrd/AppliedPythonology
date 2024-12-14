@@ -1,5 +1,5 @@
 ﻿from interpolation import Π, Λ, ϕ, ξ, interpolate as intrpl, eddie, RR
-from matplotlib.pyplot import plot, show
+from matplotlib.pyplot import plot, show, subplots
 from auxiliary import displayImages as DI
 from random import choice
 from numpy import zeros, array
@@ -37,13 +37,14 @@ else:
     out = array([ΣΣ(out[..., n], N, φ = ψ) for n in range(N)]).reshape(N, N).T
     DI((img, out), ('Original', f'{nomina}-scaled rows & columns II'), cmp = Cu)
 
-## A pretty scary stuff... Will you dare?
+## A pretty scary stuff...
+#  "Let's put a smile on that face." https://www.imdb.com/title/tt0468569/quotes/?item=qt1148950
 #  (Or rather yet another aliasing-related effect ;)
 if 0b1:
     # Troughs and crests
     _ = plot(out[N >> 0b1, ...], 'ro-'), show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
-    DI((img, out), ('Original', f'{nomina}-scaled'), cmp = Cu)
+    DI((img, out), ('Original', f'{nomina}-scaled'), cmp = Cu, title = '"Let\'s put a smile on that face."')
 
 ## (In)Deterministic users' enjoyment:
 #  "python .\interpolation2D.py 42 'lambda x: ϕ(x + RR(2) * RR(9)/12)'"
