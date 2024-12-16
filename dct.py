@@ -2,12 +2,12 @@
 from numpy import linspace as lp, random, ones, arange
 from scipy.fftpack import dct, idct
 from math import pi as π
-from matplotlib.pyplot import (grid, plot, subplot, show, title, xlabel, bar, 
+from matplotlib.pyplot import (grid, plot, subplot, show, title, xlabel, bar,
                                subplots, tight_layout, yticks, legend)
 
 T = eval(argv[1]) if len(argv) > 1 else π/2
 L, intervals, rng = 0x100, 1, random.default_rng()
-X, (f1, f2) = lp(0, 1.0, L), (0b101, 0b1110) # ♪♫ I'll be seeing you again!         https://youtu.be/xYQ2rJUT0Vg?t=101
+X, (f1, f2) = lp(0, 1.0, L), (0b111, 0b1111) # ♪♫ I'll be seeing you again!         https://youtu.be/xYQ2rJUT0Vg?t=101
                                              #    I'll be seeing you in Hertz's! ♫♪ https://youtu.be/0o4yv6Cm_ag
 #'''
 ## Almost like a photo...? pleth...?? Anyway, a PPG-like signal!
@@ -17,7 +17,7 @@ from numpy import abs, cos
 from itertools import repeat; from more_itertools import flatten
 name = 'PPG-like signal'
 s = 0o10 + 0b100*cos(f1 * π*X) + 0b10*cos(f2 * π*X); s = list(flatten(repeat(s, intervals)))
-# ♪♫ Here come the rain [of photons] again ♫♪ https://www.youtube.com/watch?v=TzFnYcIqj6I 
+# ♪♫ Here come the rain [of photons] again ♫♪ https://www.youtube.com/watch?v=TzFnYcIqj6I
 # (albeit in their usual random and Poissonian fashion...)
 S = rng.poisson(s)
 #'''
@@ -45,45 +45,45 @@ subplots(num = "When DCT and thresholding crossed paths...")[1].axis('off'); tig
 # A bit of grid drama...
 ax = subplot(0b10, 0b10, 0o1); stop, step = 0x10 + 0b100, 0b10
 yticks(range(0o0, stop, step))
-for _c, a in enumerate(ax.get_ygridlines()): 
+for _c, a in enumerate(ax.get_ygridlines()):
     c = _c*(step/stop)
-    a.set_color(eval(f'({c}, {c}, {c})'))
-    a.set_linestyle('dotted')
-grid() 
+    a.set_color((c, c, c)); a.set_linestyle('dashed')
+grid()
 
 ## Checkpoint I
-plot(S, 'k.'); plot(s, 'xkcd:orangey yellow', alpha = 0b1/0o10); title(f'1. Raw {name}')
-legend(['Measurements', 'Ground truth'])
+plot(S, 'k.'); plot(s, 'xkcd:orangey yellow', alpha = 0b1/0o10)
+legend(['Measurements', 'Ground truth']); title(f'I. Raw {name}')
 FS = dct(S, norm = 'ortho')
 # A DC component is usually important, but not here and now...
 # (Note that DC and DCT only look and sound similarly!)
-DC = FS[0]; FS[0] = 0 
+DC = FS[0]; FS[0] = 0
 Hz = arange(FS.shape[0])/intervals
 ___, lw = ones(len(Hz)) * T, 1/0b100 # Just a threshold line
 
 ## Checkpoint II: A frequency domain representation
-subplot(0b10, 0b10, 0b10); 
+subplot(0b10, 0b10, 0b10)
 bars, pplot = bar(Hz, FS, color = 'xkcd:pale orange', width = 1.0), plot(Hz, ___, 'k', lw = lw)
-legend(['Threshold', 'Frequencies']); title('2. DCT'); xlabel('Hz', color = 'xkcd:dark orange')
+legend(['Threshold', 'Frequencies']); title('II. DCT'); xlabel('Hz', color = 'xkcd:dark orange')
 
 # ... and a bit of threshold drama too (in the "Orange is the new black" style)
 # https://www.imdb.com/title/tt2372162/trivia/?item=tr2033915&ref_=ext_shr_lnk
-# That is, changing colors of "any bar bars above" ♪♫ Back to black ♫♪ https://youtu.be/TJAfLE39ZZ8?t=17 
+# That is, changing colors of "any bar bars above" ♪♫ Back to black ♫♪ https://youtu.be/TJAfLE39ZZ8?t=17
 abba = lambda x: abs(x.get_height()) > pplot[0].get_data()[1][1]
 for hibar in (fubar for fubar in bars if abba(fubar)): hibar.set_color('xkcd:black')
 
 ## Checkpoint III: A fast'n'ferocius'in'frequency domain data processing (a.k.a. L₁-like regularization)
+
 FS[abs(FS) < T] = 0
 
 # No drama, just good ole ♪♫ Back in black! ♫♪ https://youtu.be/pAgnJDJN4VA?t=10
 subplot(0b10, 0b10, 0b100); bar(Hz, FS, color = 'k', width = 1.0); plot(Hz, ___, 'k', lw = lw); plot(Hz, -___, 'k', lw = lw)
-legend(['Frequencies', 'Threshold']); title('4. DCT²'); xlabel('Hz', color = 'xkcd:dull orange')
+legend(['Frequencies', 'Threshold']); title('III. DCT²'); xlabel('Hz', color = 'xkcd:dull orange')
 
 
 ## Checkpoint IIII: DC restoration and IDCT
 FS[0] = DC; IS = idct(FS, norm = 'ortho')
 subplot(0b10, 0b10, 0b11); plot(IS, 'k'); plot(IS - s, color = 'xkcd:tan'); plot(s, color = 'xkcd:red orange')
-title(f'3. Recovered {name}'); legend(['Estimate', 'Error', 'Ground truth']); show()
+title(f'IV. Recovered {name}'); legend(['Estimate', 'Error', 'Ground truth']); show()
 
 '''——————
     Magic pencils!
