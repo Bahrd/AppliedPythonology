@@ -9,7 +9,7 @@
     - NN:  [rotatioNN.ipynb](./rotatioNN.ipynb) & [rotatioNN.py](./rotatioNN.py)
     - spline: [rotation2D.ipynb](./rotation2D.ipynb) & [rotation2D.py](./rotation2D.py)
 - demosaicking CFAs
-  - **Bayer's**): [demosaicking.py](./demosaicking.py)
+  - **Bayer's**: [demosaicking.py](./demosaicking.py)
   -  and X-Trans®: [demosaickingX.py](./demosaickingX.py)
 - **Cooley-Tukey's** FFT: [CooleyTukey.py](./CooleyTukey.py)
 - low-light image generation: [PoissonedJupiter.py](./PoissonedJupiter.py) and [PoissoningMBA](./PoissoningMBA)
@@ -35,11 +35,12 @@
 - **Monty Hall's** (no-)problem: [MontyHall.py](./montyhall.py)
 ### Computer graphics
 - Polar squares and scary circles: [PolarAndPolygon.py](./PolarAndPolygon.py)
-- **Bézier's** 
-  - curves: [deBézier1D.py](./deBézier1D.py) and [deBézieRat1D.py](./deBézieRat1D.py) (rational)
-  - surfaces: [deBézier2D.py](./deBézier2D.py) 
 - **Bresenham's** algorithms:
   - line [bresenhamLine.py](./bresenhamLine.py)
   - circle: [bresenhamCircle.py](./bresenhamCircle.py)
+- **Bézier's** 
+  - curves: [deBézier1D.py](./deBézier1D.py) and [deBézieRat1D.py](./deBézieRat1D.py) (rational)
+  - surfaces: [deBézier2D.py](./deBézier2D.py) 
+- Matrix transformations in 2D: [MatrixTransforms2D.ipynb](./MatrixTransforms2D.ipynb) and [MatrixTransforms2D.py](./MatrixTransforms2D.py)
 - a little CGAL in action: [wedge.scad](./CGAL4All/wedge.scad)
 - **Julia's** and **Mandelbrot's** fractals visualisations: [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
