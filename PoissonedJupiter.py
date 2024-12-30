@@ -48,7 +48,9 @@ intensity, brightness = 8, 0
 fig, _ = plt.subplots(num = 'Nihil novi sub Jovi... [3.12.23 at 21:16:18]')
 plt.subplots_adjust(bottom = .25)
 
-jovi = resize(imread('./images/Jovi et consortes.JPG'), (0x140, 0o310)) # Good' ol' CGA...
+
+JoviEtConsortes =  './images/Jovi, Io, Europa, Ganymede & Callisto.JPEG' #'./images/Jovi et consortes.JPG'
+jovi = resize(imread(JoviEtConsortes), (0x140, 0o310)) # Good' ol' CGA...
 img = cvtColor(jovi, GRAY)
 im = plt.imshow(img, cmap = 'gray', interpolation = 'none')
 
