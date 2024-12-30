@@ -3,32 +3,32 @@ from matplotlib.widgets import Slider, RadioButtons
 from matplotlib import pyplot as plt, animation
 from numpy.random import poisson
 from numpy import clip
+from exif import Image as exifImage
 '''
-A simple animation demonstrating Poisson distribution of faint images...
+A simple animation demonstrating Poisson distribution of the faint images...
  https://stackoverflow.com/questions/33193696/matplotlib-animation-in-for-loop/41648966#41648966
 
  https://en.wikipedia.org/wiki/90482_Orcus#/media/File:Orcus-Vanth_orbit.gif
  https://en.wikipedia.org/wiki/Orbital_resonance
 '''
 
-## A (vanilla) animation
-#  A.k.a. alone callback function
+## A (vanilla) animation, a.k.a. a callback function
 def animate(_):
-    global intensity, im, img, brightness
+    global intensity, photo, image, brightness
 
     λ = 2**(intensity - 8.0)
-    imp = clip(2**brightness * poisson(img * λ)/λ, 0x0, 0xff)
-    im.set_array(imp.astype(int))
+    imp = clip(2**brightness * poisson(image * λ)/λ, 0x0, 0xff)
+    photo.set_array(imp.astype(int))
 
 ## A GUI part
 #  A couple of event handlers
-def poissonimg(_i):
+def image_in_poisson(_):
     global intensity
-    intensity = _i
+    intensity = _
 
-def brightnimg(_b):
+def image_in_brightness(_):
     global brightness
-    brightness = _b
+    brightness = _
 
 '''
 People vs frogs (vs machines) - the world-famous single-photon detection contest
@@ -37,32 +37,36 @@ People vs frogs (vs machines) - the world-famous single-photon detection contest
 3. https://global.canon/en/technology/spad-sensor-2023.html
 4. https://www.youtube.com/watch?v=o5qXCzknxn8 [PG]
 '''
-def photoscotopic(label):
-    global img, jovi
-    img = cvtColor(jovi, RGB if label == 'RGB' else GRAY)
+def photomesoscotopic(_):
+    global image, yuppie
+    image = cvtColor(yuppie, RGB if _ == 'RGB' else GRAY)
 
 ## The main content: Jupiter and Io, Europa, Ganymede & Callisto...
 #                    [sans the remaining (~0.003%) plankton]
 intensity, brightness = 8, 0
 
-fig, _ = plt.subplots(num = 'Nihil novi sub Jovi... [3.12.23 at 21:16:18]')
-plt.subplots_adjust(bottom = .25)
-
-
 JoviEtConsortes =  './images/Jovi, Io, Europa, Ganymede & Callisto.JPEG' #'./images/Jovi et consortes.JPG'
-jovi = resize(imread(JoviEtConsortes), (0x140, 0o310)) # Good' ol' CGA...
-img = cvtColor(jovi, GRAY)
-im = plt.imshow(img, cmap = 'gray', interpolation = 'none')
+with open(JoviEtConsortes, 'rb') as _: exf = exifImage(_)
+# One should check if the GPS data are present (exf.list_all()), and the corresponding attributes exist, but let's
+# make it an exercise for the reader... https://readthedocs.org/projects/exif/downloads/pdf/latest/
+fig, _ = plt.subplots(num = f'Nihil novi sub Jovi... at [{exf.gps_longitude[0]:.0f}°, {exf.gps_latitude[0]:.0f}°]')
+plt.subplots_adjust(bottom = .25), _.xaxis.set_visible(False), _.yaxis.set_visible(False)
 
-## And a handful of elements
+
+yuppie = resize(imread(JoviEtConsortes), (0x140, 0o310)) # Good' ol' CGA...
+image = cvtColor(yuppie, GRAY)
+photo = plt.imshow(image, cmap = 'gray', interpolation = 'none')
+
+
+## And a handful of GUI elements
 #  A pair of sliders...
 axEV, axB, axc = (plt.axes(dims) for dims in ((.25, .1, .65, .03), (.92, .25, .03, .65), (.025, .01, .15, .15)))
 slEV, slB = (Slider(axEV, 'EV', 0, 16, valinit = intensity, valstep = 1),
-             Slider(axB, 'Brightness', -4, 1, valinit = brightness, valstep = 0.25, orientation = 'vertical'))
-slEV.on_changed(poissonimg), slB.on_changed(brightnimg)
+             Slider(axB, 'Brightness', -2.0, .5, valinit = brightness, valstep = 0.125, orientation = 'vertical'))
+slEV.on_changed(image_in_poisson), slB.on_changed(image_in_brightness)
 # ... and a switch
 radio = RadioButtons(axc, ('RGB', 'B&W'), active = 1)
-radio.on_clicked(photoscotopic)
+radio.on_clicked(photomesoscotopic)
 
 
 ## "Lights, Camera, Action!" https://en.wikipedia.org/wiki/Clapperboard#Construction

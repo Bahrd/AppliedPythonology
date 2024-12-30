@@ -14,21 +14,19 @@ def dd_GPS_dms(coordinate):
 
 if(len(names) < 4):
     print('USAGE: exifGPSimplant filename latitude [0-360) longitude [0 - 180)')
-    exit(-1)
 else:
     (recipient, latitude, longitude) = names[1:4]
+    with open(recipient, 'rb') as image_file:
+        img = Image(image_file)
 
-with open(recipient, 'rb') as image_file:
-    img = Image(image_file)
+    img.gps_latitude = dd_GPS_dms(latitude)
+    img.gps_longitude = dd_GPS_dms(longitude)
+    #img.gps_altitude = 1200 # An orphan...
 
-img.gps_latitude = dd_GPS_dms(latitude)
-img.gps_longitude = dd_GPS_dms(longitude)
-#img.gps_altitude = 1200 # An orphan...
+    print(img.gps_latitude, img.gps_longitude)
 
-print(img.gps_latitude, img.gps_longitude)
-
-with open(recipient, 'wb') as image_file:
-    image_file.write(img.get_file())
+    with open(recipient, 'wb') as image_file:
+        image_file.write(img.get_file())
 
 '''
 Note the GPS tags format
