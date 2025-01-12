@@ -5,7 +5,7 @@ from math import pi as π
 from matplotlib.pyplot import (grid, plot, subplot, show, title, xlabel, bar,
                                subplots, tight_layout, yticks, legend)
 
-T = eval(argv[1]) if len(argv) > 1 else π/2
+T = eval(argv[1]) if len(argv) > 1 else π/2  # Try '(π**π - π*π)/π'
 L, intervals, rng = 0x100, 1, random.default_rng()
 X, (f1, f2) = lp(0, 1.0, L), (0b111, 0b1111) # ♪♫ I'll be seeing you again!         https://youtu.be/xYQ2rJUT0Vg?t=101
                                              #    I'll be seeing you in Hertz's! ♫♪ https://youtu.be/0o4yv6Cm_ag

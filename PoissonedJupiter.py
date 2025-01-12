@@ -50,7 +50,8 @@ with open(JoviEtConsortes, 'rb') as _: exf = exifImage(_)
 # One should check if the GPS data are present (exf.list_all()), and the corresponding attributes exist, but let's
 # make it an exercise for the reader... https://readthedocs.org/projects/exif/downloads/pdf/latest/
 fig, _ = plt.subplots(num = f'Nihil novi sub Jovi... at [{exf.gps_longitude[0]:.0f}°, {exf.gps_latitude[0]:.0f}°]')
-plt.subplots_adjust(bottom = .25), _.xaxis.set_visible(False), _.yaxis.set_visible(False)
+plt.subplots_adjust(bottom = .15, left = .05, top = .95)
+_.xaxis.set_visible(False), _.yaxis.set_visible(False)
 
 
 yuppie = resize(imread(JoviEtConsortes), (0x140, 0o310)) # Good' ol' CGA...
@@ -60,7 +61,7 @@ photo = plt.imshow(image, cmap = 'gray', interpolation = 'none')
 
 ## And a handful of GUI elements
 #  A pair of sliders...
-axEV, axB, axc = (plt.axes(dims) for dims in ((.25, .1, .65, .03), (.92, .25, .03, .65), (.025, .01, .15, .15)))
+axEV, axB, axc = (plt.axes(dims) for dims in ((.25, .1, .65, .03), (.92, .25, .03, .65), (.025, .01, .10, .10)))
 slEV, slB = (Slider(axEV, 'EV', 0, 16, valinit = intensity, valstep = 1),
              Slider(axB, 'Brightness', -2.0, .5, valinit = brightness, valstep = 0.125, orientation = 'vertical'))
 slEV.on_changed(image_in_poisson), slB.on_changed(image_in_brightness)
