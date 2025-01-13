@@ -37,13 +37,17 @@
 - **Gauss** Circle problem: [latticeCircle.ipynb](./latticeCircle.ipynb) and [latticeCircle.py](./latticeCircle.py)
 - polar squares and scary circles: [PolarAndPolygon.py](./PolarAndPolygon.py)
 - **Bresenham's** algorithms:
-  - line [bresenhamLine.py](./bresenhamLine.py)
+  - line [bresenhamLine.py](./bresenhamLine.py) and
   - circle: [bresenhamCircle.py](./bresenhamCircle.py)
 - **Bézier's** 
   - curves: [deBézier1D.py](./deBézier1D.py) and [deBézieRat1D.py](./deBézieRat1D.py) (rational)
   - surfaces: [deBézier2D.py](./deBézier2D.py) 
 - matrix transformations in 2D: [MatrixTransforms2D.ipynb](./MatrixTransforms2D.ipynb) and [MatrixTransforms2D.py](./MatrixTransforms2D.py)
-- a little [CGAL](https://www.cgal.org/) in action: [wedge.scad](./CGAL4All/wedge.scad)
-- **Julia's** and **Mandelbrot's** fractals visualisations: [julia.py](./julia.py) and [mandelbrot.py](./mandelbrot.py)
+- a little [CGAL](https://www.cgal.org/) in action: 
+  - [wedge.scad](./CGAL4All/wedge.scad) and
+  - [szpunt.scad](./CGAL4All/szpunt.scad)
+- **Julia's** and **Mandelbrot's** fractals visualisations: 
+  - [julia.py](./julia.py) and
+  - [mandelbrot.py](./mandelbrot.py)
 ### Varia
 - an isomorphism in action: [ueola.py](./ueola.py)
