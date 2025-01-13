@@ -2,22 +2,29 @@ $fa = .1; $fs = .1; $fn = 360;
 
 r = 10; h = 10;
 
+// Non-animated prologue (for 3D print)
 module ally(std, caption, font)
 {
+   ang = 0;
+// Animated one...       (for fun)
+//module ally(std, caption, font, ang = $t*360)
+//{
    /* It won't work well with the text wider than 
       four characters made out of these two */
    h = 1/5*std;
-   // ⅄⅂
-   translate([0, h, 0])
-   rotate([180, 180, 0]) // == mirror([1, 0, 0]) mirror([0, 1, 0])
-   linear_extrude(height = h)
-      text(caption, font = font, size = h);
    // LY
+   rotate([ang, ang, -ang])
    linear_extrude(height = h)
       text(caption, font = font, size = h);
+   // ⅄⅂
+   rotate([-ang, -ang, ang])
+   translate([0, h, 0])
+      rotate([180, 180, 0]) // == mirror([1, 0, 0]) mirror([0, 1, 0])
+         linear_extrude(height = h)
+            text(caption, font = font, size = h);
 }
 
-// The internal "threads" are regular and thus generated in a loop
+// The internal "threads" are regular and thus generated in a loop (within a loop)
 vertices = [             [0.0,             -0.9*h], 
            for (n = [0:8], m = [0:1]) 
                (m == 0 ? [0.9*r, (-0.9 + 0.2*n)*h] : [1.0*r, (-0.7 + 0.2*n)*h]),
@@ -35,5 +42,5 @@ difference()
    translate([0, 0, 2.5*h]) 
       cube([4*r, 4*r, .5], center = true);
    translate([0, -r/4, 1.25*h]) 
-      ally(25, "LY", "Arial Black");
+      #ally(25, "LY", "Arial Black");
 }
