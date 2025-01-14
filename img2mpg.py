@@ -15,8 +15,9 @@ pattern = compile(ext)
 files = [f for f in listdir(pathIn)
            if isfile(join(pathIn, f)) and pattern.search(f.lower())]
 
-#Sort the filenames (ignoring extension)
-files.sort(key = lambda x: x[0: -len(ext)])
+#Sort the filenames (ignoring extension [assumed to exist] because... why not?)
+# https://stackoverflow.com/questions/12453580/how-to-concatenate-join-items-in-a-list-to-a-single-string
+files.sort(key = lambda x: '.'.join(x.split('.')[: -1]))
 
 ## Setting the video encoder parameters
 fps, fourcc = 50, cv2.VideoWriter_fourcc(*'DIVX')
@@ -29,7 +30,7 @@ out = cv2.VideoWriter(pathOut, fourcc, fps, size[:: -1]) # Swap rows/cols
 for f in files:
     frame = cv2.imread(join(pathIn, f))
     print(f)
-    # Assemble frames in a video stream
+    # Assemble frames into a video stream
     out.write(frame)
 
 out.release()
