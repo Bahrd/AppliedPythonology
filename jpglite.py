@@ -1,4 +1,4 @@
-import cv2; import numpy as np; import auxiliary as aux
+import cv2 as openCV; import numpy as np; import auxiliary as aux
 from scipy.fftpack import dctn, idctn
 
 #%% JP[E]G Lite - a (pretty much) simplified version of the standard 
@@ -22,12 +22,12 @@ def quantize(X, Q = 1):
 ## Image loading (if 'B == 8' then by default a JP[E]G quantization scheme 
 #   is applied (note we assume for simplicity the fixed image size 
 #   [that happens to be a power of two])
-org = cv2.cvtColor(cv2.imread('./images/GrassHopper.PNG'), cv2.COLOR_BGR2YCrCb)
-N = 512; org = cv2.resize(org[..., 0], (N, N))
-B = 16;  tiles, blocks = range(0, N, B), range(int(N/B))
+org = openCV.cvtColor(openCV.imread('./images/GrassHopper.PNG'), openCV.COLOR_BGR2YCrCb)
+N = 512; org = openCV.resize(org[..., 0], (N, N))
+B = 32;  tiles, blocks = range(0, N, B), range(int(N/B))
 
 ## Transforming each tile/block using DCT 2D
-trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
+trns = [[dct2(org[n:n + B, m:m + B]) for n in tiles] for m in tiles]
 
 ## Quantization vs. image quality 
 #  If B ≠ 8, then the standard scalar quantization is applied and 'Q == 1'
@@ -37,9 +37,7 @@ trns = [[dct2(org[n:n + B, m:m + B]) for m in tiles] for n in tiles]
 Q = .01
 ## Coefficients quantization and inverse transformation
 qntz = [[quantize(trns[n][m], Q)    for n in blocks] for m in blocks]
-img  = [[idct2(qntz[n][m])          for n in blocks] for m in blocks]
-#  Note that the 'trns' argument is not deep-copied when passed to 
-#  'quantize' function and thus is modified there!
+img  = [[idct2(qntz[m][n])          for n in blocks] for m in blocks]
 
 ## Presentation
 img, qntz = np.block(img), np.block(qntz)
@@ -47,4 +45,9 @@ nz  = sum((qntz != 0).flat)
 aux.displayImages([org, qntz, img, org - img], 
                   [f'original\n{N}×{N} = {N*N} pixels', 
                    f'DCT 2D\n{N/B:.0f}×{N/B:.0f} = {N**2/B**2:.0f} of {B}×{B} blocks', 
-                   f'Q = {Q}', f'{nz} ({100*nz/(N*N):.0f}%) non-zeros'], grid = False)
+                   f'Q = {Q}', f'{nz} ({100*nz/(N*N):.0f}%) non-zeros'], 
+                  grid = False)
+
+# Is it normal?
+from matplotlib.pyplot import hist, show
+hist((org - img).flat, density = True); show()
