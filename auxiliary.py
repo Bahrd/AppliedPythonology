@@ -14,8 +14,8 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True, t
             sb.set_xticks([]); sb.set_yticks([])
             if grid:
                 # Ticks... https://stackoverflow.com/questions/38973868/adjusting-gridlines-and-ticks-in-matplotlib-imshow
-                sb.set_xticks(np.arange(-.5, len(image), 1), minor=True)
-                sb.set_yticks(np.arange(-.5, len(image), 1), minor=True)
+                sb.set_xticks(np.arange(-.5, len(image), 1), minor = True)
+                sb.set_yticks(np.arange(-.5, len(image), 1), minor = True)
                 sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
 
             plt.title(title); plt.imshow(image, cmap = cmp)
@@ -24,8 +24,8 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True, t
 
         sb.set_xticks([]); sb.set_yticks([])
         if grid:
-            sb.set_xticks(np.arange(-.5, len(images), 1), minor=True)
-            sb.set_yticks(np.arange(-.5, len(images), 1), minor=True)
+            sb.set_xticks(np.arange(-.5, len(images), 1), minor = True)
+            sb.set_yticks(np.arange(-.5, len(images), 1), minor = True)
             sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
 
         plt.title(titles); plt.imshow(images, cmap = cmp)
