@@ -1,6 +1,7 @@
 #%% Vanilla JPEG 2000 algorithm
 # (the vanillin one, in fact: neither EBCOT nor BAC is implemented whatsoever)
 import cv2 as openCV; import numpy as np
+from numpy.random import poisson
 from itertools import repeat
 #%% https://pywavelets.readthedocs.io/en/latest/ref/dwt-coefficient-handling.html
 from pywt import dwt2, idwt2
@@ -36,15 +37,21 @@ art = 'GrassHopper'    # pseud. Philip [gr. "friend of horses"]!... ;)
 #%% JPEG 2000 main 'codec'
 # Wavelet transforms' (hiper-)parameters
 #  Hard thresholding:             'lambda x, T: thrsd(x, T, mode = 'hard')'
-L, Q, qntz = 4, -6, lambda x, Q: np.floor(x*2**Q + .5)/2**Q
+qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
+wn, λ, L, Q = 'bior2.2', 0, 4, -6
 # Interactive-aware wavelet family name selection
 # https://en.wikipedia.org/wiki/Cohen-Daubechies-Feauveau_wavelet#Numbering
 # 'bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7'
 import sys;
-if hasattr(sys, 'ps1'): wn = 'bior4.4'
-else:                   wn = sys.argv[1] if len(sys.argv) > 1 else 'bior2.2'
+if hasattr(sys, 'ps1'): 
+    wn, λ, L, Q = 'bior4.4', 0x10, 5, -2
+elif len(sys.argv) > 1: 
+    wn, λ, L, Q = eval(sys.argv[1])
 
 img = openCV.imread(f'./images/{art}.png')
+# Pick your own (floating) poison...  (for instance λ = 16.0 and then spice it with λ = 0x10 ;D) 
+if λ > 0: img = np.clip(poisson(img * λ)/λ, 0x0, 0xff).astype(np.uint8)
+
 DI([img[..., n] for n in (2, 1, 0)], ['R', 'G', 'B'], grid = False)
 # Irréversible color transform (ICT)†
 img = openCV.cvtColor(img, openCV.COLOR_BGR2YCrCb)
