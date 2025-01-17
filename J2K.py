@@ -7,8 +7,8 @@ from itertools import repeat
 from pywt import dwt2, idwt2
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2,
                   array_to_coeffs as a2c, coeffs_to_array as c2a)
-from matplotlib.pyplot import plot, show, xticks, yticks, title
-from auxiliary import displayImages as DI, displayChannels as DC
+from auxiliary import displayImages as DI, displayChannels as DC, displayAnyChannels as DAC
+from auxiliary import YCbCr_channels, YCoCg_channels, rgb2ycocg, channelHist as CH
 
 #%% Wavelet transform coefficients operation wrapper
 def wc_op(c, wn, lvl, Q, op = lambda x, Q: x, channel = 'Y'):
@@ -50,18 +50,15 @@ if hasattr(sys, 'ps1'):
 elif len(sys.argv) > 1:
     wn, λ, L, Q = eval(sys.argv[1])
 
-img = openCV.cvtColor(openCV.imread(f'./images/{art}.png'), openCV.COLOR_BGR2RGB)
 # Pick your own (floating) poison...  (for instance λ = 16.0).
 # And then spice it up with e.g. λ = 0x10 ;D)
+img = openCV.cvtColor(openCV.imread(f'./images/{art}.png'), openCV.COLOR_BGR2RGB)
 if λ > 0: img = np.clip(poisson(img * λ)/λ, 0x0, 0xff)
 
 #%% A native RGB color space channels
 DC([img.astype(int)],  ('red', 'green', 'blue'))
 # Let me digress a bit: A histogram of the original image
-redux = lambda x: x[0]
-hR, hG, hB = [redux(np.histogram(img[..., c], bins = 0x100)) for c in range(0b11)]
-xticks(np.arange(0, 0x101, 0x20)); yticks([])
-plot(hR, 'r', hG, 'g', hB, 'b'); title(art); show()
+CH(img, art, 'RGB', ('r', 'g', 'b'))
 
 #%% Wavelet multiresolution analysis (MRA) visualization (yet another digression)...
 # See https://pywavelets.readthedocs.io/en/latest/
@@ -73,22 +70,22 @@ DI([LL, HL, LH, HH], titles, grid = False)
 Y = idwt2((LL, (HL, LH, HH)), wn)
 DI(Y, 'DWT⁻¹(DWT(Y)) → ⌊…⌋ ?', grid = False)
 
-#%% But I digress again: A YCoCg color space - a réversible color transform
+#%% And again I digress: A YCoCg color space - a réversible color transform
 #   cf. e.g. https://en.wikipedia.org/wiki/YCoCg
-def rgb2ycocg(img):  # R  G  B
-    YCoCg = np.array([[1, 2, 1], [2, 0, -2], [-1, 2, -1]])/4
-    return img@YCoCg.T
 ycocg = rgb2ycocg(img)
-DI([ycocg[..., n] for n in range(3)], ['Y', 'Co', 'Cg'], grid = False)
+DAC([ycocg.astype(int)],  YCoCg_channels)
+# A histogram of the YCoCg-transformed image
+CH(ycocg, art, 'YCoCg', ('xkcd:grey', 'xkcd:orange', 'xkcd:army green'))
 
 #%% Back to the JPEG 2000(-ish)...
 # An irréversible color transform (ICT)†
 img = openCV.cvtColor(img.astype(np.uint8), openCV.COLOR_RGB2YCrCb)
 # An original image in the YCbCr color space before...
-DI([img[..., n] for n in (0, 2, 1)], ['Y', 'Cb', 'Cr'], grid = False)
+DAC([img], YCbCr_channels)
 # ... and after the wavelet transform and quantization
 Y, Cb, Cr = [wc_op(img[..., n], wn, L, Q, qntz, ('Y', 'Cr', 'Cb')[n]) for n in (0, 2, 1)]
-DI([Y, Cb, Cr], ['Y', 'Cb', 'Cr'], grid = False)
+DAC([img.astype(int)], YCbCr_channels)
+
 #%% Final housekeeping...
 img = np.array(np.clip(np.dstack((Y, Cr, Cb)), 0, 0xff), np.uint8)
 # ... the inverse ICT...
@@ -105,7 +102,7 @@ DI(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
 #  and cf. https://en.wikipedia.org/wiki/YCoCg
 ## Proof: R,G,B are integers. Hence:
 #   Y - ⌊(Cr + Cb)/4⌋ = Y - ⌊(R - G + B - G)/4⌋
-#                    = Y - ⌊(R - G + B - G + (4G - 4G))/4⌋
-#                    = Y - ⌊(R - G + B - G + 4G)/4⌋ + G
-#                    = Y - ⌊(R + 2G + B)/4⌋ + G = Y - Y + G = G ■
+#                     = Y - ⌊(R - G + B - G + (4G - 4G))/4⌋
+#                     = Y - ⌊(R - G + B - G + 4G)/4⌋ + G
+#                     = Y - ⌊(R + 2G + B)/4⌋ + G = Y - Y + G = G ■
 # %%

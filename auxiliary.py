@@ -56,6 +56,27 @@ def displayChannels(images, channels, rows = 1, cols = 4, title = 'RGB'):
         plt.title(title); plt.imshow(image)
         plt.show()
 
+# Image dissection presentation (the channels)
+YCoCg_channels = (('Y', 'k', 'xkcd:grey'), ('Co', 'r', 'b'),
+                  ('Cg', 'xkcd:army green', 'xkcd:orange'))
+YCbCr_channels = (('Y', 'k', 'w'), ('Cb','g', 'b'), ('Cr','g', 'r'))
+
+def displayAnyChannels(images, channels, rows = 1, cols = 3):
+    for image in images:
+        for p, (cn, cl, cr) in enumerate(channels):
+            sb = plt.subplot(rows, cols, p + 1)
+            sb.set_xticks([]); sb.set_yticks([])
+            cmp = lscm.from_list('_', [cl, cr])
+            plt.title(cn); plt.imshow(image[..., p], cmp)
+    plt.show()
+
+def channelHist(img, art, color_space, colors):
+    redux = lambda x: x[0]
+    a, b, c = [redux(np.histogram(img[..., cn], bins = 0x100)) for cn in range(0b11)]
+    plt.xticks(np.arange(0, 0x101, 0x20)); plt.yticks([])
+    plt.plot(a, colors[0], b, colors[1], c, colors[2])
+    plt.title(f'{art} in {color_space}'); plt.show()
+
 # When you don't care about the return value
 def splot(*args, scalex = True, scaley = True, data = None, **kwargs):
     _ = plt.plot(*args, scalex = scalex, scaley = scaley, data = data, **kwargs)
@@ -98,6 +119,12 @@ def invRCT(Y, Cb, Cr):
     R, B = Cr + G, Cb + G
     return (R, G, B)
 
+## Reversible Color Transform (YCoCg)
+def rgb2ycocg(img, YCoCg = np.array([[1, 2, 1], [2, 0, -2], [-1, 2, -1]])/4):
+    return img@YCoCg.T
+
+def ycocg2rgb(img, YCoCg = np.array([[1, 1, -1], [1, 0, 1], [1, -1, -1]])):
+    return img@YCoCg.T
 
 ## A decorative fun... See: https://www.geeksforgeeks.org/decorators-in-python/
 from time import time as TT
