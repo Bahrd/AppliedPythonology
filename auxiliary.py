@@ -123,10 +123,19 @@ JPG_QT_CbCr =  [[17, 18, 24, 47, 99, 99, 99, 99],
                 [99, 99, 99, 99, 99, 99, 99, 99]]
 
 ## Irréversible Color Transform (ICT)
-RGB2YCbCr = [[ .299,     .587,     .114],
-             [-.168736, -.331264,  .5],
-             [ .5,      -.418688, -.081312]]
-YCbCr2RGB = inv(np.array(RGB2YCbCr))
+RGB2YCbCr = np.array([[ .299,     .587,     .114],
+                      [-.168736, -.331264,  .5],
+                      [ .5,      -.418688, -.081312]])
+YCbCr2RGB = inv(RGB2YCbCr)
+
+## Reversible Color Transform (YCoCg)
+RGB2YCoCg = np.array([[1, 2, 1], [2, 0, -2], [-1, 2, -1]])/4
+YCoCg2RGB = np.array([[1, 1, -1], [1, 0, 1], [1, -1, -1]])
+
+#def rgb2ycocg(img, YCoCg = np.array([[1, 2, 1], [2, 0, -2], [-1, 2, -1]])/4):
+#    return img@YCoCg.T
+#def ycocg2rgb(img, YCoCg = np.array([[1, 1, -1], [1, 0, 1], [1, -1, -1]])):
+#    return img@YCoCg.T
 
 ## Reversible Color Transform (RCT)
 def RCT(R, G, B):
@@ -137,13 +146,6 @@ def invRCT(Y, Cb, Cr):
     G = Y - int(np.floor((Cb + Cr)/4))
     R, B = Cr + G, Cb + G
     return (R, G, B)
-
-## Reversible Color Transform (YCoCg)
-def rgb2ycocg(img, YCoCg = np.array([[1, 2, 1], [2, 0, -2], [-1, 2, -1]])/4):
-    return img@YCoCg.T
-
-def ycocg2rgb(img, YCoCg = np.array([[1, 1, -1], [1, 0, 1], [1, -1, -1]])):
-    return img@YCoCg.T
 
 ## A decorative fun... See: https://www.geeksforgeeks.org/decorators-in-python/
 from time import time as TT

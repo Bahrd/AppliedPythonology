@@ -1,6 +1,7 @@
 #%% Vanilla JPEG 2000 algorithm (more like a vanillin one, in fact:
 #   neither EBCOT nor BAC is implemented whatsoever)
 import cv2 as openCV; import numpy as np
+import sys
 from numpy.random import poisson
 from itertools import repeat
 from pywt import dwt2, idwt2
@@ -8,14 +9,14 @@ from pywt import (wavedec2 as fwt2, waverec2 as ifwt2,
                   array_to_coeffs as a2c, coeffs_to_array as c2a)
 # https://pywavelets.readthedocs.io/en/latest/ref/dwt-coefficient-handling.html
 from auxiliary import (displayImages as DI,displayAnyChannels as DAC,
-                       rgb2ycocg,
                        YCbCr_ext_channels as YCbCr,
                        YCoCg_ext_channels as YCoCg,
-                       RGB_ext_channels as RGB)
+                       RGB_ext_channels as RGB,
+                       RGB2YCbCr, YCbCr2RGB, RGB2YCoCg)
 from histogramXYZ import channelGradientHistogram as CHXYZ
 
-#   Wavelet transform coefficients operation wrapper
-def wc_op(c, wn, lvl, Q, op = lambda x, Q: x, channel = 'Y'):
+#   Wavelet transform coefficients operation palindrome
+def wtotw(c, wn, lvl, Q, op = lambda x, Q: x, channel = 'Y'):
     # Applying a wavelet transform
     C = fwt2(c, wn, level = lvl)
     # Performing operation (quantization in JPEG 2000)
@@ -37,41 +38,41 @@ art = 'GrassHopper' # pseud. Philip [gr. "friend of horses"]!... ;)
 
 #%% JPEG 2000 main 'codec'
 qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
-wn, λ, L, Q = 'bior2.2', 0, 4, -6
 #   Interactive-aware wavelet transform parameters setting
 #   https://en.wikipedia.org/wiki/Cohen-Daubechies-Feauveau_wavelet#Numbering
 #   'bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7'
-import sys;
+wn, λ, L, Q = 'bior2.2', 0, 4, -6
 if hasattr(sys, 'ps1'):
-    wn, λ, L, Q = 'bior4.4', float(0x10), 5, -5
+    wn, λ, L, Q = 'bior4.4', 4.0, 5, 0
 elif len(sys.argv) > 1:
     wn, λ, L, Q = eval(sys.argv[1])
-#   Pick your own (floating) poison...  (for instance λ = 16.0).
-#   And then spice it up with e.g. λ = 0x10 ;D)
+#   Pick your own (floating) poison...  (for instance λ = 4.0).
+#   And then spice it up with e.g. λ = 0x4 ;D)
 img = openCV.cvtColor(openCV.imread(f'./images/{art}.png'), openCV.COLOR_BGR2RGB)
-if λ > 0: img = np.clip(poisson(img * λ)/λ, 0x0, 0xff)
+if λ > 0: img = np.clip(poisson(img * 2**λ)/2**λ, 0x0, 0xff)
 #   A native RGB color space channels
 DAC(img, RGB); CHXYZ(img, art, 'RGB', RGB)
 
 #%% An irréversible color transform (ICT)†
 #   An original image in the YCbCr color space before...
-img = openCV.cvtColor(img.astype(np.uint8), openCV.COLOR_RGB2YCrCb)
+img = img@RGB2YCbCr
 DAC(img, YCbCr); CHXYZ(img, art, 'YCbCr (before)', YCbCr)
-Y, Cb, Cr = [wc_op(img[..., n], wn, L, Q, qntz, ('Y', 'Cr', 'Cb')[n]) for n in (0, 2, 1)]
+Y, Cb, Cr = [wtotw(img[..., n], wn, L, Q, qntz, ('Y', 'Cr', 'Cb')[n]) for n in (0, 2, 1)]
 img = np.array(np.clip(np.dstack((Y, Cr, Cb)), 0, 0xff), np.uint8)
 #   ... and after the wavelet transform and quantization
 DAC(img, YCbCr); CHXYZ(img, art, 'YCbCr (after)', YCbCr)
 
 #%% Grand finale!
 #   ... with the inverse ICT...
-img = openCV.cvtColor(img, openCV.COLOR_YCrCb2RGB)
-DI(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
+img = img@YCbCr2RGB
+DI(img.astype(int), f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
 
 #%% Digressions within digressions...
 #   A YCoCg color space - a réversible color transform
 #   cf. e.g. https://en.wikipedia.org/wiki/YCoCg
 img = openCV.cvtColor(openCV.imread(f'./images/{art}.png'), openCV.COLOR_BGR2RGB)
-ycocg = rgb2ycocg(img)
+if λ > 0: img = np.clip(poisson(img * 2**λ)/2**λ, 0x0, 0xff)
+ycocg = img@RGB2YCoCg
 DAC(ycocg,  YCoCg); CHXYZ(ycocg, art, 'YCoCg', YCoCg)
 
 #%% Wavelet multiresolution analysis (MRA) visualization
