@@ -44,6 +44,7 @@ def displayPlotsXY(plots, titles):
     plt.show()
 
 # Image dissection presentation (the channels and the resulting image)
+# Note it is assumed that the images are in the RGB (or other additive) color space
 def displayChannels(images, channels, rows = 1, cols = 4, title = 'RGB'):
     for image in images:
         for p, c in enumerate(channels):
@@ -56,20 +57,36 @@ def displayChannels(images, channels, rows = 1, cols = 4, title = 'RGB'):
         plt.title(title); plt.imshow(image)
         plt.show()
 
-# Color channels for histogram visualization purposes
-RGB_channels = (('R', 'k', 'r'), ('G','k', 'g'), ('B','k', 'b'))
-YCbCr_channels = (('Y', 'k', 'w'), ('Cb','b', 'g'), ('Cr','r', 'g'))
-YCoCg_channels = (('Y', 'k', 'xkcd:light grey'), ('Co', 'b', 'r'),
-                  ('Cg', 'xkcd:orange', 'xkcd:army green'))
+# Color channels for channel and histogram visualizations
+RGB_channels = (('R', 'k', 'r'),
+                ('G','k', 'g'),
+                ('B','k', 'b'))
+YCbCr_channels = (('Y', 'k', 'w'),
+                  ('Cb','y', 'b'),
+                  ('Cr','cyan', 'r'))
+YCoCg_channels = (('Y', 'k', 'grey'),
+                  ('Co', 'b', 'r'),
+                  ('Cg', 'xkcd:pink', 'xkcd:green'))
+
+# Enhanced color channels (Because not only ♪♫ https://youtu.be/PIb6AZdTr-A ♫♪)
+RGB_ext_channels = (('R', 'k', 'xkcd:dark red', 'r', 'xkcd:light red'),
+                    ('G','k', 'xkcd:dark green', 'g', 'xkcd:light green'),
+                    ('B','k', 'xkcd:dark blue', 'b', 'xkcd:light blue'))
+YCbCr_ext_channels = (('Y', 'k', 'xkcd:light grey'),
+                      ('Cb','y', 'k', 'b'),
+                      ('Cr','cyan', 'k', 'r'))
+YCoCg_ext_channels = (('Y', 'k', 'xkcd:dark grey', 'grey', 'xkcd:light grey'),
+                      ('Co', 'b', 'k', 'r', 'xkcd:light red'),
+                      ('Cg', 'xkcd:pink', 'k', 'xkcd:army green', 'xkcd:light green'))
 
 # Image channel dissection
 # (this routine works with any number of channels, but with a single image)
 def displayAnyChannels(image, channels, rows = 1, cols = 3):
-    for p, (cn, cl, cr) in enumerate(channels):
+    for p, cn in enumerate(channels):
         sb = plt.subplot(rows, cols, p + 1)
         sb.set_xticks([]); sb.set_yticks([])
-        cmp = lscm.from_list('_', [cl, cr])
-        plt.title(cn); plt.imshow(image[..., p], cmp)
+        cmp = lscm.from_list('_', cn[1:])
+        plt.title(cn[0]); plt.imshow(image[..., p], cmp)
     plt.show()
 
 def channelHistogram(img, art, color_space, colors):
@@ -79,7 +96,7 @@ def channelHistogram(img, art, color_space, colors):
     plt.plot(a, colors[0], b, colors[1], c, colors[2])
     plt.title(f'{art} in {color_space}'); plt.show()
 
-# When you don't care about the return value
+# Sometimes you just don't care about the return value
 def splot(*args, scalex = True, scaley = True, data = None, **kwargs):
     _ = plt.plot(*args, scalex = scalex, scaley = scaley, data = data, **kwargs)
 

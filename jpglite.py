@@ -7,7 +7,7 @@ from numpy.random import poisson
 ## JP[E]G Lite - a (pretty much) simplified version of the standard
 #  still image transform coding compression algorithm
 
-##  Forward & inverse DCT2 transform shortcuts
+##  Forward & inverse DCT 2D transform shortcuts
 dct2, idct2 = (lambda img, norm = 'ortho': dctn(img, norm = norm),
                lambda img, norm = 'ortho': idctn(img, norm = norm))
 
@@ -43,13 +43,14 @@ if λ > 0:
 trns = [[dct2(org[n:n + B, m:m + B]) for n in tiles] for m in tiles]
 
 #%% Quantization vs. image quality
-#  If B ≠ 8, then the standard scalar quantization is applied and 'Q == 1'
-#  means no scalar quantization (other than conversion to the 'int' type).
-#  For B == 8 the JP[E]G quantization matrix is applied (for 'Y' channel).
-#  Then 'Q == 0.1' results (usually) in a poor quality image while
-#  'Q == 10' yields a (seemingly) indistinguishable image.
-#  When 'B != 8', then the scalar quantization, 'x = Q⁻¹⌊Q⋅x + .5⌋', is performed
-
+r'''
+If B ≠ 8, then the standard scalar quantization is applied and 'Q == 1'
+  means no scalar quantization (other than conversion to the 'int' type).
+  For B == 8 the JP[E]G quantization matrix is applied (for 'Y' channel).
+  Then 'Q == 0.1' results (usually) in a poor quality image while
+  'Q == 10' yields a (seemingly) indistinguishable image.
+  When 'B != 8', then the scalar quantization, 'x = Q⁻¹⌊Q⋅x + .5⌋', is performed
+'''
 ## Coefficients quantization and inverse transformation
 qntz = [[quantize(trns[n][m], Q)    for n in blocks] for m in blocks]
 img  = [[idct2(qntz[m][n])          for n in blocks] for m in blocks]
@@ -58,14 +59,12 @@ img  = [[idct2(qntz[m][n])          for n in blocks] for m in blocks]
 img, qntz = np.block(img), np.block(qntz)
 nz  = sum((qntz != 0).flat)
 DI([org, qntz, img, org - img],
-                  [f'original\n{N}×{N} = {N*N} pixels',
-                   f'DCT 2D\n{N/B:.0f}×{N/B:.0f} = {N**2/B**2:.0f} of {B}×{B} blocks',
-                   f'Reconstruction\nQ = {Q}',
-                   f'Difference\n{nz} ({nz/(N*N):,.1%}) non-zeros'],
-                  grid = False)
+    [f'original\n{N}×{N} = {N*N} pixels',
+     f'DCT 2D\n{N/B:.0f}×{N/B:.0f} = {N**2/B**2:.0f} of {B}×{B} blocks',
+     f'Reconstruction\nQ = {Q}',
+     f'Difference\n{nz} ({nz/(N*N):,.1%}) non-zeros'], grid = False)
 
 #%% Is this a new normal?
 from matplotlib.pyplot import hist, show
 hist((org - img).flat, density = True); show()
-
 # %%
