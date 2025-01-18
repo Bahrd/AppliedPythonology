@@ -33,14 +33,11 @@ if hasattr(sys, 'ps1'):
     B, Q, λ = 32, 0.1, 1.0
 elif len(sys.argv) > 1:
     B, Q, λ = eval(sys.argv[1])
-print(f'Block size: {B}×{B}, quality factor: {Q}')
 
 tiles, blocks = range(0, N, B), range(int(N/B))
-
 # Pick your poison... (be sure to make λ floating... ;)
 if λ > 0:
     org = np.clip(poisson(org * λ)/λ, 0x0, 0xff)
-#    org = org.astype(int)
 
 #%% Transforming (separately/in a parallel way (supposedly!)) each tile/block by DCT 2D
 trns = [[dct2(org[n:n + B, m:m + B]) for n in tiles] for m in tiles]

@@ -56,21 +56,23 @@ def displayChannels(images, channels, rows = 1, cols = 4, title = 'RGB'):
         plt.title(title); plt.imshow(image)
         plt.show()
 
-# Image dissection presentation (the channels)
-YCoCg_channels = (('Y', 'k', 'xkcd:grey'), ('Co', 'r', 'b'),
-                  ('Cg', 'xkcd:army green', 'xkcd:orange'))
-YCbCr_channels = (('Y', 'k', 'w'), ('Cb','g', 'b'), ('Cr','g', 'r'))
+# Color channels for histogram visualization purposes
+RGB_channels = (('R', 'k', 'r'), ('G','k', 'g'), ('B','k', 'b'))
+YCbCr_channels = (('Y', 'k', 'w'), ('Cb','b', 'g'), ('Cr','r', 'g'))
+YCoCg_channels = (('Y', 'k', 'xkcd:light grey'), ('Co', 'b', 'r'),
+                  ('Cg', 'xkcd:orange', 'xkcd:army green'))
 
-def displayAnyChannels(images, channels, rows = 1, cols = 3):
-    for image in images:
-        for p, (cn, cl, cr) in enumerate(channels):
-            sb = plt.subplot(rows, cols, p + 1)
-            sb.set_xticks([]); sb.set_yticks([])
-            cmp = lscm.from_list('_', [cl, cr])
-            plt.title(cn); plt.imshow(image[..., p], cmp)
+# Image channel dissection
+# (this routine works with any number of channels, but with a single image)
+def displayAnyChannels(image, channels, rows = 1, cols = 3):
+    for p, (cn, cl, cr) in enumerate(channels):
+        sb = plt.subplot(rows, cols, p + 1)
+        sb.set_xticks([]); sb.set_yticks([])
+        cmp = lscm.from_list('_', [cl, cr])
+        plt.title(cn); plt.imshow(image[..., p], cmp)
     plt.show()
 
-def channelHist(img, art, color_space, colors):
+def channelHistogram(img, art, color_space, colors):
     redux = lambda x: x[0]
     a, b, c = [redux(np.histogram(img[..., cn], bins = 0x100)) for cn in range(0b11)]
     plt.xticks(np.arange(0, 0x101, 0x20)); plt.yticks([])
