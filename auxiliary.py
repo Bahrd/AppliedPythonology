@@ -72,10 +72,10 @@ YCoCg_channels = (('Y', 'k', 'grey'),
 RGB_ext_channels = (('R', 'k', 'xkcd:dark red', 'r', 'xkcd:light red'),
                     ('G','k', 'xkcd:dark green', 'g', 'xkcd:light green'),
                     ('B','k', 'xkcd:dark blue', 'b', 'xkcd:light blue'))
-YCbCr_ext_channels = (('Y', 'k', 'xkcd:light grey'),
+YCbCr_ext_channels = (('Y', 'k', 'xkcd:light grey', 'xkcd:white'),
                       ('Cb','y', 'k', 'b'),
                       ('Cr','cyan', 'k', 'r'))
-YCoCg_ext_channels = (('Y', 'k', 'xkcd:dark grey', 'grey', 'xkcd:light grey'),
+YCoCg_ext_channels = (('Y', 'k', 'xkcd:dark grey', 'grey', 'xkcd:light grey', 'xkcd:white'),
                       ('Co', 'b', 'k', 'r', 'xkcd:light red'),
                       ('Cg', 'xkcd:pink', 'k', 'xkcd:army green', 'xkcd:light green'))
 

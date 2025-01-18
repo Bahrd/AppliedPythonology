@@ -43,7 +43,7 @@ qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 #   'bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7'
 wn, λ, L, Q = 'bior2.2', 0, 4, -6
 if hasattr(sys, 'ps1'):
-    wn, λ, L, Q = 'bior4.4', 4.0, 5, 0
+    wn, λ, L, Q = 'bior4.4', 4.0, 5, -4
 elif len(sys.argv) > 1:
     wn, λ, L, Q = eval(sys.argv[1])
 #   Pick your own (floating) poison...  (for instance λ = 4.0).
@@ -57,9 +57,10 @@ DAC(img, RGB); CHXYZ(img, art, 'RGB', RGB)
 #   An original image in the YCbCr color space before...
 img = img@RGB2YCbCr
 DAC(img, YCbCr); CHXYZ(img, art, 'YCbCr (before)', YCbCr)
+#%% ... the wavelet transform and quantization...
 Y, Cb, Cr = [wtotw(img[..., n], wn, L, Q, qntz, ('Y', 'Cr', 'Cb')[n]) for n in (0, 2, 1)]
 img = np.array(np.clip(np.dstack((Y, Cr, Cb)), 0, 0xff), np.uint8)
-#   ... and after the wavelet transform and quantization
+# ... and after
 DAC(img, YCbCr); CHXYZ(img, art, 'YCbCr (after)', YCbCr)
 
 #%% Grand finale!
