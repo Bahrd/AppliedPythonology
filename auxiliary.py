@@ -89,13 +89,6 @@ def displayAnyChannels(image, channels, rows = 1, cols = 3):
         plt.title(cn[0]); plt.imshow(image[..., p], cmp)
     plt.show()
 
-def channelHistogram(img, art, color_space, colors):
-    redux = lambda x: x[0]
-    a, b, c = [redux(np.histogram(img[..., cn], bins = 0x100)) for cn in range(0b11)]
-    plt.xticks(np.arange(0, 0x101, 0x20)); plt.yticks([])
-    plt.plot(a, colors[0], b, colors[1], c, colors[2])
-    plt.title(f'{art} in {color_space}'); plt.show()
-
 # Sometimes you just don't care about the return value
 def splot(*args, scalex = True, scaley = True, data = None, **kwargs):
     _ = plt.plot(*args, scalex = scalex, scaley = scaley, data = data, **kwargs)

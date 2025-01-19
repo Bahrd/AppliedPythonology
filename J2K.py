@@ -41,9 +41,9 @@ qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 #   Interactive-aware wavelet transform parameters setting
 #   https://en.wikipedia.org/wiki/Cohen-Daubechies-Feauveau_wavelet#Numbering
 #   'bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7'
-wn, λ, L, Q = 'bior2.2', 0, 4, -6
+wn, λ, L, Q = 'bior2.2', 0, 4, -7
 if hasattr(sys, 'ps1'):
-    wn, λ, L, Q = 'bior4.4', 4.0, 5, -4
+    wn, λ, L, Q = 'bior4.4', 4.0, 5, -5
 elif len(sys.argv) > 1:
     wn, λ, L, Q = eval(sys.argv[1])
 #   Pick your own (floating) poison...  (for instance λ = 4.0).
@@ -59,14 +59,14 @@ img = img@RGB2YCbCr
 DAC(img, YCbCr); CHXYZ(img, art, 'YCbCr (before)', YCbCr)
 #%% ... the wavelet transform and quantization...
 Y, Cb, Cr = [wtotw(img[..., n], wn, L, Q, qntz, ('Y', 'Cr', 'Cb')[n]) for n in (0, 2, 1)]
-img = np.array(np.clip(np.dstack((Y, Cr, Cb)), 0, 0xff), np.uint8)
+img = np.array(np.clip(np.dstack((Y, Cr, Cb)), 0, 0xff))
 # ... and after
 DAC(img, YCbCr); CHXYZ(img, art, 'YCbCr (after)', YCbCr)
 
 #%% Grand finale!
 #   ... with the inverse ICT...
-img = img@YCbCr2RGB
-DI(img.astype(int), f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
+img = np.clip(img@YCbCr2RGB, 0, 0xff).astype(np.uint8)
+DI(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
 
 #%% Digressions within digressions...
 #   A YCoCg color space - a réversible color transform

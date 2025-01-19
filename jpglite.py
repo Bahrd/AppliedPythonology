@@ -1,4 +1,5 @@
 #%%
+from turtle import width
 import cv2 as openCV; import numpy as np
 from auxiliary import displayImages as DI, JPG_QT_Y
 from scipy.fftpack import dctn, idctn
@@ -66,5 +67,17 @@ DI([org, qntz, img, org - img],
 
 #%% Is this a new normal?
 from matplotlib.pyplot import hist, show
-hist((org - img).flat, density = True); show()
+from matplotlib.colors import Normalize, LinearSegmentedColormap as lscm
+from auxiliary import YCbCr_ext_channels as YCbCr
+N, bins, patches = hist((org - img).flat, bins = 0x100, density = True)
+
+# See: https://matplotlib.org/stable/gallery/statistics/hist.html
+fracs = N / N.max(); norm = Normalize(fracs.min(), fracs.max())
+
+# The higher bar the lighter color
+cm = lscm.from_list(YCbCr[0][0], YCbCr[0][1:-1], N = 0x100)
+for thisfrac, thispatch in zip(fracs, patches):
+    thispatch.set_facecolor(cm(norm(thisfrac)))
+
+show()
 # %%
