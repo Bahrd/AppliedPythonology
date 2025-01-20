@@ -8,12 +8,12 @@ from pywt import dwt2, idwt2
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2,
                   array_to_coeffs as a2c, coeffs_to_array as c2a)
 # https://pywavelets.readthedocs.io/en/latest/ref/dwt-coefficient-handling.html
-from auxiliary import (displayImages as DI,displayAnyChannels as DAC,
+from auxiliary import (displayImages as di,displayAnyChannels as dac,
                        YCbCr_ext_channels as YCbCr,
                        YCoCg_ext_channels as YCoCg,
                        RGB_ext_channels as RGB,
                        RGB2YCbCr, YCbCr2RGB, RGB2YCoCg)
-from histogramXYZ import channelGradientHistogram as CHXYZ
+from histogramXYZ import channelGradientHistogram as cgh
 
 #   Wavelet transform coefficients operation palindrome
 def wtotw(c, wn, lvl, Q, op = lambda x, Q: x, channel = 'Y'):
@@ -51,22 +51,22 @@ elif len(sys.argv) > 1:
 img = openCV.cvtColor(openCV.imread(f'./images/{art}.png'), openCV.COLOR_BGR2RGB)
 if λ > 0: img = np.clip(poisson(img * 2**λ)/2**λ, 0x0, 0xff)
 #   A native RGB color space channels
-DAC(img, RGB); CHXYZ(img, art, 'RGB', RGB)
+dac(img, RGB); cgh(img, art, 'RGB', RGB)
 
 #%% An irréversible color transform (ICT)†
 #   An original image in the YCbCr color space before...
 img = img@RGB2YCbCr
-DAC(img, YCbCr); CHXYZ(img, art, 'YCbCr (before)', YCbCr)
+dac(img, YCbCr); cgh(img, art, 'YCbCr (before)', YCbCr)
 #%% ... the wavelet transform and quantization...
 Y, Cb, Cr = [wtotw(img[..., n], wn, L, Q, qntz, ('Y', 'Cr', 'Cb')[n]) for n in (0, 2, 1)]
 img = np.array(np.clip(np.dstack((Y, Cr, Cb)), 0, 0xff))
 # ... and after
-DAC(img, YCbCr); CHXYZ(img, art, 'YCbCr (after)', YCbCr, DC = False)
+dac(img, YCbCr); cgh(img, art, 'YCbCr (after)', YCbCr, DC = False)
 
 #%% Grand finale!
 #   ... with the inverse ICT...
 img = np.clip(img@YCbCr2RGB, 0, 0xff).astype(np.uint8)
-DI(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
+di(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
 
 #%% Digressions within digressions...
 #   A YCoCg color space - a réversible color transform
@@ -74,7 +74,7 @@ DI(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
 img = openCV.cvtColor(openCV.imread(f'./images/{art}.png'), openCV.COLOR_BGR2RGB)
 if λ > 0: img = np.clip(poisson(img * 2**λ)/2**λ, 0x0, 0xff)
 ycocg = img@RGB2YCoCg
-DAC(ycocg,  YCoCg); CHXYZ(ycocg, art, 'YCoCg', YCoCg)
+dac(ycocg,  YCoCg); cgh(ycocg, art, 'YCoCg', YCoCg)
 
 #%% Wavelet multiresolution analysis (MRA) visualization
 #   See https://pywavelets.readthedocs.io/en/latest/
@@ -86,9 +86,9 @@ titles = [f'{wn} approximation (LL)', 'Horizontal details (HL)',
 Y = ycocg[..., 0]
 LL, (HL, LH, HH) = dwt2(Y, wn)
 #   Note that the details are (slightly) exaggerated...
-DI([LL, A(HL), A(LH), A(HH)], titles, grid = False)
+di([LL, A(HL), A(LH), A(HH)], titles, grid = False)
 Y = idwt2((LL, (HL, LH, HH)), wn)
-DI(Y, 'DWT⁻¹(DWT(Y)) → ⌊…⌋ ?', grid = False)
+di(Y, 'DWT⁻¹(DWT(Y)) → ⌊…⌋ ?', grid = False)
 # %%
 '''
 ————————————————————————————————————————————————————————————————————————

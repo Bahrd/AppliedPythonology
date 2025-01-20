@@ -1,7 +1,7 @@
 #%%
 from turtle import width
 import cv2 as openCV; import numpy as np
-from auxiliary import displayImages as DI, JPG_QT_Y
+from auxiliary import displayImages as di, JPG_QT_Y
 from scipy.fftpack import dctn, idctn
 from numpy.random import poisson
 
@@ -23,7 +23,7 @@ def quantize(X, Q = 1):
 
 #%% Image loading....
 org = openCV.cvtColor(openCV.imread('./images/GrassHopper.PNG'), openCV.COLOR_BGR2YCrCb)
-N = 512; org = openCV.resize(org[..., 0], (N, N))
+N = 0x1 << 10; org = openCV.resize(org[..., 0], (N, N))
 # ... and tiling (if 'B == 8' then, by default, the JP[E]G quantization scheme
 #     is applied (note we assume for simplicity the fixed image size
 #     [that happens to be a power of two])
@@ -59,7 +59,7 @@ img  = [[idct2(qntz[m][n])          for n in blocks] for m in blocks]
 #%% Presentation
 img, qntz = np.block(img), np.block(qntz)
 nz  = sum((qntz != 0).flat)
-DI([org, qntz, img, org - img],
+di([org, qntz, img, org - img],
     [f'original\n{N}×{N} = {N*N} pixels',
      f'DCT 2D\n{N/B:.0f}×{N/B:.0f} = {N**2/B**2:.0f} of {B}×{B} blocks',
      f'Reconstruction\nQ = {Q}',
@@ -72,12 +72,11 @@ from auxiliary import YCbCr_ext_channels as YCbCr
 N, bins, patches = hist((org - img).flat, bins = 0x100, density = True)
 
 # See: https://matplotlib.org/stable/gallery/statistics/hist.html
-fracs = N / N.max(); norm = Normalize(fracs.min(), fracs.max())
+fracs = N/N.max(); norm = Normalize(fracs.min(), fracs.max())
 
 # The higher bar the lighter color
 cm = lscm.from_list(YCbCr[0][0], YCbCr[0][1:-1], N = 0x100)
 for thisfrac, thispatch in zip(fracs, patches):
     thispatch.set_facecolor(cm(norm(thisfrac)))
-
 show()
 # %%
