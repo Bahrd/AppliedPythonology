@@ -1,13 +1,14 @@
-﻿from matplotlib.pyplot import show, title, bar, yticks
+﻿from matplotlib.pyplot import show, title, bar, yticks, figure
 from matplotlib.colors import LinearSegmentedColormap as lscm
 from numpy import histogram, arange
 
 from auxiliary import YCoCg2RGB
 
-def channelGradientHistogram(img, art, name, channels, N = 0x100, DC = True, noshow = False):
+def channelGradientHistogram(img, art, name, channels, N = 0x100, DC = True, tabbed = None):
     redux = lambda x: x[0]
     hC = [redux(histogram(img[..., c], bins = N)) for c in range(len(channels))]
 
+    if(tabbed != None): _ = figure()
     for h, cr in zip(hC, channels):
         ## Color map build-up (Have you already sensed a smell
         #  of interpolation here? ;)
@@ -18,7 +19,10 @@ def channelGradientHistogram(img, art, name, channels, N = 0x100, DC = True, nos
         if(DC == False): h[0] = 0
         bar(range(len(h)), h, color = colors, width = 1, alpha = .75)
     title(f'{art} in {name} space'); yticks([])
-    if (noshow == False): show()
+    if(tabbed != None): 
+        tabbed.addPlot(f'{art} in {name} space', _)
+    else:
+        show()
 
 if __name__ == '__main__':
     from cv2 import cvtColor as cvcc, imread as cvread, COLOR_BGR2RGB

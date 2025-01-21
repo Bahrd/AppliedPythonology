@@ -18,7 +18,7 @@
 - Monte Carlo pixel counting/area measurements: [MonteCarlo.py](./MonteCarlo.py)
 - **Duda's** ANS compression coding:  [ans.ipynb](./ans.ipynb) & [ans.py](./ans.py)
 - JPEG 'lite' algorithm: [jpglite.py](./jpglite.py)
-- JPEG 2000 'featherlite' algorithm: [J2K.py](./J2K.py)
+- JPEG 2000 'featherlite' algorithm: [Jp2lite.py](./Jp2lite.py) and [J2K.py](./J2K.py)
 - **Hamming's** code: [HammingBird.ipynb](./HammingBird.ipynb) and [HammingBird.py](./HammingBird.py)
 - jigsaw pieces of cryptography: 
   - PKI [RSA.py](./RSA.py), 

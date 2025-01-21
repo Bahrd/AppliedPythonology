@@ -2,34 +2,107 @@
 import numpy as np; from numpy.linalg import inv
 import matplotlib.pyplot as plt; from matplotlib.colors import LinearSegmentedColormap as lscm
 
-#Image presentation
-def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True, title = 'Applied Pythonology [Of] Course'):
-#    if type(images) is tuple or type(images) is list:
-    if isinstance(images, (tuple, list)):
-        number = len(images)
-        fig = plt.figure(figsize = (number * 3, 3), num = title); fig.tight_layout()
-        for p, (image, title) in enumerate(zip(images, titles)):
-            sb = plt.subplot(1, number, p + 1)
+## Image presentation
+def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True, 
+                  title = 'Applied Pythonology of[f] Course', tabbed = None):
+    # Tabbed images
+    def _withTabs(images, titles, cmp, grid, title):
+        _ = plt.figure()
+        if isinstance(images, (tuple, list)):
+            number = len(images)
+            for p, (image, _title) in enumerate(zip(images, titles)):
+                sb = plt.subplot(1, number, p + 1)
+                sb.set_xticks([]); sb.set_yticks([])
+                if grid:
+                    # Ticks... https://stackoverflow.com/questions/38973868/adjusting-gridlines-and-ticks-in-matplotlib-imshow
+                    sb.set_xticks(np.arange(-.5, len(image), 1), minor = True)
+                    sb.set_yticks(np.arange(-.5, len(image), 1), minor = True)
+                    sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
 
+                plt.title(_title); plt.imshow(image, cmap = cmp)
+        else:
+            sb = plt.subplot(1, 1, 1)
             sb.set_xticks([]); sb.set_yticks([])
             if grid:
-                # Ticks... https://stackoverflow.com/questions/38973868/adjusting-gridlines-and-ticks-in-matplotlib-imshow
-                sb.set_xticks(np.arange(-.5, len(image), 1), minor = True)
-                sb.set_yticks(np.arange(-.5, len(image), 1), minor = True)
+                sb.set_xticks(np.arange(-.5, len(images), 1), minor = True)
+                sb.set_yticks(np.arange(-.5, len(images), 1), minor = True)
                 sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
 
-            plt.title(title); plt.imshow(image, cmap = cmp)
+            plt.title(titles); plt.imshow(images, cmap = cmp)
+        tabbed.addPlot(title, _)
+    # Tabless images
+    def _noTabs(images, titles, cmp, show, grid):
+        if isinstance(images, (tuple, list)):
+            number = len(images)
+            for p, (image, _title) in enumerate(zip(images, titles)):
+                sb = plt.subplot(1, number, p + 1)
+                sb.set_xticks([]); sb.set_yticks([])
+                if grid:
+                    # Ticks... https://stackoverflow.com/questions/38973868/adjusting-gridlines-and-ticks-in-matplotlib-imshow
+                    sb.set_xticks(np.arange(-.5, len(image), 1), minor = True)
+                    sb.set_yticks(np.arange(-.5, len(image), 1), minor = True)
+                    sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
+
+                plt.title(_title); plt.imshow(image, cmap = cmp)
+        else:
+            sb = plt.subplot(1, 1, 1)
+            sb.set_xticks([]); sb.set_yticks([])
+            if grid:
+                sb.set_xticks(np.arange(-.5, len(images), 1), minor = True)
+                sb.set_yticks(np.arange(-.5, len(images), 1), minor = True)
+                sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
+
+            plt.title(titles); plt.imshow(images, cmap = cmp)
+        if show:
+            plt.show()
+
+    if tabbed != None:
+        _withTabs(images, titles, cmp, grid, title)
     else:
-        sb = plt.subplot(1, 1, 1)
+        _noTabs(images, titles, cmp, show, grid)
+    
+## Color image channel dissection
+# Tabbed color channels (still nice, still messy integration - and still my bad!)
+# (this routine works with any number of channels, but with a single image)
+def displayAnyChannels(image, channels, rows = 1, cols = 3, tabbed = None):
+    def _withTabs(image, channels, rows, cols):
+        _ = plt.figure()
+        name = '[ '
+        for p, cn in enumerate(channels):
+            sb = plt.subplot(rows, cols, p + 1)
+            sb.set_xticks([]); sb.set_yticks([])
+            cmp = lscm.from_list(cn[0], cn[1:])
+            plt.title(cn[0])
+            name += cn[0] + ' '
+            plt.imshow(image[..., p], cmp)
+        name += ']'
+        tabbed.addPlot(name, _)
+    def _noTabs(image, channels, rows, cols):
+        for p, cn in enumerate(channels):
+            sb = plt.subplot(rows, cols, p + 1)
+            sb.set_xticks([]); sb.set_yticks([])
+            cmp = lscm.from_list(cn[0], cn[1:])
+            plt.title(cn[0])
+            plt.imshow(image[..., p], cmp)
+        plt.show()
+    if tabbed != None:
+        _withTabs(image, channels, rows, cols)
+    else:
+        _noTabs(image, channels, rows, cols)
 
+## Image dissection presentation (the channels and the resulting image)
+#  Note it is assumed that the images are in the RGB (or other additive) color space
+def displayChannels(images, channels, rows = 1, cols = 4, title = 'RGB'):
+    for image in images:
+        for p, c in enumerate(channels):
+            sb = plt.subplot(rows, cols, p + 1)
+            sb.set_xticks([]); sb.set_yticks([])
+            cmp = lscm.from_list('_', ['black', c])
+            plt.title(c); plt.imshow(image[..., p], cmp)
+        sb = plt.subplot(rows, cols, rows * cols)
         sb.set_xticks([]); sb.set_yticks([])
-        if grid:
-            sb.set_xticks(np.arange(-.5, len(images), 1), minor = True)
-            sb.set_yticks(np.arange(-.5, len(images), 1), minor = True)
-            sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
-
-        plt.title(titles); plt.imshow(images, cmap = cmp)
-    if show: plt.show()
+        plt.title(title); plt.imshow(image)
+        plt.show()
 
 def displayPlots(plots, titles):
     for p, (pl, ttl) in enumerate(zip(plots, titles)):
@@ -42,20 +115,6 @@ def displayPlotsXY(plots, titles):
         plt.subplot(1, len(plots), p + 1)
         plt.title(ttl); plt.plot(x, y)
     plt.show()
-
-# Image dissection presentation (the channels and the resulting image)
-# Note it is assumed that the images are in the RGB (or other additive) color space
-def displayChannels(images, channels, rows = 1, cols = 4, title = 'RGB'):
-    for image in images:
-        for p, c in enumerate(channels):
-            sb = plt.subplot(rows, cols, p + 1)
-            sb.set_xticks([]); sb.set_yticks([])
-            cmp = lscm.from_list('_', ['black', c])
-            plt.title(c); plt.imshow(image[..., p], cmp)
-        sb = plt.subplot(rows, cols, rows * cols)
-        sb.set_xticks([]); sb.set_yticks([])
-        plt.title(title); plt.imshow(image)
-        plt.show()
 
 # Color channels for channel and histogram visualizations
 RGB_channels = (('R', 'k', 'r'),
@@ -72,22 +131,15 @@ YCoCg_channels = (('Y', 'k', 'grey'),
 RGB_ext_channels = (('R', 'k', 'xkcd:dark red', 'r', 'xkcd:light red'),
                     ('G','k', 'xkcd:dark green', 'g', 'xkcd:light green'),
                     ('B','k', 'xkcd:dark blue', 'b', 'xkcd:light blue'))
-YCbCr_ext_channels = (('Y', 'k', 'xkcd:light grey', 'xkcd:white'),
+YCbCr_ext_channels = (('Y', 'k', 'xkcd:dark grey', 'grey',
+                       'xkcd:light grey', 'xkcd:white'),
                       ('Cb','y', 'k', 'b'),
                       ('Cr','cyan', 'k', 'r'))
-YCoCg_ext_channels = (('Y', 'k', 'xkcd:dark grey', 'grey', 'xkcd:light grey', 'xkcd:white'),
+YCoCg_ext_channels = (('Y', 'k', 'xkcd:dark grey', 'grey',
+                       'xkcd:light grey', 'xkcd:white'),
                       ('Co', 'b', 'k', 'r', 'xkcd:light red'),
-                      ('Cg', 'xkcd:pink', 'k', 'xkcd:army green', 'xkcd:light green'))
-
-# Image channel dissection
-# (this routine works with any number of channels, but with a single image)
-def displayAnyChannels(image, channels, rows = 1, cols = 3):
-    for p, cn in enumerate(channels):
-        sb = plt.subplot(rows, cols, p + 1)
-        sb.set_xticks([]); sb.set_yticks([])
-        cmp = lscm.from_list('_', cn[1:])
-        plt.title(cn[0]); plt.imshow(image[..., p], cmp)
-    plt.show()
+                      ('Cg', 'xkcd:pink', 'k', 'xkcd:army green',
+                       'xkcd:light green'))
 
 # Sometimes you just don't care about the return value
 def splot(*args, scalex = True, scaley = True, data = None, **kwargs):
@@ -125,11 +177,6 @@ YCbCr2RGB = inv(RGB2YCbCr)
 RGB2YCoCg = np.array([[1, 2, 1], [2, 0, -2], [-1, 2, -1]])/4
 YCoCg2RGB = np.array([[1, 1, -1], [1, 0, 1], [1, -1, -1]])
 
-#def rgb2ycocg(img, YCoCg = np.array([[1, 2, 1], [2, 0, -2], [-1, 2, -1]])/4):
-#    return img@YCoCg.T
-#def ycocg2rgb(img, YCoCg = np.array([[1, 1, -1], [1, 0, 1], [1, -1, -1]])):
-#    return img@YCoCg.T
-
 ## Reversible Color Transform (RCT)
 def RCT(R, G, B):
     Y, Cb, Cr = int(np.floor((R + 2*G + B)/4)), B - G, R - G
@@ -150,5 +197,3 @@ def ITT(f):
 		print(f'{f.__name__} evaluated in {end - begin:2.4}s')
 		return r
 	return time_warper_wrapper
-
-

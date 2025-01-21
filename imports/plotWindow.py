@@ -1,8 +1,10 @@
-import matplotlib
-# prevent NoneType error for versions of matplotlib 3.1.0rc1+ by calling matplotlib.use()
-# For more on why it's nececessary, see
-# https://stackoverflow.com/questions/59656632/using-qt5agg-backend-with-matplotlib-3-1-2-get-backend-changes-behavior
-matplotlib.use('qt5agg')
+''' 
+    Prevent NoneType error for versions of matplotlib 3.1.0rc1+ by calling matplotlib.use()
+    For more on why it's nececessary, see
+    https://stackoverflow.com/questions/59656632/using-qt5agg-backend-with-matplotlib-3-1-2-get-backend-changes-behavior
+'''
+from turtle import title
+import matplotlib; matplotlib.use('qt5agg')
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
@@ -15,11 +17,11 @@ import sys
 
 
 class plotWindow():
-    def __init__(self, parent=None):
+    def __init__(self, parent = None, title = 'Tabbed main window'):
         self.app = QApplication(sys.argv)
         self.MainWindow = QMainWindow()
         self.MainWindow.__init__()
-        self.MainWindow.setWindowTitle("Tabbed main window")
+        self.MainWindow.setWindowTitle(title)
         self.canvases = []
         self.figure_handles = []
         self.toolbar_handles = []
@@ -57,30 +59,10 @@ if __name__ == '__main__':
 
     pw = plotWindow()
 
-    x = np.arange(0, 10, 0.001)
-
-    f = plt.figure()
-    ysin = np.sin(x)
-    plt.plot(x, ysin, '--')
-    pw.addPlot("sin", f)
-
-    f = plt.figure()
-    ycos = np.cos(x)
-    plt.plot(x, ycos, '--')
-    pw.addPlot("cos", f)
-
-    f = plt.figure()
-    gh = plt.imread('../../AppliedPythonology/images/GrassHopper.png')
-    
-    plt.imshow(gh) #plt.figimage(gh)
-    pw.addPlot("gh", f)
-
+    for(filename, title) in [('../images/Mustang.jpg', 'Mustang'),
+                             ('../images/Fella.jpg', 'Fella')]:
+        _ = plt.figure()
+        gh = plt.imread(filename)
+        plt.imshow(gh)
+        pw.addPlot(title, _)
     pw.show()
-
-    # sys.exit(app.exec_())
-
-
-
-
-
-
