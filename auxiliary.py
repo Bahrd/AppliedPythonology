@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt; from matplotlib.colors import LinearSegmentedCo
 ## Image presentation
 def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True, 
                   title = 'Applied Pythonology of[f] Course', tabs = None):
+    # Clip'n'cast
+    cc = lambda x: np.clip(x, 0x0, 0xff).astype(np.uint8)
     # Tabbed images
     def _withTabs(images, titles, cmp, grid, title):
         _ = plt.figure()
@@ -19,7 +21,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True,
                     sb.set_yticks(np.arange(-.5, len(image), 1), minor = True)
                     sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
 
-                plt.title(_title); plt.imshow(image, cmap = cmp)
+                plt.title(_title); plt.imshow(cc(image), cmap = cmp)
         else:
             sb = plt.subplot(1, 1, 1)
             sb.set_xticks([]); sb.set_yticks([])
@@ -28,7 +30,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True,
                 sb.set_yticks(np.arange(-.5, len(images), 1), minor = True)
                 sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
 
-            plt.title(titles); plt.imshow(images, cmap = cmp)
+            plt.title(titles); plt.imshow(cc(images), cmap = cmp)
         tabs.addPlot(title, _)
     # Tabless images
     def _noTabs(images, titles, cmp, show, grid):
@@ -43,7 +45,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True,
                     sb.set_yticks(np.arange(-.5, len(image), 1), minor = True)
                     sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
 
-                plt.title(_title); plt.imshow(image, cmap = cmp)
+                plt.title(_title); plt.imshow(cc(image), cmap = cmp)
         else:
             sb = plt.subplot(1, 1, 1)
             sb.set_xticks([]); sb.set_yticks([])
@@ -52,7 +54,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True,
                 sb.set_yticks(np.arange(-.5, len(images), 1), minor = True)
                 sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
 
-            plt.title(titles); plt.imshow(images, cmap = cmp)
+            plt.title(titles); plt.imshow(cc(images), cmap = cmp)
         if show:
             plt.show()
 

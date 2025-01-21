@@ -50,7 +50,7 @@ elif len(sys.argv) > 1:
 #   Pick your own (floating) poison...  (for instance λ = 4.0).
 #   And then spice it up with e.g. λ = 0x4 ;D)
 img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
-if λ > 0: img = np.clip(poisson(img * 2**λ)/2**λ, 0x0, 0xff)
+if λ > 0: img = poisson(img * 2**λ)/2**λ
 di(img.astype(np.uint8), f'{art}', grid = False)
 
 #   A native RGB color space channels
@@ -69,8 +69,8 @@ dac(img, YCbCr); cgh(img, art, 'YCbCr (after)', YCbCr, DC = False)
 
 #%% Grand finale!
 #   ... with the inverse ICT...
-img = img@YCbCr2RGB.T; img = np.clip(img, 0x0, 0xff)
-di(img.astype(np.uint8), f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
+img = img@YCbCr2RGB.T
+di(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
 
 ### Let us digress a bit... (edge detection)
 #   Wavelet multiresolution analysis (MRA) visualization
@@ -82,11 +82,11 @@ import matplotlib.pyplot as plt
 A, wn = lambda x, a = 0x40, l = -0xff, h = 0xff: np.clip(a*x, l, h), 'Haar'
 titles = [f'{wn} approximation (LL)', 'Horizontal details (HL)',
            'Vertical details (LH)',   'Diagonal details (HH)']
-img = plt.imread(f'./images/{art}.png')[..., :3]
+img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
 img = img@RGB2YCbCr.T
 Y = img[..., 0]
 LL, (HL, LH, HH) = dwt2(Y, wn)
-di([LL, A(HL), A(LH), A(HH)], titles, grid = False)
+di([A(LL, .5), A(HL), A(LH), A(HH)], titles, grid = False)
 Y = idwt2((LL, (HL, LH, HH)), wn)
 di([Y, Y - img[..., 0]], ['DWT⁻¹(DWT(Y)) → ⌊…⌋ ?', 'Zero, zip, zilch, nada?'], grid = False)
 

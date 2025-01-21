@@ -55,8 +55,8 @@ art = choice(['Mustang GTD', 'Mustang RTR']) # a.k.a. "Spirit [Stallion of the C
 tabs = mtw(title = f'{art}@J2K[e]lite')
 
 img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
-if λ > 0: img = np.clip(poisson(img * 2**λ)/2**λ, 0x0, 0xff)
-di(img.astype(np.uint8), f'{art}', grid = False, title = 'Pretty original...', tabs = tabs)
+if λ > 0: img = poisson(img * 2**λ)/2**λ
+di(img, f'{art}', grid = False, title = 'Pretty original...', tabs = tabs)
 
 #   A native RGB color space channels
 dac(img, RGB, tabbed = tabs); cgh(img, art, 'RGB', RGB, tabs = tabs)
@@ -74,8 +74,8 @@ dac(img, YCoCg, tabbed = tabs); cgh(img, art, 'YCoCg (after)', YCoCg, tabs = tab
 
 #   Grand finale!
 #   ... with the inverse réversible CT...
-img = img@YCoCg2RGB.T; img = np.clip(img, 0x0, 0xff)
-di(img.astype(np.uint8), f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', 
+img = img@YCoCg2RGB.T
+di(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', 
    title = '... and pretty compressed', grid = False, tabs = tabs)
 
 # Et voilà!
