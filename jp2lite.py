@@ -1,6 +1,8 @@
 #%% Vanilla JPEG 2000 algorithm (more like a vanillin one, in fact:
 #   neither EBCOT nor BAC is implemented whatsoever)
-import cv2 as openCV; import numpy as np; import sys
+import numpy as np
+import sys
+import matplotlib.pyplot as plt
 from numpy.random import poisson
 from itertools import repeat
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2,
@@ -31,6 +33,8 @@ def wt4tw(c, wn, lvl, Q, op = lambda x, Q: x, channel = 'Y'):
     C = a2c(C, S, output_format = 'wavedec2')
     # Inversing the wavelet transform
     return ifwt2(C, wn)
+
+# Still a somehow horse-related creature...
 art = 'GrassHopper' # pseud. Philip [gr. "friend of horses"]!... ;)
 
 #%% JPEG 2000 main 'codec'
@@ -40,31 +44,33 @@ qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 #   'bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7'
 wn, λ, L, Q = 'bior2.2', 0, 0b100, -0b111
 if hasattr(sys, 'ps1'):
-    wn, λ, L, Q = 'bior4.4', float(0o10), 0b101, -0b101
+    wn, λ, L, Q = 'bior4.4', 0o10, 0b101, -0b101
 elif len(sys.argv) > 1:
     wn, λ, L, Q = eval(sys.argv[1])
 #   Pick your own (floating) poison...  (for instance λ = 4.0).
 #   And then spice it up with e.g. λ = 0x4 ;D)
-img = openCV.cvtColor(openCV.imread(f'./images/{art}.png'), openCV.COLOR_BGR2RGB)
+img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
 if λ > 0: img = np.clip(poisson(img * 2**λ)/2**λ, 0x0, 0xff)
+di(img.astype(np.uint8), f'{art}', grid = False)
+
 #   A native RGB color space channels
 dac(img, RGB); cgh(img, art, 'RGB', RGB)
 
 #%% An irréversible color transform (ICT)
-#   An original image in the YCbCr color space before...
 img = img@RGB2YCbCr.T
 dac(img, YCbCr); cgh(img, art, 'YCbCr (before)', YCbCr)
+
 #%% ... the wavelet transform and quantization...
-Y, Cb, Cr = [wt4tw(img[..., n], wn, L, Q, qntz, ('Y', 'Cr', 'Cb')[n]) for n in (0, 2, 1)]
-img = np.array(np.dstack((Y, Cr, Cb)))
+Y, Cb, Cr = [wt4tw(img[..., n], wn, L, Q, qntz, ('Y', 'Cb', 'Cr')[n]) for n in range(3)]
+img = np.array(np.dstack((Y, Cb, Cr)))
+
 # ... and after
 dac(img, YCbCr); cgh(img, art, 'YCbCr (after)', YCbCr, DC = False)
 
 #%% Grand finale!
 #   ... with the inverse ICT...
-img = img@YCbCr2RGB.T
-di(img.astype(int), f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
-
+img = img@YCbCr2RGB.T; img = np.clip(img, 0x0, 0xff)
+di(img.astype(np.uint8), f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
 
 ### Let us digress a bit... (edge detection)
 #   Wavelet multiresolution analysis (MRA) visualization

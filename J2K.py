@@ -3,18 +3,19 @@
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
-from numpy.random import poisson
+from numpy.random import poisson, choice
 from itertools import repeat
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2,
                   array_to_coeffs as a2c, coeffs_to_array as c2a)
 # https://pywavelets.readthedocs.io/en/latest/ref/dwt-coefficient-handling.html
 from auxiliary import (displayImages as di,displayAnyChannels as dac,
-                       YCoCg_ext_channels as YCoCg,
                        RGB_ext_channels as RGB,
+                       YCoCg_ext_channels as YCoCg,
                        RGB2YCoCg, YCoCg2RGB)
+#   No gradient, no pain! ;)
 from histogramXYZ import channelGradientHistogram as cgh
-#   Tabbed windows
-from imports.plotWindow import plotWindow as pw
+#   No tabs, no fun! ;)
+from imports.plotWindow import plotWindow as mtw
 
 #   Wavelet transform (for the win!) coefficients operation palindrome
 def wtftw(c, wn, lvl, Q, op = lambda x, Q: x, channel = 'Y'):
@@ -35,41 +36,47 @@ def wtftw(c, wn, lvl, Q, op = lambda x, Q: x, channel = 'Y'):
     C = a2c(C, S, output_format = 'wavedec2')
     # Inversing the wavelet transform
     return ifwt2(C, wn)
-art = 'Mustang GTD' # a.k.a. "Spirit [Stallion of the Cimarron]"!... Kiger?
-tabs = pw(title = 'JPEG 2000[e]lite')
+
 
 #   JPEG 2000 main 'codec'
 qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 #   Interactive-aware wavelet transform parameters setting
 #   https://en.wikipedia.org/wiki/Cohen-Daubechies-Feauveau_wavelet#Numbering
 #   'bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7'
-wn, λ, L, Q = 'bior2.2', 0, 0b100, 0b11
+wn, λ, L, Q = 'bior2.2', 0, 0b110, -0b110
 if hasattr(sys, 'ps1'):
-    wn, λ, L, Q = 'bior4.4', float(0o10), 0b101, 0b10
+    wn, λ, L, Q = 'bior4.4', 0b101, 0b101, -0b101
 elif len(sys.argv) > 1:
-#   Pick your own (floating) poison...  (for instance λ = 4.0).
-#   And then spice it up with e.g. λ = 0x4 ;D)
+#   Pick your own λ-poison...
     wn, λ, L, Q = eval(sys.argv[1])
 
-img = plt.imread(f'./images/{art}.png')[..., :3]
-di(img, f'{art} (original)', grid = False, show = False, tabbed = tabs)
+#   Ɑ: Hold your horses! :D
+art = choice(['Mustang GTD', 'Mustang RTR']) # a.k.a. "Spirit [Stallion of the Cimarron]"!... Kiger?
+tabs = mtw(title = f'{art}@J2K[e]lite')
 
+img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
 if λ > 0: img = np.clip(poisson(img * 2**λ)/2**λ, 0x0, 0xff)
+di(img.astype(np.uint8), f'{art}', grid = False, title = 'Pretty original...', tabs = tabs)
+
 #   A native RGB color space channels
-dac(img, RGB, tabbed = tabs); cgh(img, art, 'RGB', RGB, tabbed = tabs)
+dac(img, RGB, tabbed = tabs); cgh(img, art, 'RGB', RGB, tabs = tabs)
+
 #   A réversible color transform (RCT)†
 img = img@RGB2YCoCg.T
-dac(img, YCoCg, tabbed = tabs); cgh(img, art, 'YCoCg (before)', YCoCg, tabbed = tabs)
+dac(img, YCoCg, tabbed = tabs); cgh(img, art, 'YCoCg (before)', YCoCg, tabs = tabs)
+
 #   ... the wavelet transform and quantization...
 Y, Co, Cg = [wtftw(img[..., n], wn, L, Q, qntz, ('Y', 'Co', 'Cg')[n]) for n in range(3)]
+
 # ... and after
 img = np.array(np.dstack((Y, Co, Cg)))
-dac(img, YCoCg, tabbed = tabs); cgh(img, art, 'YCoCg (after)', YCoCg, DC = False, tabbed = tabs)
+dac(img, YCoCg, tabbed = tabs); cgh(img, art, 'YCoCg (after)', YCoCg, tabs = tabs, DC = False)
+
 #   Grand finale!
 #   ... with the inverse réversible CT...
-img = img@YCoCg2RGB.T
-di(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', 
-   grid = False, show = False, tabbed = tabs)
+img = img@YCoCg2RGB.T; img = np.clip(img, 0x0, 0xff)
+di(img.astype(np.uint8), f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', 
+   title = '... and pretty compressed', grid = False, tabs = tabs)
 
 # Et voilà!
 tabs.show()

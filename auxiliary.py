@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt; from matplotlib.colors import LinearSegmentedCo
 
 ## Image presentation
 def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True, 
-                  title = 'Applied Pythonology of[f] Course', tabbed = None):
+                  title = 'Applied Pythonology of[f] Course', tabs = None):
     # Tabbed images
     def _withTabs(images, titles, cmp, grid, title):
         _ = plt.figure()
@@ -29,7 +29,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True,
                 sb.grid(which = 'minor', color = 'w', linestyle = '-', linewidth = 1)
 
             plt.title(titles); plt.imshow(images, cmap = cmp)
-        tabbed.addPlot(title, _)
+        tabs.addPlot(title, _)
     # Tabless images
     def _noTabs(images, titles, cmp, show, grid):
         if isinstance(images, (tuple, list)):
@@ -56,7 +56,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True,
         if show:
             plt.show()
 
-    if tabbed != None:
+    if tabs != None:
         _withTabs(images, titles, cmp, grid, title)
     else:
         _noTabs(images, titles, cmp, show, grid)

@@ -2,13 +2,11 @@
 from matplotlib.colors import LinearSegmentedColormap as lscm
 from numpy import histogram, arange
 
-from auxiliary import YCoCg2RGB
-
-def channelGradientHistogram(img, art, name, channels, N = 0x100, DC = True, tabbed = None):
+def channelGradientHistogram(img, art, name, channels, N = 0x100, DC = True, tabs = None):
     redux = lambda x: x[0]
     hC = [redux(histogram(img[..., c], bins = N)) for c in range(len(channels))]
 
-    if(tabbed != None): _ = figure()
+    if(tabs != None): _ = figure()
     for h, cr in zip(hC, channels):
         ## Color map build-up (Have you already sensed a smell
         #  of interpolation here? ;)
@@ -19,35 +17,27 @@ def channelGradientHistogram(img, art, name, channels, N = 0x100, DC = True, tab
         if(DC == False): h[0] = 0
         bar(range(len(h)), h, color = colors, width = 1, alpha = .75)
     title(f'{art} in {name} space'); yticks([])
-    if(tabbed != None): 
-        tabbed.addPlot(f'{art} in {name} space', _)
+    if(tabs != None): 
+        tabs.addPlot(f'{art} in {name} space', _)
     else:
         show()
 
 if __name__ == '__main__':
-    from cv2 import cvtColor as cvcc, imread as cvread, COLOR_BGR2RGB
     from histogramXYZ import channelGradientHistogram as cgh # ;)
-    from auxiliary import RGB_ext_channels as RGB, YCbCr_ext_channels as YCbCr, YCoCg_ext_channels as YCoCg
-    from auxiliary import YCbCr2RGB, YCoCg2RGB
+    from auxiliary import (RGB_ext_channels as RGB, YCbCr_ext_channels as YCbCr, YCoCg_ext_channels as YCoCg,
+                           YCbCr2RGB, YCoCg2RGB)
+    from imports.plotWindow import plotWindow as mtw
+    import matplotlib.pyplot as plt
     from sys import argv
-    from imports.plotWindow import plotWindow as pw
-    from matplotlib.pyplot import figure as fg
 
     
-    tabs = pw()
+    tabs = mtw()
     art = './images/Pollock No. 5.png' if len(argv) < 0b10 else argv[1]
-    img = cvcc(cvread(f'{art}'), COLOR_BGR2RGB); 
+    img = plt.imread(f'{art}')[..., :3]
 
-    _ = fg()
-    cgh(img, art, 'RGB in cgh', RGB, noshow = True)
-    tabs.addPlot('RGB', _)
-
-    _ = fg()
-    cgh(img@YCbCr2RGB, art, 'YCbCr in cgh', YCbCr, noshow = True)
-    tabs.addPlot('YCbCr', _)
-
-    _ = fg()
-    cgh(img@YCoCg2RGB, art, 'YCoCg in cgh', YCoCg, noshow = True)
-    tabs.addPlot('YCoCg', _)
-
+    kwargs = ({'img': img, 'art': art, 'name': 'RGB in cgh', 'channels': RGB},
+              {'img': img@YCbCr2RGB.T, 'art': art, 'name': 'YCbCr in cgh', 'channels': YCbCr},
+              {'img': img@YCoCg2RGB.T, 'art': art, 'name': 'YCoCg in cgh', 'channels': YCoCg})
+    for kwarg in kwargs:
+        cgh(**kwarg, tabs = tabs)
     tabs.show()
