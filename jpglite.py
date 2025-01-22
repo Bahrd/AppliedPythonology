@@ -80,3 +80,13 @@ for thisfrac, thispatch in zip(fracs, patches):
     thispatch.set_facecolor(cm(norm(thisfrac)))
 show()
 # %%
+'''
+Scrapyard (see e.g.: https://maps.app.goo.gl/Y2xsDhVSk51mjC3KA or https://maps.app.goo.gl/BpsS7N7PhxF1HXUs8 - they are much more interesting!)
+art = 'Mustang GTD'   # Kiger?
+art = 'Malewicz I'    # a.k.a. 'Negroes Fighting in a Cellar at Night' by Allais 1897
+art = 'Malewicz II'   # or 'Bociany albinosy pośród śnieżnej zamieci' by OT.TO 1997
+art = 'Rothko'        # vel 'Orange, Red, Yellow' 1961
+art = 'BayerLCD'      # Color channel test pattern (Rothko & Malewicz would surely
+                      # have been proud of me! ;)
+art = 'Pollock No. 5' # https://blogs.uoregon.edu/richardtaylor/2016/02/08/fractal-analysis-of-jackson-pollocks-poured-paintings/
+'''

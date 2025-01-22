@@ -34,6 +34,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True,
         tabs.addPlot(title, _)
     # Tabless images
     def _noTabs(images, titles, cmp, show, grid):
+        _ = plt.figure(num = title)
         if isinstance(images, (tuple, list)):
             number = len(images)
             for p, (image, _title) in enumerate(zip(images, titles)):

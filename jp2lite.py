@@ -1,8 +1,6 @@
 #%% Vanilla JPEG 2000 algorithm (more like a vanillin one, in fact:
 #   neither EBCOT nor BAC is implemented whatsoever)
-import numpy as np
-import sys
-import matplotlib.pyplot as plt
+import numpy as np; import sys; import matplotlib.pyplot as plt
 from numpy.random import poisson
 from itertools import repeat
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2,
@@ -56,7 +54,7 @@ di(img.astype(np.uint8), f'{art}', grid = False)
 #   A native RGB color space channels
 dac(img, RGB); cgh(img, art, 'RGB', RGB)
 
-#%% An irréversible color transform (ICT)
+#%% An irréversible color transform (ICT) from RGB to YCbCr (ever heard of 4:2:0?)
 img = img@RGB2YCbCr.T
 dac(img, YCbCr); cgh(img, art, 'YCbCr (before)', YCbCr)
 
@@ -71,33 +69,4 @@ dac(img, YCbCr); cgh(img, art, 'YCbCr (after)', YCbCr, DC = False)
 #   ... with the inverse ICT...
 img = img@YCbCr2RGB.T
 di(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
-
-### Let us digress a bit... (edge detection)
-#   Wavelet multiresolution analysis (MRA) visualization
-#   See https://pywavelets.readthedocs.io/en/latest/
-#   Illustrated here for the luminance ('Y', grayscale) channel
-#   from the YCoCg space and the "grandpas" of all wavelets: the Haar family!
-from pywt import dwt2, idwt2
-import matplotlib.pyplot as plt
-A, wn = lambda x, a = 0x40, l = -0xff, h = 0xff: np.clip(a*x, l, h), 'Haar'
-titles = [f'{wn} approximation (LL)', 'Horizontal details (HL)',
-           'Vertical details (LH)',   'Diagonal details (HH)']
-img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
-img = img@RGB2YCbCr.T
-Y = img[..., 0]
-LL, (HL, LH, HH) = dwt2(Y, wn)
-di([A(LL, .5), A(HL), A(LH), A(HH)], titles, grid = False)
-Y = idwt2((LL, (HL, LH, HH)), wn)
-di([Y, Y - img[..., 0]], ['DWT⁻¹(DWT(Y)) → ⌊…⌋ ?', 'Zero, zip, zilch, nada?'], grid = False)
-
-'''
-Scrapyard:
-art = 'Pollock No. 5' # https://blogs.uoregon.edu/richardtaylor/2016/02/08/fractal-analysis-of-jackson-pollocks-poured-paintings/
-art = 'Malewicz I'    # a.k.a. 'Negroes Fighting in a Cellar at Night' by Allais 1897
-art = 'Malewicz II'   # or 'Bociany albinosy pośród śnieżnej zamieci' by OT.TO 1997
-art = 'Rothko'        # vel 'Orange, Red, Yellow' 1961
-art = 'BayerLCD'      # Color channel test pattern (Rothko & Malewicz would surely
-                      # have been proud of me! ;)
-#  Hard thresholding:
-from pywt import threshold as thrsd; qntz = lambda x, T: thrsd(x, T, mode = 'hard')
-'''
+#%% Et finis coronat opus...

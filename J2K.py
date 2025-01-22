@@ -14,7 +14,7 @@ from auxiliary import (displayImages as di,displayAnyChannels as dac,
                        RGB2YCoCg, YCoCg2RGB)
 #   No gradient, no pain! ;)
 from histogramXYZ import channelGradientHistogram as cgh
-#   No tabs, no fun! ;)
+#   No tabs, no gain! ;)
 from imports.plotWindow import plotWindow as mtw
 
 #   Wavelet transform (for the win!) coefficients operation palindrome
@@ -48,10 +48,10 @@ if hasattr(sys, 'ps1'):
     wn, λ, L, Q = 'bior4.4', 0b101, 0b101, -0b101
 elif len(sys.argv) > 1:
 #   Pick your own λ-poison...
-    wn, λ, L, Q = eval(sys.argv[1])
+    wn, λ, L, Q = eval(sys.argv[1]) # "'Haar', 0o10, 0b101, -0b101"
 
 #   Ɑ: Hold your horses! :D
-art = choice(['Mustang GTD', 'Mustang RTR']) # a.k.a. "Spirit [Stallion of the Cimarron]"!... Kiger?
+art = choice(['Mustang GTD', 'Mustang RTR']) # a.k.a. "Spirit [Stallion of the Cimarron]"
 tabs = mtw(title = f'{art}@J2K[e]lite')
 
 img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
@@ -75,7 +75,7 @@ dac(img, YCoCg, tabbed = tabs); cgh(img, art, 'YCoCg (after)', YCoCg, tabs = tab
 #   Grand finale!
 #   ... with the inverse réversible CT...
 img = img@YCoCg2RGB.T
-di(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', 
+di(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})',
    title = '... and pretty compressed', grid = False, tabs = tabs)
 
 # Et voilà!
@@ -85,7 +85,7 @@ tabs.show()
 † That the original J2K's RCT (Réversible Color Transform) algorithm
     Y = ⌊(R + 2G + B)/4⌋,  Cr = R  - G, Cb = B  - G  :RCT
     G = Y - ⌊(Cr + Cb)/4⌋,  R = Cr + G,  B = Cb + G  :RCT⁻¹
-  where '⌊x⌋' stands for 'floor(x)', is also réversible, is equally remarkable 
+  where '⌊x⌋' stands for 'floor(x)', is also réversible, is equally remarkable
   if not even more stunning...
   See: https://en.wikipedia.org/wiki/JPEG_2000#Color_components_transformation
   and cf. https://en.wikipedia.org/wiki/YCoCg
