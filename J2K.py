@@ -50,27 +50,30 @@ elif len(sys.argv) > 1:
 #   Ɑ: Hold your horses! :D
 art = choice(['Mustang GTD', 'Mustang RTR']) # a.k.a. "Spirit [Stallion of the Cimarron]"
 tabs = mtw(title = f'{art}@J2K[e]lite')
+# Shortcuts for displayAnyChannels and channelGradientHistogram
+dact, cght = (lambda img, ch, tabs = tabs: dac(img, ch, tabs = tabs), 
+              lambda img, art, ch, chn, DC = True, tabs = tabs: cgh(img, art, ch, chn, DC = DC, tabs = tabs))
 
 img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
 if λ > 0: img = poisson(img * 2**λ)/2**λ
 di(img, f'{art}', grid = False, title = 'Pretty original...', tabs = tabs)
 
 #   A native RGB color space channels
-dac(img, RGB, tabbed = tabs)
-cgh(img, art, 'RGB', RGB, tabs = tabs)
+dact(img, RGB)
+cght(img, art, 'RGB', RGB)
 
 #   A réversible color transform (RCT)†
 img = img@RGB2YCoCg.T
-dac(img, YCoCg, tabbed = tabs)
-cgh(img, art, 'YCoCg (before)', YCoCg, tabs = tabs)
+dact(img, YCoCg)
+cght(img, art, 'YCoCg (before)', YCoCg)
 
 #   ... the wavelet transform and quantization...
 Y, Co, Cg = [wtftw(img[..., n], wn, L, Q, qntz, ('Y', 'Co', 'Cg')[n]) for n in range(3)]
 
 # ... and after
 img = np.array(np.dstack((Y, Co, Cg)))
-dac(img, YCoCg, tabbed = tabs)
-cgh(img, art, 'YCoCg (after)', YCoCg, tabs = tabs, DC = False)
+dact(img, YCoCg)
+cght(img, art, 'YCoCg (after)', YCoCg, DC = False)
 
 #   Grand finale!
 #   ... with the inverse réversible CT...

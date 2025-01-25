@@ -67,7 +67,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True,
 ## Color image channel dissection
 # Tabbed color channels (still nice, still messy integration - and still my bad!)
 # (this routine works with any number of channels, but with a single image)
-def displayAnyChannels(image, channels, rows = 1, cols = 3, tabbed = None):
+def displayAnyChannels(image, channels, rows = 1, cols = 3, tabs = None):
     def _withTabs(image, channels, rows, cols):
         _ = plt.figure()
         name = '[ '
@@ -79,7 +79,7 @@ def displayAnyChannels(image, channels, rows = 1, cols = 3, tabbed = None):
             name += cn[0] + ' '
             plt.imshow(image[..., p], cmp)
         name += ']'
-        tabbed.addPlot(name, _)
+        tabs.addPlot(name, _)
     def _noTabs(image, channels, rows, cols):
         for p, cn in enumerate(channels):
             sb = plt.subplot(rows, cols, p + 1)
@@ -88,7 +88,7 @@ def displayAnyChannels(image, channels, rows = 1, cols = 3, tabbed = None):
             plt.title(cn[0])
             plt.imshow(image[..., p], cmp)
         plt.show()
-    if tabbed != None:
+    if tabs != None:
         _withTabs(image, channels, rows, cols)
     else:
         _noTabs(image, channels, rows, cols)
