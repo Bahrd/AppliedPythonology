@@ -1,21 +1,21 @@
-### Wavelet multiresolution analysis (MRA) visualization
-#   See https://pywavelets.readthedocs.io/en/latest/
-#   Illustrated here for the luminance ('Y', grayscale) channel
-#   from the YCoCg space and (be default) with the help of the "grandpas" of all wavelets:
-#   the "International sensation!", the Haar family! [ https://youtu.be/uMTPXen99n0 ]
-#   Some say: "You can choose your friends, but you can't choose your family!"
-#   Oh, really?! :D
-
-import matplotlib.pyplot as plt; import sys
-from numpy import array, concatenate as cnc, clip
+''' Wavelet multiresolution analysis (MRA) visualization
+    See https://pywavelets.readthedocs.io/en/latest/
+    Illustrated here for the luminance ('Y', grayscale) channel
+    from the YCoCg space and (be default) with the help of the "grandpas" of all wavelets:
+    the "International sensation!", the Haar family! [ https://youtu.be/uMTPXen99n0 ]
+    Some say: "You can choose your friends, but you can't choose your family!"
+    Oh, really?! :D
+'''
+import matplotlib.pyplot as plt, sys
 
 from auxiliary import displayImages as di, RGB2YCoCg as RGB2YCxCy # RGB2YCbCr
 from imports.plotWindow import plotWindow as mtw
+from numpy import array, concatenate as cnc
 from numpy.random import poisson
 from pywt import dwt2, idwt2
 
-##  The "GrassHopper" is a "friend of horses" (Philip) and a "spirit" (Mustang)...
-art = 'GrassHopper'
+##  A test image (isotoxal, from Greek τόξον - 'arc') https://en.wikipedia.org/wiki/Isotoxal_figure
+art = 'Isotoxal octagons' 
 ##  'λ' is - as always - a λevǝλ of poison (a.k.a an intensity in Poisson distribution)
 wn, λ = eval(sys.argv[1]) if len(sys.argv) > 1 else ('bior1.1', 0) # 'Haar" will do too!
 
@@ -31,18 +31,18 @@ img = img@RGB2YCxCy.T
 # ... and pick the luminance channel only
 Y = img[..., 0]
 
-##  MRA quartet decomposition|analysis (a forward wavelet transform): 
-#   + one approximation (LL), and 
-#   + three details/differences quarters (HL, LH, HH). 
-#   You can call it a "wavelet microscope"
+'''  MRA quartet decomposition|analysis (a forward wavelet transform): 
+    + one approximation (LL), and 
+    + three details/differences quarters (HL, LH, HH). 
+    You can call it a "wavelet microscope" '''
 LL, (HL, LH, HH) = dwt2(Y, wn)
-#   ...
-#   Note that we do nothing like 
-#   + thresholding or
-#   + quantizing 
-#   the wavelet coefficients...
-#   ...
-#   Reconstruction|synthesis from MRA (an inverse wavelet transform)
+''' ...
+    Note that we do nothing like 
+    + thresholding or
+    + quantizing 
+    the wavelet coefficients...
+    ...
+    Reconstruction|synthesis from MRA (an inverse wavelet transform)'''
 Y = idwt2((LL, (HL, LH, HH)), wn)
 
 ##  MRA demonstration
@@ -54,7 +54,7 @@ MRA = cnc([cnc([LL, HL], axis = 1),
            cnc([LH, HH], axis = 1)], axis = 0)
 #   It looks like eventually "nothing [zero, zip, zilch, nada] happened here, move along people"!
 di([Y, MRA, Y - img[..., 0]], ['DWT⁻¹(DWT(Y)) → ⌊…⌋ ?', 'MRA', 'Zero, zip, zilch, nada?'],
-    title = 'The MRA, or There and Back Again...', grid = False, tabs = tabs)
+   title = 'The MRA, or There and Back Again...', grid = False, tabs = tabs)
 
 # "That's all, folks!"
 tabs.show()

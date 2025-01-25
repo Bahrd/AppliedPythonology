@@ -1,6 +1,5 @@
 #%%
-from turtle import width
-import cv2 as openCV; import numpy as np
+import cv2 as openCV, numpy as np, sys
 from auxiliary import displayImages as di, JPG_QT_Y
 from scipy.fftpack import dctn, idctn
 from numpy.random import poisson
@@ -29,7 +28,6 @@ N = 0x1 << 10; org = openCV.resize(org[..., 0], (N, N))
 #     [that happens to be a power of two])
 B, Q, λ = 8, 1, 0
 
-import sys;
 if hasattr(sys, 'ps1'):
     B, Q, λ = 32, 0.1, 1.0
 elif len(sys.argv) > 1:
@@ -64,6 +62,7 @@ di([org, qntz, img, org - img],
      f'DCT 2D\n{N/B:.0f}×{N/B:.0f} = {N**2/B**2:.0f} of {B}×{B} blocks',
      f'Reconstruction\nQ = {Q}',
      f'Difference\n{nz} ({nz/(N*N):,.1%}) non-zeros'], grid = False)
+
 
 #%% Is this a new normal?
 from matplotlib.pyplot import hist, show

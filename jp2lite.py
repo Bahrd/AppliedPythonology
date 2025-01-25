@@ -1,6 +1,6 @@
 #%% Vanilla JPEG 2000 algorithm (more like a vanillin one, in fact:
 #   neither EBCOT nor BAC is implemented whatsoever)
-import numpy as np; import sys; import matplotlib.pyplot as plt
+import numpy as np, sys, matplotlib.pyplot as plt
 from numpy.random import poisson
 from itertools import repeat
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2,
@@ -10,6 +10,7 @@ from auxiliary import (displayImages as di,displayAnyChannels as dac,
                        YCbCr_ext_channels as YCbCr,
                        RGB_ext_channels as RGB,
                        RGB2YCbCr, YCbCr2RGB)
+#   No gradient, no gain! ;)
 from histogramXYZ import channelGradientHistogram as cgh
 
 #   Wavelet transform coefficients operation palindrome

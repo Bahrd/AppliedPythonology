@@ -1,8 +1,6 @@
 #%% J2K (a.k.a. a skeleton of the JPEG 2000 algorithm: merely its color and wavelet transforms.
 #   But... with a twist: the wavelet transform is applied to the YCoCg color space channels
-import numpy as np
-import sys
-import matplotlib.pyplot as plt
+import numpy as np, sys, matplotlib.pyplot as plt
 from numpy.random import poisson, choice
 from itertools import repeat
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2,
@@ -12,9 +10,9 @@ from auxiliary import (displayImages as di,displayAnyChannels as dac,
                        RGB_ext_channels as RGB,
                        YCoCg_ext_channels as YCoCg,
                        RGB2YCoCg, YCoCg2RGB)
-#   No gradient, no pain! ;)
+#   No gradient, no gain! ;)
 from histogramXYZ import channelGradientHistogram as cgh
-#   No tabs, no gain! ;)
+#   No tabs, no pain! ;)
 from imports.plotWindow import plotWindow as mtw
 
 #   Wavelet transform (for the win!) coefficients operation palindrome
@@ -37,7 +35,6 @@ def wtftw(c, wn, lvl, Q, op = lambda x, Q: x, channel = 'Y'):
     # Inversing the wavelet transform
     return ifwt2(C, wn)
 
-
 #   JPEG 2000 main 'codec'
 qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 #   Interactive-aware wavelet transform parameters setting
@@ -59,18 +56,21 @@ if λ > 0: img = poisson(img * 2**λ)/2**λ
 di(img, f'{art}', grid = False, title = 'Pretty original...', tabs = tabs)
 
 #   A native RGB color space channels
-dac(img, RGB, tabbed = tabs); cgh(img, art, 'RGB', RGB, tabs = tabs)
+dac(img, RGB, tabbed = tabs)
+cgh(img, art, 'RGB', RGB, tabs = tabs)
 
 #   A réversible color transform (RCT)†
 img = img@RGB2YCoCg.T
-dac(img, YCoCg, tabbed = tabs); cgh(img, art, 'YCoCg (before)', YCoCg, tabs = tabs)
+dac(img, YCoCg, tabbed = tabs)
+cgh(img, art, 'YCoCg (before)', YCoCg, tabs = tabs)
 
 #   ... the wavelet transform and quantization...
 Y, Co, Cg = [wtftw(img[..., n], wn, L, Q, qntz, ('Y', 'Co', 'Cg')[n]) for n in range(3)]
 
 # ... and after
 img = np.array(np.dstack((Y, Co, Cg)))
-dac(img, YCoCg, tabbed = tabs); cgh(img, art, 'YCoCg (after)', YCoCg, tabs = tabs, DC = False)
+dac(img, YCoCg, tabbed = tabs)
+cgh(img, art, 'YCoCg (after)', YCoCg, tabs = tabs, DC = False)
 
 #   Grand finale!
 #   ... with the inverse réversible CT...
@@ -99,4 +99,3 @@ tabs.show()
       = G ■
 ————————————————————————————————————————————————————————————————————————
 '''
-
