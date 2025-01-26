@@ -59,7 +59,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True,
         if show:
             plt.show()
 
-    if tabs != None:
+    if tabs:
         _withTabs(images, titles, cmp, grid, title)
     else:
         _noTabs(images, titles, cmp, show, grid)
@@ -67,7 +67,7 @@ def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True,
 ## Color image channel dissection
 # Tabbed color channels (still nice, still messy integration - and still my bad!)
 # (this routine works with any number of channels, but with a single image)
-def displayAnyChannels(image, channels, rows = 1, cols = 3, tabs = None):
+def displayAllChannels(image, channels, rows = 1, cols = 3, tabs = None):
     def _withTabs(image, channels, rows, cols):
         _ = plt.figure()
         name = '[ '
@@ -88,7 +88,7 @@ def displayAnyChannels(image, channels, rows = 1, cols = 3, tabs = None):
             plt.title(cn[0])
             plt.imshow(image[..., p], cmp)
         plt.show()
-    if tabs != None:
+    if tabs:
         _withTabs(image, channels, rows, cols)
     else:
         _noTabs(image, channels, rows, cols)
@@ -100,7 +100,7 @@ def displayChannels(images, channels, rows = 1, cols = 4, title = 'RGB'):
         for p, c in enumerate(channels):
             sb = plt.subplot(rows, cols, p + 1)
             sb.set_xticks([]); sb.set_yticks([])
-            cmp = lscm.from_list('_', ['black', c])
+            cmp = lscm.from_list('_', ['black', c]) # this is where additivity comes in
             plt.title(c); plt.imshow(image[..., p], cmp)
         sb = plt.subplot(rows, cols, rows * cols)
         sb.set_xticks([]); sb.set_yticks([])

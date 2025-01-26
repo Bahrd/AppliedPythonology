@@ -6,7 +6,7 @@ from itertools import repeat
 from pywt import (wavedec2 as fwt2, waverec2 as ifwt2,
                   array_to_coeffs as a2c, coeffs_to_array as c2a)
 # https://pywavelets.readthedocs.io/en/latest/ref/dwt-coefficient-handling.html
-from auxiliary import (displayImages as di,displayAnyChannels as dac,
+from auxiliary import (displayImages as di,displayAllChannels as dac,
                        YCbCr_ext_channels as YCbCr,
                        RGB_ext_channels as RGB,
                        RGB2YCbCr, YCbCr2RGB)
@@ -50,21 +50,26 @@ elif len(sys.argv) > 1:
 #   And then spice it up with e.g. λ = 0x4 ;D)
 img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
 if λ > 0: img = poisson(img * 2**λ)/2**λ
+
+#   There we go!
 di(img.astype(np.uint8), f'{art}', grid = False)
 
 #   A native RGB color space channels
-dac(img, RGB); cgh(img, art, 'RGB', RGB)
+dac(img, RGB)
+cgh(img, art, 'RGB', RGB)
 
 #%% An irréversible color transform (ICT) from RGB to YCbCr (ever heard of 4:2:0?)
 img = img@RGB2YCbCr.T
-dac(img, YCbCr); cgh(img, art, 'YCbCr (before)', YCbCr)
+dac(img, YCbCr)
+cgh(img, art, 'YCbCr (before)', YCbCr)
 
 #%% ... the wavelet transform and quantization...
 Y, Cb, Cr = [wt4tw(img[..., n], wn, L, Q, qntz, ('Y', 'Cb', 'Cr')[n]) for n in range(3)]
-img = np.array(np.dstack((Y, Cb, Cr)))
 
 # ... and after
-dac(img, YCbCr); cgh(img, art, 'YCbCr (after)', YCbCr, DC = False)
+img = np.array(np.dstack((Y, Cb, Cr)))
+dac(img, YCbCr)
+cgh(img, art, 'YCbCr (after)', YCbCr, DC = False)
 
 #%% Grand finale!
 #   ... with the inverse ICT...
