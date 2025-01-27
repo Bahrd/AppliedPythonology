@@ -37,18 +37,14 @@ def wtftw(c, wn, lvl, Q, op = lambda x, Q: x, channel = 'Y'):
 
 #   JPEG 2000 main 'codec'
 qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
-#   Interactive-aware wavelet transform parameters setting
+#   Wavelet transform parameters setting ('bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7')
 #   https://en.wikipedia.org/wiki/Cohen-Daubechies-Feauveau_wavelet#Numbering
-#   'bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7'
-wn, λ, L, Q = 'bior2.2', 0, 0b110, -0b110
-if hasattr(sys, 'ps1'):
-    wn, λ, L, Q = 'bior4.4', 0b101, 0b101, -0b101
-elif len(sys.argv) > 1:
+#   Ɑ: Hold your horse! "Spirit [Stallion of the Cimarron]" :D
+art, wn, λ, L, Q = choice(['Mustang GTD', 'Mustang RTR']), 'bior2.2', 0, 0b110, -0b110
+if len(sys.argv) > 1:
 #   Pick your own λ-poison...
-    wn, λ, L, Q = eval(sys.argv[1]) # "'Haar', 0o10, 0b101, -0b101"
+    art, wn, λ, L, Q = eval(sys.argv[1]) # "'Haar', 0o10, 0b101, -0b101"
 
-#   Ɑ: Hold your horses! :D
-art = choice(['Mustang GTD', 'Mustang RTR']) # a.k.a. "Spirit [Stallion of the Cimarron]"
 tabs = mtw(title = f'{art}@J2K[e]lite')
 # Handmade shortcuts for tabbed figures 
 # ♪♫ Lumpy bumpity bee! ♫♪
