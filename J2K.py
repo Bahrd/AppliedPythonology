@@ -58,7 +58,7 @@ tbdac, tbcgh, tbdi = (lambda ch, tabs = tabs: dac(img, ch, tabs = tabs),
 # ♪♫ Lumpy dumpity dee! ♫♪
 
 img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
-if λ > 0: img = poisson(img * 2**λ)/2**λ
+if λ != 0: img = poisson(img * 2**λ)/2**λ
 
 #   Here we go!
 tbdi(f'{art}', title = 'Pretty original...')
@@ -83,7 +83,7 @@ tbcgh(art, 'YCoCg (after)', YCoCg, DC = False)
 #   ♪♫ Final countdown! ♫♪ https://youtu.be/9jK-NcRmVcw
 #   ... with the inverse réversible CT...
 img = img@YCoCg2RGB.T
-tbdi(f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', title = '... and pretty compressed')
+tbdi(f'{art} {wn}\'ed@level {L} (step size = {2**-Q})', title = '... and pretty compressed')
 # Et voilà!
 tabs.show()
 '''

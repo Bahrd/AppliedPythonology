@@ -34,7 +34,7 @@ def wt4tw(c, wn, lvl, Q, op = lambda x, Q: x, channel = 'Y'):
     return ifwt2(C, wn)
 
 # Still a somehow horse-related creature...
-art = 'GrassHopper' # pseud. Philip [gr. "friend of horses"]!... ;)
+art = 'Wasp'#'GrassHopper' # pseud. Philip [gr. "friend of horses"]!... ;)
 
 #%% JPEG 2000 main 'codec'
 qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
@@ -49,7 +49,7 @@ elif len(sys.argv) > 1:
 #   Pick your own (floating) poison...  (for instance λ = 4.0).
 #   And then spice it up with e.g. λ = 0x4 ;D)
 img = np.array(plt.imread(f'./images/{art}.png')[..., :3] * 0xff)
-if λ > 0: img = poisson(img * 2**λ)/2**λ
+if λ != 0: img = poisson(img * 2**λ)/2**λ
 
 #   There we go!
 di(img.astype(np.uint8), f'{art}', grid = False)
@@ -74,5 +74,5 @@ cgh(img, art, 'YCbCr (after)', YCbCr, DC = False)
 #%% Grand finale!
 #   ... with the inverse ICT...
 img = img@YCbCr2RGB.T
-di(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
+di(img, f'{art} {wn}\'ed@level {L} (step size = {2**-Q})', grid = False)
 #%% Et finis coronat opus...

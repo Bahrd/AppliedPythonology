@@ -1,6 +1,7 @@
 ## Auxiliary routines for image processing algorithms
-import numpy as np; from numpy.linalg import inv
-import matplotlib.pyplot as plt; from matplotlib.colors import LinearSegmentedColormap as lscm
+import numpy as np, matplotlib.pyplot as plt
+from numpy.linalg import inv
+from matplotlib.colors import LinearSegmentedColormap as lscm
 
 ## Image presentation
 def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True, 
@@ -131,7 +132,7 @@ YCoCg_channels = (('Y', 'k', 'grey'),
                   ('Cg', 'xkcd:pink', 'xkcd:green'))
 
 # Enhanced color channels (Because not only ♪♫ https://youtu.be/PIb6AZdTr-A ♫♪)
-RGB_ext_channels = (('R', 'k', 'xkcd:dark red', 'r', 'xkcd:light red'),
+RGB_ext_channels = (('R', 'k', 'xkcd:dark red', '#b00000', 'r', '#ffc0c0'),
                     ('G','k', 'xkcd:dark green', 'g', 'xkcd:light green'),
                     ('B','k', 'xkcd:dark blue', 'b', 'xkcd:light blue'))
 YCbCr_ext_channels = (('Y', 'k', 'xkcd:dark grey', 'grey',
