@@ -5,6 +5,9 @@
     the "International sensation!", the Haar family! [ https://youtu.be/uMTPXen99n0 ]
     Some say: "You can choose your friends, but you can't choose your family!"
     Oh, really?! :D
+
+    BTW, isn't it a genius idea to counter MRA: 
+    https://en.wikipedia.org/wiki/Yehudi_lights#/media/File:Principle_of_Yehudi_Lights_with_Avenger_head-on_view.jpg
 '''
 import matplotlib.pyplot as plt, sys
 

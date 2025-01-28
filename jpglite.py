@@ -1,15 +1,12 @@
 #%%
 import cv2 as openCV, numpy as np, sys
 from auxiliary import displayImages as di, JPG_QT_Y
+from skimage.util import view_as_blocks as vab
 from scipy.fftpack import dctn, idctn
 from numpy.random import poisson
 
 ## JP[E]G Lite - a (pretty much) simplified version of the standard
 #  still image transform coding compression algorithm
-
-##  Forward & inverse DCT 2D transform shortcuts
-dct2, idct2 = (lambda img, norm = 'ortho': dctn(img, norm = norm),
-               lambda img, norm = 'ortho': idctn(img, norm = norm))
 
 #%%  Quantization of the DCT 2D coefficients
 def quantize(X, Q = 1):
@@ -23,36 +20,37 @@ def quantize(X, Q = 1):
 #%% Image loading....
 org = openCV.cvtColor(openCV.imread('./images/GrassHopper.PNG'), openCV.COLOR_BGR2YCrCb)
 N = 0x1 << 10; org = openCV.resize(org[..., 0], (N, N))
-# ... and tiling (if 'B == 8' then, by default, the JP[E]G quantization scheme
-#     is applied (note we assume for simplicity the fixed image size
-#     [that happens to be a power of two])
 B, Q, λ = 8, 1, 0
+
+##  Forward & inverse DCT 2D transform shortcuts
+dct2, idct2 = (lambda img, norm = 'ortho': dctn(img, norm = norm),
+               lambda img, norm = 'ortho': idctn(img, norm = norm))
 
 if hasattr(sys, 'ps1'):
     B, Q, λ = 32, 0.1, 1.0
 elif len(sys.argv) > 1:
     B, Q, λ = eval(sys.argv[1])
 
-tiles, blocks = range(0, N, B), range(int(N/B))
-# Pick your poison... (be sure to make λ floating... ;)
+# Pick your poison...
 if λ > 0:
     org = np.clip(poisson(org * λ)/λ, 0x0, 0xff)
 
-#%% Transforming (separately/in a parallel way (supposedly!)) each tile/block by DCT 2D
-trns = [[dct2(org[n:n + B, m:m + B]) for n in tiles] for m in tiles]
-
-#%% Quantization vs. image quality
+#%% Tilin'quantization vs. image quality
 r'''
-If B ≠ 8, then the standard scalar quantization is applied and 'Q == 1'
-  means no scalar quantization (other than conversion to the 'int' type).
+  If e size of the block, B ≠ 8, then the standard scalar quantization is applied 
+  and then 'Q == 1' means no scalar quantization (other than conversion to the 'int' type)
+  is performed.
+  
   For B == 8 the JP[E]G quantization matrix is applied (for 'Y' channel).
   Then 'Q == 0.1' results (usually) in a poor quality image while
   'Q == 10' yields a (seemingly) indistinguishable image.
   When 'B != 8', then the scalar quantization, 'x = Q⁻¹⌊Q⋅x + .5⌋', is performed
 '''
-## Coefficients quantization and inverse transformation
-qntz = [[quantize(trns[n][m], Q)    for n in blocks] for m in blocks]
-img  = [[idct2(qntz[m][n])          for n in blocks] for m in blocks]
+blck, bn  = vab(org, (B, B)), range(int(N/B))
+#  Transformation, quantization and...
+qntz = [[quantize(dct2(blck[n, m])) for m in bn] for n in bn]
+#  ... the inverse transformation (implicit block views...)
+img  = [[idct2(qntz[n, m])          for m in bn] for n in bn]
 
 #%% Presentation
 img, qntz = np.block(img), np.block(qntz)
@@ -80,12 +78,17 @@ for thisfrac, thispatch in zip(fracs, patches):
 show()
 # %%
 '''
-Scrapyard (see e.g.: https://maps.app.goo.gl/Y2xsDhVSk51mjC3KA or https://maps.app.goo.gl/BpsS7N7PhxF1HXUs8 - they are much more interesting!)
-art = 'Mustang GTD'   # Kiger?
-art = 'Malewicz I'    # a.k.a. 'Negroes Fighting in a Cellar at Night' by Allais 1897
-art = 'Malewicz II'   # or 'Bociany albinosy pośród śnieżnej zamieci' by OT.TO 1997
-art = 'Rothko'        # vel 'Orange, Red, Yellow' 1961
-art = 'BayerLCD'      # Color channel test pattern (Rothko & Malewicz would surely
-                      # have been proud of me! ;)
+Scrapyard and parking lot (see e.g.: 
++ https://maps.app.goo.gl/Y2xsDhVSk51mjC3KA 
++ https://maps.app.goo.gl/qD9qW3ypFafsbHdK6
++ https://maps.app.goo.gl/BpsS7N7PhxF1HXUs8 - they are much more interesting! 
+And definitely less pretentious...)
+art = 'Mustang GTD'         # Kiger?
+art = 'Malewicz I'          # a.k.a. 'Negroes Fighting in a Cellar at Night' by Allais 1897
+art = 'Malewicz II'         # or 'Bociany albinosy pośród śnieżnej zamieci' by OT.TO 1997
+art = 'Rothko'              # vel 'Orange, Red, Yellow' 1961
+art = 'BayerLCD'            # Color channel test pattern (Rothko & Malewicz would surely
+                            # have been proud of me! ;)
+art = 'Isotoxal octagons'   # "Study in RGB, CMYK and S"... A more colorful version of the C. Doyle's novel
 art = 'Pollock No. 5' # https://blogs.uoregon.edu/richardtaylor/2016/02/08/fractal-analysis-of-jackson-pollocks-poured-paintings/
 '''
