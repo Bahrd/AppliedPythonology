@@ -67,7 +67,7 @@ Y, Cb, Cr = [wt4tw(img[..., n], wn, L, Q, qntz, ('Y', 'Cb', 'Cr')[n]) for n in r
 # ... and after
 img = np.array(np.dstack((Y, Cb, Cr)))
 dac(img, YCbCr)
-cgh(img, art, 'YCbCr (after)', YCbCr, DC = False)
+cgh(img, art, 'YCbCr (after)', YCbCr)
 
 #%% Grand finale!
 #   ... with the inverse ICT...

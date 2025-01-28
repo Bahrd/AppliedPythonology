@@ -74,7 +74,7 @@ Y, Co, Cg = [wtftw(img[..., n], wn, L, Q, qntz, ('Y', 'Co', 'Cg')[n]) for n in r
 # ... and after
 img = np.array(np.dstack((Y, Co, Cg)))
 tbdac(YCoCg)
-tbcgh(art, 'YCoCg (after)', YCoCg, DC = False)
+tbcgh(art, 'YCoCg (after)', YCoCg)
 
 #   ♪♫ Final countdown! ♫♪ https://youtu.be/9jK-NcRmVcw
 #   ... with the inverse réversible CT...
