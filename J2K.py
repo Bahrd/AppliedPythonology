@@ -79,7 +79,7 @@ tbcgh(art, 'YCoCg (after)', YCoCg)
 #   ♪♫ Final countdown! ♫♪ https://youtu.be/9jK-NcRmVcw
 #   ... with the inverse réversible CT...
 img = img@YCoCg2RGB.T
-tbdi(f'{art} {wn}\'ed@level {L} (step size = {2**-Q})', title = '... and pretty compressed')
+tbdi(f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', title = '... and pretty compressed')
 # Et voilà!
 tabs.show()
 '''

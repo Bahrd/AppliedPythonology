@@ -72,5 +72,5 @@ cgh(img, art, 'YCbCr (after)', YCbCr)
 #%% Grand finale!
 #   ... with the inverse ICT...
 img = img@YCbCr2RGB.T
-di(img, f'{art} {wn}\'ed@level {L} (step size = {2**-Q})', grid = False)
+di(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
 #%% Et finis coronat opus...
