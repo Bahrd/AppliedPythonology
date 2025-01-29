@@ -45,7 +45,7 @@ def photomesoscotopic(_):
 #                    [sans the remaining (~0.003%) plankton]
 intensity, brightness = 8, 0
 
-JoviEtConsortes =  './images/Jovi, Io, Europa, Ganymede & Callisto.JPEG' #'./images/Jovi et consortes.JPG'
+JoviEtConsortes =  './images/cosmos/Jovi, Io, Europa, Ganymede & Callisto.PNG' #'./images/cosmos/Jovi et consortes.PNG'
 with open(JoviEtConsortes, 'rb') as _: exf = exifImage(_)
 # One should check if the GPS data are present (exf.list_all()), and the corresponding attributes exist, but let's
 # make it an exercise for the reader... https://readthedocs.org/projects/exif/downloads/pdf/latest/

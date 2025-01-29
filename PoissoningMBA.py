@@ -59,7 +59,7 @@ slev.on_changed(poissonimg); slsp.on_clicked(scotophotopic); slbr.on_clicked(bct
 
 # Global variables
 bctrl:bool = True; rgbw:int = RGB  # A double act of superfluous redundancy and unnecessarily exaggerated pedantry?
-mb = f'./images/MB{choice("ABCD")}.png'
+mb = f'./images/vehicles/MB{choice("ABCD")}.png'
 imrgb, imbw = (cvtColor(imread(mb), _) for _ in (RGB, BW))
 
 # Image re/de-generation

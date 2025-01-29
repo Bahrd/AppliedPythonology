@@ -3,7 +3,7 @@ import cv2; import numpy as np; import auxiliary as aux
 #### Image 'framing'
 # Note - the example works only for square images (N x N) and for even N
 # (the filter segments are 2 x 2)
-img = cv2.cvtColor(cv2.imread('./images/GrassHopper.PNG'), cv2.COLOR_BGR2RGB)
+img = cv2.cvtColor(cv2.imread('./images/insects/GrassHopper.PNG'), cv2.COLOR_BGR2RGB)
 img = cv2.resize(img, (128, 128), interpolation = cv2.INTER_LINEAR_EXACT)
 N = img.shape[0]; X = [N >> 1]; X *= 2
 

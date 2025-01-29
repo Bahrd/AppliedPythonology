@@ -19,7 +19,7 @@ from pywt import dwt2, idwt2
 
 ##  A test image (isotoxal, from Greek τόξον - 'arc') https://en.wikipedia.org/wiki/Isotoxal_figure
 ##  'λ' is - as always - a λevǝλ of poison (a.k.a an intensity in Poisson distribution)
-art, wn, λ = eval(sys.argv[1]) if len(sys.argv) > 1 else ('Isotoxal octagons', 'bior1.1', 0) # 'Haar" will do too!
+art, wn, λ = eval(sys.argv[1]) if len(sys.argv) > 1 else ('varia/Isotoxal octagons', 'bior1.1', 0) # 'Haar" will do too!
 
 # Ready, set, go!
 tabs, titles  = mtw(), [f'{wn} approximation (LL)', 'Horizontal details (HL)',

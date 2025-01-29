@@ -40,7 +40,7 @@ qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 #   Wavelet transform parameters setting ('bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7')
 #   https://en.wikipedia.org/wiki/Cohen-Daubechies-Feauveau_wavelet#Numbering
 #   Ɑ: Hold your horse! "Spirit [Stallion of the Cimarron]" :D
-art, wn, λ, L, Q = choice(['Mustang GTD', 'Mustang RTR']), 'bior2.2', 0, 0b110, -0b110
+art, wn, λ, L, Q = choice(['mammals/Mustang GTD', 'mammals/Mustang RTR']), 'bior2.2', 0, 0b110, -0b110
 if len(sys.argv) > 1:
 #   Pick your own λ-poison...
     art, wn, λ, L, Q = eval(sys.argv[1]) # "'Haar', 0o10, 0b101, -0b101"

@@ -39,9 +39,9 @@ qntz = lambda x, Q: np.floor(x*2**Q + .5)/2**Q
 #   Interactive-aware wavelet transform parameters setting ('bior1.1', 'bior2.2', 'bior4.4' = 'Haar', 'LGT 5/3', 'CDF 9/7')
 #   https://en.wikipedia.org/wiki/Cohen-Daubechies-Feauveau_wavelet#Numbering
 #   'GrassHopper' # pseud. Philip [gr. "friend of horses"]!... :D
-art, wn, λ, L, Q = 'GrassHopper', 'bior2.2', 0, 0b100, -0b111
+art, wn, λ, L, Q = 'insects/Wassup, wasp!', 'bior2.2', 0, 0b100, -0b111
 if hasattr(sys, 'ps1'):
-    art, wn, λ, L, Q = 'GrassHopper', 'bior4.4', 0o10, 0b101, -0b101
+    art, wn, λ, L, Q = 'insects/GrassHopper', 'bior4.4', 0o10, 0b101, -0b101
 elif len(sys.argv) > 1:
     art, wn, λ, L, Q = eval(sys.argv[1])
 #   Pick your own (floating) poison...  (for instance λ = 4.0).

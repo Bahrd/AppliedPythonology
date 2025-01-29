@@ -17,13 +17,13 @@ def quantize(X, Q = 1):
         X = np.floor(Q*X + .5)/Q
     return X
 
-art, B, Q, λ = 'GrassHopper', 8, 1, 0
+art, B, Q, λ = 'insects/GrassHopper', 8, 1, 0
 ##  Forward & inverse DCT 2D transform shortcuts
 dct2, idct2 = (lambda img, norm = 'ortho': dctn(img, norm = norm),
                lambda img, norm = 'ortho': idctn(img, norm = norm))
 
 if hasattr(sys, 'ps1'):
-    art, B, Q, λ = 'Wassup, wasp!', 32, 0.1, 1.0
+    art, B, Q, λ = 'insects/Wassup, wasp!', 32, 0.1, 1.0
 elif len(sys.argv) > 1:
     art, B, Q, λ = eval(sys.argv[1])
 
