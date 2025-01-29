@@ -12,26 +12,27 @@ from numpy.random import poisson
 def quantize(X, Q = 1):
     if X.shape[0] == 8:
         QT = np.array(JPG_QT_Y)/Q
-        X /= QT; X = np.floor(X + .5); X *= QT; X = X.astype(int)
+        X /= QT; X = np.floor(X + .5); X *= QT
     else:
         X = np.floor(Q*X + .5)/Q
     return X
 
-#%% Image loading....
-org = openCV.cvtColor(openCV.imread('./images/GrassHopper.PNG'), openCV.COLOR_BGR2YCrCb)
-N = 0x1 << 10; org = openCV.resize(org[..., 0], (N, N))
-B, Q, λ = 8, 1, 0
-
+art, B, Q, λ = 'GrassHopper', 8, 1, 0
 ##  Forward & inverse DCT 2D transform shortcuts
 dct2, idct2 = (lambda img, norm = 'ortho': dctn(img, norm = norm),
                lambda img, norm = 'ortho': idctn(img, norm = norm))
 
 if hasattr(sys, 'ps1'):
-    B, Q, λ = 32, 0.1, 1.0
+    art, B, Q, λ = 'Wassup, wasp!', 32, 0.1, 1.0
 elif len(sys.argv) > 1:
-    B, Q, λ = eval(sys.argv[1])
+    art, B, Q, λ = eval(sys.argv[1])
 
-# Pick your poison...
+#%% ♪♫ It's loading, re-loading! ♫♪
+org = openCV.cvtColor(openCV.imread(f'./images/{art}.PNG'), openCV.COLOR_BGR2YCrCb)
+N = 0x1 << 10; org = openCV.resize(org[..., 0], (N, N))
+
+
+# Pick your (floating) poison...
 if λ > 0:
     org = np.clip(poisson(org * λ)/λ, 0x0, 0xff)
 
@@ -49,8 +50,8 @@ r'''
 blck, bn  = vab(org, (B, B)), range(int(N/B))
 #  Transformation, quantization and...
 qntz = [[quantize(dct2(blck[n, m])) for m in bn] for n in bn]
-#  ... the inverse transformation (implicit block views...)
-img  = [[idct2(qntz[n, m])          for m in bn] for n in bn]
+#  ... the inverse transformation (via implicit block views...)
+img  = [[idct2(qntz[n][m])          for m in bn] for n in bn]
 
 #%% Presentation
 img, qntz = np.block(img), np.block(qntz)
@@ -61,7 +62,7 @@ di([org, qntz, img, org - img],
      f'Reconstruction\nQ = {Q}',
      f'Difference\n{nz} ({nz/(N*N):,.1%}) non-zeros'], grid = False)
 
-
+exit()
 #%% Is this a new normal?
 from matplotlib.pyplot import hist, show
 from matplotlib.colors import Normalize, LinearSegmentedColormap as lscm

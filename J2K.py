@@ -1,4 +1,4 @@
-#%% J2K (a.k.a. a skeleton of the JPEG 2000 algorithm: merely its color and wavelet transforms.
+### J2K (a.k.a. a skeleton of the JPEG 2000 algorithm: merely its color and wavelet transforms.
 #   But... with a twist: the wavelet transform is applied to the YCoCg color space channels
 import numpy as np, sys, matplotlib.pyplot as plt
 from numpy.random import poisson, choice
