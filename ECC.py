@@ -5,6 +5,7 @@
 + https://en.wikipedia.org/wiki/Elliptic_curve#Elliptic_curves_over_finite_fields
 '''
 from matplotlib.pyplot import scatter as scat, title, show, contour, subplots, subplot, plot
+from matplotlib import colormaps as cmps
 from itertools import product
 from numpy.random import rand, randint
 from numpy import linspace as lp, meshgrid
@@ -67,7 +68,8 @@ subplot(1, 1, 1); show() #... must go on!
 
 # Let's move on to the integer solutions of the elliptic curves
 # and the promised [more] rational ones...  
-params = (17, (2, 2), 'ocean'), (331, (3, 3), 'cividis'), (2503, (3, 7), 'twilight')
+
+params = (17, (2, 2), 'ocean'), (331, (3, 3), 'twilight'), (2503, (3, 7), 'terrain')
 for q, (a, b), cm in params:
     # Elliptic curve points (x, y) for a given equation
     ec = [(x, y) for (x, y) in product(range(q), range(q)) if 0 == (x**3 + a*x + b - y**2) % q]
@@ -75,7 +77,8 @@ for q, (a, b), cm in params:
     cc, ce = rand(len(ec)), tuple(zip(*ec))
     xy = (eval(f'ce[{_}]') for _ in (0, 1))
     # Have you already noticed how the plot tickens? ;)
-    _ = scat(*xy, c = cc, alpha = 0.75), title(f'group order = {len(ec)} + 1 for {q = }'), show()
+    cmn = cmps[cm].resampled(0x100)
+    _ = scat(*xy, c = cmn(cc), alpha = 0.75), title(f'group order = {len(ec)} + 1 for {q = }'), show()
 
 r'''
  Now, we are talking...
@@ -144,7 +147,8 @@ for n in range(1, 333):
 from matplotlib.pyplot import rcParams, cycler, cm
 rcParams["axes.prop_cycle"] = cycler("color", cm.cividis.colors)
 
-#  Does it look random - at least to the naked eye?...
+#  How about that? Does it look random - at least to the naked eye?...
+#  (Okay, those wearing glasses can also take a look...;)
 for n in range(1, 333 - 1):
     _ = plot((GG[n - 1][0], GG[n][0]), (GG[n - 1][1], GG[n][1]))
 _ = title('A Brownian motion (kind of?) over an elliptical curve...'), show()

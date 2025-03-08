@@ -1,4 +1,4 @@
-﻿from matplotlib.pyplot import show, title, bar, yticks, figure, plot
+﻿from matplotlib.pyplot import show, title, bar, yticks, figure
 from matplotlib.colors import LinearSegmentedColormap as lscm
 from numpy import histogram, arange, min, max
 
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     
     tabs = mtw()
-    art = './images/Pollock No. 5.png' if len(argv) < 0b10 else argv[1]
+    art = './images/varia/Pollock No. 5.png' if len(argv) < 0b10 else argv[1]
     img = plt.imread(f'{art}')[..., :3]
 
     kwargs = ({'img': img, 'art': art, 'name': 'RGB in cgh', 'channels': RGB},
