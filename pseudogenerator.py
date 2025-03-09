@@ -6,14 +6,14 @@ from auxiliary import YCoCg_ext_channels as YCoCg
 
 # Fancy parsing... https://docs.python.org/3/howto/argparse.html#argparse-tutorial
 # Check this out: '.\pseudogenerator.py --N 0o011110 --Z π**π'
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument('--N', help = 'N - number of numbers (a multiple of 6 - just for [our] coding convenience])')
-parser.add_argument('--Z', help = 'Z - an integer multiplier')
+from argparse import ArgumentParser
+parser = ArgumentParser()
+parser.add_argument('--N', help = 'N - a number of numbers (multiplied by 6 - just for [our] coding convenience])')
+parser.add_argument('--Z', help = 'Z - a multiplier')
 parser.add_argument('--S', help = 'S - a seed', type = float)
 # Pseudo-random sequence parameters
 args = parser.parse_args()
-N = eval(args.N) if args.N and eval(args.N)%6 == 0 else 0o010010
+N = 0b0110*eval(args.N) if args.N else 0o010010
 Z = eval(args.Z) if args.Z else 0o1001
 S = args.S if args.S else π
 
