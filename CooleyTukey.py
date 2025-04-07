@@ -3,6 +3,8 @@ from numpy import exp, sin, concatenate as ConcaTenate, arange, abs, pi as π, l
 from random import random as rr
 from auxiliary import ITT
 
+# https://www.youtube.com/watch?v=nmgFG7PUHfo - "FFT - The most important algorithm of all time"
+
 @ITT
 def dft(x, s = 1):
     ## A neat matrix-based implementation of the 1D DFT [via Copilot I]

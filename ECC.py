@@ -84,6 +84,7 @@ r'''
  Now, we are talking...
  https://en.wikipedia.org/wiki/File:ECClines.svg        
  https://en.wikipedia.org/wiki/Elliptic_curve#Elliptic_curves_over_finite_fields    
+ https://www.youtube.com/watch?v=6gCaEeBNlnk [Unsolved problem]
  And again... https://link.springer.com/book/10.1007/978-3-662-69007-9
  
  See pp. 244nn of the book: Note that we start with doubling of G (a point on a curve with integer coordinates) and then we just add 
@@ -92,7 +93,7 @@ r'''
        2G = G + G, 3G = 2G + G, ..., nG = (n - 1)G + G, etc.
 
  nG encrypts the private key n with the help of the publicly known quadruplet (a, b, q, G)
- They say finding n given nG is infeasible (and we need to believe them...)
+ They say finding n given nG is infeasible (and we need to believe them... - or wait for a QC)
 '''
 
 ### An example taylored to the following parameters:

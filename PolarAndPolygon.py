@@ -3,6 +3,12 @@ from matplotlib.pyplot import subplots, polar, title, show, Slider
 from random import uniform as U
 from math import pi as π
 
+r'''
+Source(s):
+1. https://en.wikipedia.org/wiki/Parametric_equation#Some_sophisticated_functions
+2. https://youtu.be/AoOv6bWg9lk?t=151 - "Polar Equations of Polygons" 
+'''
+
 # A square on a pole ♪♫...and the byenary 100 all!♫♪
 θ, ρ = lsp(0, π/0b100, 0b10), U(π/0o10, π*0o1) # ... or for octoplus!
 # https://en.wikipedia.org/wiki/Trigonometric_functions#Etymology
@@ -15,7 +21,7 @@ _ = title('A square on a pole...'), show()
 ## Lp circles are real weirdos... https://youtu.be/n8lYKa8YGKw?t=514
 #  like "a square peg in a round hole..."
 def Lp_octant(p):
-    x = lsp(0, pow(0o1/0b10, 1/p), 0x10) # Hexadecaphilia!
+    x = lsp(0, pow(0x1/0b10, 1/p), 0o100) # Hexadecaphilia (-phobia? -phonia? - or just all of them at once?)!
     y = pow(1 - pow(x, p), 1/p)
     return x, y
 
@@ -26,7 +32,7 @@ ax.set_aspect('equal')
 fig.subplots_adjust(bottom = 1/6)
 p_ax = fig.add_axes([.125, .06125, .8125, 0.0125])
 
-# ...  and an L₂ circle (the round one!) to start with...
+# ...  or picture this: an L₂ circle (yeah, that round one to start with...;)
 p = 2; x, y = Lp_octant(p)
 for x, y in ((x, y), (x, -y), (-x, -y), (-x, y)):
     _ = ax.plot(x, y, y, x)
@@ -46,7 +52,7 @@ def Lp_circle(p):
 p_slider.on_changed(Lp_circle)
 show()
 
-''' 
+r''' 
 # Polygon Lp circles for specific values of $p$
 # p ~ 1.7915 (= 3583/2000) yields π ~ 3
 # p = 2 makes π = π again!
