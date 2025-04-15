@@ -67,7 +67,7 @@ else:
                                                  for n in range(N)]
 
 for grid in (False, True):
-    di((img, out), ('Original', f'{nomina}-rotated by {ϱ}°'), cmp = Cu, grid = grid)
+    di((img, out), ('Original', f'{nomina}-rotated by {ϱ}°'), cmp = Cu, grid = grid, clip = False)
 
 ''' Random users' fun: "python .\rotation2D.py '-RR(44)' '42 + RR(7) - 6' 'lambda x: ϕ(x + RR(9)/12)'"
 44:   "A imię jego..." A. M. Dz. III

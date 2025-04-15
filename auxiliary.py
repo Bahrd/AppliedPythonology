@@ -5,9 +5,9 @@ from matplotlib.colors import LinearSegmentedColormap as lscm
 
 ## Image presentation
 def displayImages(images, titles = '', cmp = 'gray', show = True, grid = True, 
-                  title = 'Applied Pythonology of[f] Course', tabs = None):
+                  title = 'Applied Pythonology of[f] Course', tabs = None, clip = True):
     # Clip'n'cast
-    cc = lambda x: np.clip(x, 0x0, 0xff).astype(np.uint8)
+    cc = lambda x: np.clip(x, 0x0, 0xff).astype(np.uint8) if clip else x
     # Tabbed images
     def _withTabs(images, titles, cmp, grid, title):
         _ = plt.figure()
