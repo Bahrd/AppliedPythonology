@@ -13,7 +13,7 @@ procedure to each row and then to each column of the image. '''
 
 ## Setting:
 #  A source image...
-img = eddie; M = len(img); N = int(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
+img = eddie; M = len(img); N = eval(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
 # ... and some shortcuts.
 את, ΣΣ, nomina = lambda : choice([True, False]), intrpl, argv[0b10] if len(argv) > 0b10 else ϕ.__name__
 ψ, Cu = eval(nomina), 'copper'
@@ -24,18 +24,18 @@ if את():
     out = zeros((N, N))
     for m in range(M):
         out[m, ...] = array(ΣΣ(img[m, ...], N, φ = ψ)).flat
-    di((img, out), ('Original', f'{nomina}-scaled rows'), cmp = Cu)
+    di((img, out), ('Original', f'{nomina}-scaled rows'), cmp = Cu, clip = False)
 
     for n in range(N):
         out[..., n] = array(ΣΣ(out[:M, n], N, φ = ψ)).flat
-    di((img, out), ('Original', f'{nomina}-scaled rows & columns'), cmp = Cu)
+    di((img, out), ('Original', f'{nomina}-scaled rows & columns'), cmp = Cu, clip = False)
 # ... and the more convoluted (snaky, sneaky'n'snacky) version
 else:
     out = array([ΣΣ(img[m, ...], N, φ = ψ) for m in range(M)]).reshape(M, N)
-    di((img, out), ('Original', f'{nomina}-scaled rows II'), cmp = Cu)
+    di((img, out), ('Original', f'{nomina}-scaled rows II'), cmp = Cu, clip = False)
 
     out = array([ΣΣ(out[..., n], N, φ = ψ) for n in range(N)]).reshape(N, N).T
-    di((img, out), ('Original', f'{nomina}-scaled rows & columns II'), cmp = Cu)
+    di((img, out), ('Original', f'{nomina}-scaled rows & columns II'), cmp = Cu, clip = False)
 
 ## A pretty scary stuff...
 #  "Let's put a smile on that face." https://www.imdb.com/title/tt0468569/quotes/?item=qt1148950
@@ -44,7 +44,7 @@ if 0b1:
     # Troughs and crests
     _ = plot(out[N >> 0b1, ...], 'ro-'), show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
-    di((img, out), ('Original', f'{nomina}-scaled'), cmp = Cu, title = '"Let\'s put a smile on that face."')
+    di((img, out), ('Original', f'{nomina}-scaled'), cmp = Cu, title = '"Let\'s put a smile on that face."', clip = False)
 
 ## (In)Deterministic users' enjoyment:
 #  "python .\interpolation2D.py 42 'lambda x: ϕ(x + RR(2) * RR(9)/12)'"
