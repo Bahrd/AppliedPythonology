@@ -6,8 +6,8 @@ from math import sin, cos, pi as π
 from sys import argv
 
 ''' 2D rotation - a canonical version of the NN, bi-linear and bi-qubic-based algorithms
-If one wants a serious 2D:
-https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/ '''
+(if one wants a serious 2D:
+https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/) '''
 
 clp = lambda n, nmax, nmin = 0: nmin if n < 0 else n if n < nmax else nmax - 1
 rclp = lambda n, m, nmax: (clp(n, nmax), clp(m, nmax)) # range clipper
@@ -16,7 +16,7 @@ rclp = lambda n, m, nmax: (clp(n, nmax), clp(m, nmax)) # range clipper
 
 '''A not-so-quick-yet-dirty (loop-in-loop) version...
 Since "premature optimization is the root of all evil"!
--- D. Knuth [http://wiki.c2.com/?PrematureOptimization]'''
+—— D. Knuth [http://wiki.c2.com/?PrematureOptimization]'''
 def fl(img, x, y, ψ = ϕ, Δ = 0b11):
     N, M = img.shape; xx, yy = int(x), int(y)
 
@@ -39,7 +39,7 @@ def ft(img, x, y, ψ = ϕ, Δ = 0b11):
 ## Setting...
 #  A rotation angle α...
 ϱ = eval(argv[0b1]) if len(argv) > 0b1 else RR(-180, 180) #°
-α, Cu = ϱ * π/180.0, 'copper' # Main and auxiliary variables
+α, Cu = ϱ * π/180, 'copper' # Main and auxiliary variables
 
 #  A source image...
 img = eddie; M = len(img); N = int(eval(argv[0b10])) if len(argv) > 0b10 else M << 0b1
