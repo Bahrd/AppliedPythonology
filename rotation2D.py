@@ -2,10 +2,10 @@
 from auxiliary import displayImages as di
 from random import randrange as RR, choice
 from numpy import array, empty, arange as A, tensordot as tendot
-from math import sin, cos, pi
+from math import sin, cos, pi as π
 from sys import argv
 
-''' 2D rotation - the canonical version of the NN, bi-linear and bi-qubic-based algorithms
+''' 2D rotation - a canonical version of the NN, bi-linear and bi-qubic-based algorithms
 If one wants a serious 2D:
 https://scipython.com/book/chapter-8-scipy/additional-examples/interpolation-of-an-image/ '''
 
@@ -39,7 +39,7 @@ def ft(img, x, y, ψ = ϕ, Δ = 0b11):
 ## Setting...
 #  A rotation angle α...
 ϱ = eval(argv[0b1]) if len(argv) > 0b1 else RR(-180, 180) #°
-α, Cu = ϱ * pi/180.0, 'copper' # Main and auxiliary variables
+α, Cu = ϱ * π/180.0, 'copper' # Main and auxiliary variables
 
 #  A source image...
 img = eddie; M = len(img); N = int(eval(argv[0b10])) if len(argv) > 0b10 else M << 0b1

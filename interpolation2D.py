@@ -1,4 +1,4 @@
-﻿from interpolation import Π, Λ, ϕ, ξ, interpolate as intrpl, eddie, RR
+﻿from interpolation import Π, Λ, ϕ, ξ, interpolate as Σ, eddie, RR
 from matplotlib.pyplot import plot, show, subplots
 from auxiliary import displayImages as di
 from random import choice
@@ -15,7 +15,7 @@ procedure to each row and then to each column of the image. '''
 #  A source image...
 img = eddie; M = len(img); N = eval(argv[1]) if len(argv) > 1 else M << 0b1 #13 #
 # ... and some shortcuts.
-את, ΣΣ, nomina = lambda : choice([True, False]), intrpl, argv[0b10] if len(argv) > 0b10 else ϕ.__name__
+את, ΣΣ, nomina = lambda : choice([True, False]), Σ, argv[0b10] if len(argv) > 0b10 else ϕ.__name__
 ψ, Cu = eval(nomina), 'copper'
 
 ##2D interpolation - simple as that?! (yeah, but only when M ≤ N...)
