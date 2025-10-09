@@ -4,8 +4,8 @@ import cv2; import numpy as np; import auxiliary as aux
 # Note - the example works only for square images (N x N) and for even N
 # (the filter segments are 2 x 2)
 img = cv2.cvtColor(cv2.imread('./images/insects/GrassHopper.PNG'), cv2.COLOR_BGR2RGB)
-img = cv2.resize(img, (128, 128), interpolation = cv2.INTER_LINEAR_EXACT)
-N = img.shape[0]; X = [N >> 1]; X *= 2
+img = cv2.resize(img, (128, 128), interpolation = cv2.INTER_NEAREST_EXACT)
+N = img.shape[0]; X = [N >> 1]; X *= 0b10
 
 ## Bayer CFA (Kodak Research Laboratory)
 #  Peter Dillon and Albert Brault, 1974 & Bryce E. Bayer, 1976
@@ -42,7 +42,7 @@ A bit more directly interpolation-based demosaicking routines:
 '''
 ## An interpolation scheme derived from Open CV
 scheme = cv2.INTER_LINEAR_EXACT
-img = cv2.resize(cv2.cvtColor(cv2.imread('./images/GrassHopper.png'), cv2.COLOR_BGR2RGB),
+img = cv2.resize(cv2.cvtColor(cv2.imread('./images/insects/GrassHopper.png'), cv2.COLOR_BGR2RGB),
                  (512, 512),
                  interpolation = scheme)
 N, M, _ = img.shape

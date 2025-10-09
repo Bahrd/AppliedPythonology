@@ -54,3 +54,8 @@ cc, CC = g ** rr * yy % p, g ** rr % p
 #  Victor (oh, poor Victor...) - never heard about Ronald Reagan's "Trust, but verify" (https://en.wikipedia.org/wiki/Trust,_but_verify)?
 v, V = cc,  CC * yy % p
 print(f"{v} == {V}. And poor Victor believes Alice every time..." if (v == V) else f"{v} != {V}. Whoa!!! Alice's caught!")
+
+
+'''
+https://en.wikipedia.org/wiki/Feige%E2%80%93Fiat%E2%80%93Shamir_identification_scheme - looks equaly simple, doesn't it?
+'''

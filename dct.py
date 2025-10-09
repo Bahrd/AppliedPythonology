@@ -9,7 +9,7 @@ T = eval(argv[1]) if len(argv) > 1 else π/2  # Try '(π**π - π*π)/π'
 L, intervals, rng = 0x100, 1, random.default_rng()
 X, (f1, f2) = lp(0, 1.0, L), (0b111, 0b1111) # ♪♫ I'll be seeing you again!         https://youtu.be/xYQ2rJUT0Vg?t=101
                                              #    I'll be seeing you in Hertz's! ♫♪ https://youtu.be/0o4yv6Cm_ag
-#'''
+'''
 ## Almost like a photo...? pleth...?? Anyway, a PPG-like signal!
 #  https://en.wikipedia.org/wiki/Photoplethysmogram#Monitoring_heart_rate_and_cardiac_cycle
 #  See also: https://en.wikipedia.org/wiki/Photoplethysmogram#Monitoring_depth_of_anesthesia
@@ -20,7 +20,7 @@ s = 0o10 + 0b100*cos(f1 * π*X) + 0b10*cos(f2 * π*X); s = list(flatten(repeat(s
 # ♪♫ Here come the rain [of photons] again ♫♪ https://www.youtube.com/watch?v=TzFnYcIqj6I
 # (albeit in their usual random and Poissonian fashion...)
 S = rng.poisson(s)
-#'''
+'''
 '''
 ## A square wave (a.k.a. a digital signal?)
 from numpy import sqrt, cos, sign, zeros
@@ -30,7 +30,7 @@ _s = sign(sqrt(1/0b101)*cos(f1 * π*X)) - sign(sqrt(1/0b101)*cos(f2 * π*X))
 s, ε = list(flatten(repeat(_s, intervals))), zeros(L * intervals)
 S = s + ε
 '''
-'''
+#'''
 ## A chirp-like signal (https://www.youtube.com/watch?v=TWqhUANNFXw [LIGO] ;)
 #  https://www.youtube.com/watch?v=iphcyNWFD10 - Veritasium's take on it
 #  https://www.youtube.com/watch?v=B4XzLDM3Py8 - MIT
@@ -39,7 +39,7 @@ name = 'chirp'
 X = lp(0.05, 1.0, L * intervals)
 s, ε = sin(1/X), rng.standard_normal(L * intervals)/0b100
 S = s + ε
-'''
+#'''
 
 subplots(num = "When DCT and thresholding crossed paths...")[1].axis('off'); tight_layout()
 # A bit of grid drama...
