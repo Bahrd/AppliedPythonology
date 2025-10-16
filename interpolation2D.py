@@ -24,18 +24,18 @@ if את():
     out = zeros((N, N))
     for m in range(M):
         out[m, ...] = array(ΣΣ(img[m, ...], N, φ = ψ)).flat
-    di((img, out), ('Original', f'{nomina}-scaled rows'), cmp = Cu, clip = False)
+    di((img, out), ('Original', f'{nomina}-scaled rows'), cmp = Cu, clip = False, grid = False)
 
     for n in range(N):
         out[..., n] = array(ΣΣ(out[:M, n], N, φ = ψ)).flat
-    di((img, out), ('Original', f'{nomina}-scaled rows & columns'), cmp = Cu, clip = False)
+    di((img, out), ('Original', f'{nomina}-scaled rows & columns'), cmp = Cu, clip = False, grid = False)
 # ... and the more convoluted (snaky, sneaky'n'snacky) version
 else:
     out = array([ΣΣ(img[m, ...], N, φ = ψ) for m in range(M)]).reshape(M, N)
-    di((img, out), ('Original', f'{nomina}-scaled rows II'), cmp = Cu, clip = False)
+    di((img, out), ('Original', f'{nomina}-scaled rows II'), cmp = Cu, clip = False, grid = False)
 
     out = array([ΣΣ(out[..., n], N, φ = ψ) for n in range(N)]).reshape(N, N).T
-    di((img, out), ('Original', f'{nomina}-scaled rows & columns II'), cmp = Cu, clip = False)
+    di((img, out), ('Original', f'{nomina}-scaled rows & columns II'), cmp = Cu, clip = False, grid = False)
 
 ## A pretty scary stuff...
 #  "Let's put a smile on that face." https://www.imdb.com/title/tt0468569/quotes/?item=qt1148950
@@ -44,7 +44,7 @@ if 0b1:
     # Troughs and crests
     _ = plot(out[N >> 0b1, ...], 'ro-'), show()
     out[out < 0.0] = 1.0; out[out > 1.0] = 0.0
-    di((img, out), ('Original', f'{nomina}-scaled'), cmp = Cu, title = '"Let\'s put a smile on that face."', clip = False)
+    di((img, out), ('Original', f'{nomina}-scaled'), cmp = Cu, title = '"Let\'s put a smile on that face."', clip = False, grid = False)
 
 ## (In)Deterministic users' enjoyment:
-#  "python .\interpolation2D.py 42 'lambda x: ϕ(x + RR(2) * RR(9)/12)'"
+#  "python .\interpolation2D.py 42 'lambda x: Λ(x + RR(2) * RR(9)/12)'"
