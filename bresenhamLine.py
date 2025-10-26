@@ -8,7 +8,8 @@ from numpy import clip, fliplr, flipud, zeros, maximum
 from matplotlib.pyplot import imshow, show, subplot, tight_layout
 
 ## See this "esplanation": https://youtu.be/CceepU1vIKo?t=20 first!
-def bresenham_line(x0: int, y0: int, x1: int, y1: int):   
+def bresenham_line(x0: int, y0: int, x1: int, y1: int):  
+    Δx, Δy = x1 - x0, y1 - y0
     # A canvas 0b100 the line, and its center
     Λ = zeros((Δx, Δy + 1))
 

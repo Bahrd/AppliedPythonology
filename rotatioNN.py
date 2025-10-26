@@ -27,4 +27,4 @@ for n in range(N):
         ϑ = Rα @ ϑ + OXY
         x, y = clip(ϑ, 0, M - 1).astype(int) # where the NNs dwell
         out[n, m] = img[x, y]                # again, cf. rotation2D.py's '... = f(x, y, img, Π)'
-di((img, out), ('Original', f'NN-rotated by {ρ}°'), cmp = Cu)
+di((img, out), ('Original', f'NN-rotated by {ρ}°'), cmp = Cu, grid = N < 0x20)
