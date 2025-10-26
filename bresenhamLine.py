@@ -15,7 +15,6 @@ def bresenham_line(x0: int, y0: int, x1: int, y1: int):
 
     #... and the actual algorithm
     y = y0
-    Δx, Δy = x1 - x0, y1 - y0
     D = (Δy << 1) - Δx
     
     Δx <<= 1; Δy <<= 1
