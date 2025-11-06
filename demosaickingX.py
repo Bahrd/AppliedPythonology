@@ -3,7 +3,8 @@ import cv2; import numpy as np; import auxiliary as aux
 #### Image 'framing'
 # Note - the example works only for square images (N x N) and 
 # for 6 x 6 filter segments (and hence for N such that N % 6 = 0
-img = cv2.cvtColor(cv2.imread('./images/varia/XTransLCD.PNG'), cv2.COLOR_BGR2RGB) 
+# Testbed image: './images/varia/XTransLCD.PNG'
+img = cv2.cvtColor(cv2.imread('./images/insects/GrassHopperX.png'), cv2.COLOR_BGR2RGB) 
 N = img.shape[0]; X = [int(N/6)]; X *= 2
 
 
