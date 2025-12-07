@@ -1,3 +1,8 @@
+'''
+https://en.wikipedia.org/wiki/3D_rotation_group - SO(3) (a nonabelian [non-commutative] group)
+A.k.a. "The special orthogonal group in 3 dimensions"
+SO(2) is a commutative (abelian) group though...
+'''
 from numpy import array, identity as I
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
@@ -23,11 +28,14 @@ polygon = Polygon(vertices, ec = 'xkcd:navy blue', fc = 'xkcd:true blue', alpha 
 ax.add_patch(polygon); ax.scatter(vertices[:, 0], vertices[:, 1], color = 'xkcd:blue', s = 25)
 
 # Our square after translation by K and L...
-K, L = 2, 1
+K, L = 2, 2
 T = array([[1, 0, K],
            [0, 1, L],
            [0, 0, 1]])
-# ... and after rotation by α degrees...
+# ... and after rotation by α degrees... https://en.wikipedia.org/wiki/Rotations_and_reflections_in_two_dimensions
+# And don't bother about quaternions here, as they are for 3D rotations only.
+# https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation
+# But remember that by definition i² = j² = k² = ijk = -1
 α = 75*π/180
 R = I(3); _R = array([[cos(α), -sin(α)],
                       [sin(α),  cos(α)]])
@@ -43,7 +51,7 @@ S[:2, :2] = _S
 #  See https://en.wikipedia.org/wiki/Transformation_matrix#/media/File:2D_affine_transformation_matrix.svg
 #  and https://en.wikipedia.org/wiki/Transformation_matrix#/media/File:Perspective_transformation_matrix_2D.svg
 # Stretching:
-k, κ = 3, 2
+k, κ = 3, -2
 S1 = array([[k, 0, 0],
             [0, κ, 0],
             [0, 0, 1]])
@@ -56,7 +64,8 @@ S3 = array([[1, k, 0],
             [κ, 1, 0],
             [0, 0, 1]])
 
-# Reflection:
+# Reflection: https://en.wikipedia.org/wiki/Householder_transformation#Householder_matrix
+#             https://upload.wikimedia.org/wikipedia/commons/f/f9/Householdertransformation.png
 lx, ly = 1, 2   # ... about the line from the origin (0, 0) through (lx, ly)
 M = I(3)
 _M = array([[lx**2 - ly**2,     2*lx*ly  ],
@@ -76,7 +85,7 @@ ax.add_patch(polygon); ax.scatter(vertices[:, 0], vertices[:, 1], color = 'xkcd:
 # which is a linear operation too and can be represented by a matrix as well:
 # https://wrfranklin.org/pmwiki/Main/HomogeneousCoords
 # The shadow of the final shape on the line Ax + By = 1
-A, B = 4, 1
+A, B = 0, 2/3
 P = array([[1, 0, 0],
            [0, 1, 0],
            [A, B, 0]])

@@ -1,7 +1,7 @@
 ## See this first and foremost: https://www.youtube.com/watch?v=Rqv3cXt8ZNU
 
 # Yet another formatting subroutine - nothing to see here, move along!
-def show(expression):
+def show(expression, comment = ''):
     global V
     p, lv = lambda _: print(_, end = ''), list(V)
     c = 0
@@ -21,7 +21,7 @@ def show(expression):
                 p('-')
             p(f'{lv[i]}')
             c += 1
-    print()
+    print(f' {comment}')
 
 from numpy import array as A
 from numpy.linalg import inv
@@ -41,19 +41,20 @@ ID = inv(D)
 
 ## Elementary educational example
 w = 7*V['sin(x)'] + 3*V['x⋅sin(x)'] - 5*V['x⋅cos(x)']
+#w = 5*V['x⋅cos(x)']
 show(w)
 
 # Differentiation is so easy...
 derivative = D@w
-show(derivative)
+show(derivative, ' after differentiation')
 
 # ... and so is double integration!
 integral = ID@ID@derivative
-show(integral)
+show(integral, ' after integration done twice')
 
 # Checkpoint: the derivative of the integral should yield the original expression
 original = D@integral
-show(original)
+show(original, ' back to black...')
 
 if (original == w).all():
     print('Yippee ki-yay!')

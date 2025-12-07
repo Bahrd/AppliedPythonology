@@ -39,7 +39,7 @@ def ft(img, x, y, ψ = ϕ, Δ = 0b11):
 ## Setting...
 #  A rotation angle α...
 ϱ = eval(argv[0b1]) if len(argv) > 0b1 else RR(-180, 180) #°
-α, Cu = ϱ * π/180, 'copper' # Main and auxiliary variables
+α, Cu = ϱ * π/180, 'copper' # All those main and/or auxiliary variables...
 
 #  A source image...
 img = eddie; M = len(img); N = int(eval(argv[0b10])) if len(argv) > 0b10 else M << 0b1
@@ -49,6 +49,7 @@ OXY, Rα = array([M/2, M/2]), array([[cos(α), -sin(α)],
                                     [sin(α),  cos(α)]]) # turns clockwise when α > 0
 
 # ... and an interpoland...:) Π, Λ, ϕ, ξ, "or else..."
+#     Λ - by default, cf. https://github.com/github-copilot/code_referencing?cursor=bc6063e36f79e91ec4099247f7181616
 nomina = argv[0b11] if len(argv) > 0b11 else Λ.__name__; ψ = eval(nomina)
 ToF = lambda: choice([True, False])
 

@@ -88,12 +88,15 @@ def refresh():
     plt.plot(dft, 'xkcd:black', s, 'xkcd:red', s - dft, 'xkcd:gray')
     plt.plot(S, color ='xkcd:light gray', marker = '.', markersize = 1, lw = 0)
     plt.show()
+
 def threshold(_):
     global h; h = _
     refresh()
+
 def wavelets(_):
     global wn; wn = _.split()[0] # "Separate the Wheat from the Chaff" - or just separate the standard wavelet family name
     refresh()                      # from the one that "gives credit where credit is due!"
+
 def method(_):
     global Th, mode
     mode = _; Th = lambda x, h: thrsd(x, h, mode = mode)

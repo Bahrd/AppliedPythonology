@@ -25,12 +25,12 @@ def deBézierFace(samples, steps = 0x100):
 
 # An NxM grid of samples of a surely random surface
 from random import random
-N, M = 0o10, 0x10
+N, M = 0o20, 0x10
 samples = np.array([[[i, j, random()] for i in range(N)] for j in range(M)])
 ## Bézier skull...
-#from interpolation import eddie
-#N, M = eddie.shape; N <<= 1; M <<= 1
-#samples = np.array([[[i, j, eddie[i >> 1, j >> 1]] for i in range(N)] for j in range(M)])
+from interpolation import eddie
+N, M = eddie.shape; N <<= 1; M <<= 1
+samples = np.array([[[i, j, eddie[i >> 1, j >> 1]] for i in range(N)] for j in range(M)])
 
 sureface = deBézierFace(samples)
 # Go, figure!

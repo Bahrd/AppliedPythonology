@@ -1,9 +1,10 @@
 ﻿from matplotlib.pyplot import bar, plot, subplot, figure, tight_layout, show, xlabel, ylabel, title
-from numpy import exp, sin, concatenate as ConcaTenate, arange, abs, pi as π, linspace as lp, sum, outer, roll, arctan2
+from numpy import exp, sin, concatenate as ConcaTenate, arange, abs, pi as π, linspace as lp, sum, outer, roll, arctan2, add
+from numpy.random import randn
 from random import random as rr
 from auxiliary import ITT
 
-# https://www.youtube.com/watch?v=nmgFG7PUHfo - "FFT - The most important algorithm of all time"
+# https://www.youtube.com/watch?v=nmgFG7PUHfo - 'FFT - The most important algorithm of all time'
 
 @ITT
 def dft(x, s = 1):
@@ -14,7 +15,7 @@ def dft(x, s = 1):
     W = exp(-s*2j * π * ω/N)
 
     ##<didactics>
-    # assert N <= 8, "The input signal is too long for a didactic Fourier transform"
+    # assert N <= 8, 'The input signal is too long for a didactic Fourier transform.\n'Hanc marginis exiguitas non caperet''
     # from numpy import set_printoptions
     # set_printoptions(formatter={'all': lambda x: f'{x:1.1f}'})
     # print(f'{W = }')
@@ -41,14 +42,25 @@ def CooleyTukey(x):
     return _CooleyTukey(x)
 
 ## Examples (randomized). Spot some invariances (https://en.wiktionary.org/wiki/vicenarians#Anagrams), will ya?
-N = 0x1000; t = lp(0, 1, N)
+N, T = 0x1000, 0o1; t = lp(0, T, N)
+
+## A slow signal (see https://stackoverflow.com/a/26283381/17524824)
 f = 0x20 >> 2, 0x20, 0x20 << 2  # 8, 32, 128 Hz - YFMV ;)
 φ = 2*rr()*π, -π/2, 2*rr()*π    # Phases...
-# A slow signal (see https://stackoverflow.com/a/26283381/17524824)
-x = sum([sin(2*_f*π*t + _φ) for _f, _φ in zip(f, φ)], axis = 0)
+x = sum([0o10*sin(2*_f*π*t + _φ) for _f, _φ in zip(f, φ)], axis = 0)
+
+## Ever seen the Smoluchowski's motion, a.k.a. ♪♫Brown girl in the ring!♫♪? ;) [ https://www.youtube.com/watch?v=15nMlfogITw ]
+b = add.accumulate(randn(N)); x[0] = 0
+# And the Munk's girl on the [Brownian] bridge [ https://www.youtube.com/watch?v=GZaI0WQrb5Y ]
+# https://en.wikipedia.org/wiki/Brownian_bridge
+bb = b - b[-1]*t/T
+# A periodic signal with a tad of Brownian bridge
+x += bb
+
+### Transforms
 # ... its standard and fast transforms
 ξ, X =  dft(x), CooleyTukey(x)
-# ... and it'self again (restored by the standard inverse transform)
+# ... and it'self again (restored by the inverse transform to our universe form...)
 _x = idft(X).real
 
 ## Plotting
@@ -58,20 +70,20 @@ _x = idft(X).real
 figure(figsize = (10, 0b110)); tight_layout()
 
 # The signal
-subplot(4, 1, 1); plot(t, x, color = 'darkred')
-title("Slow signal"); xlabel("Time"); ylabel("Amplitude")
+subplot(4, 1, 1); plot(t, x, color = 'darkred'); plot(t, b, color = 'black', ); plot(t, bb, color = 'red', )
+title('Slow signal@Brownian bridge'); xlabel('Time'); ylabel('Amplitude')
 
 # Its fast transform (magnitude, two sides)
 subplot(4, 1, 1+1); bar(Λ, roll(abs(X), υ), color = 'goldenrod', width = 4.0)
-title("Fast transform"); xlabel("Frequencies [Hz]"); ylabel("Magnitude")
+title('Fast transform'); xlabel('Frequencies [Hz]'); ylabel('Magnitude')
 
 # Its transform (real and (amplified by β) args parts, one side)
 subplot(4, 1, 1+1+1); bar(Λ[υ:], (ξ[:υ]).real, color = 'orange', width = 4.0)
 plot(Λ[υ:], β*arctan2((ξ[:υ]).imag, (ξ[:υ]).real), color = 'brown')
-title("Slow transform"); xlabel("Freqs [Hz] and phases [°]"); ylabel("Re/Arg parts")
+title('Slow transform'); xlabel('Freqs [Hz] and phases [°]'); ylabel('Re/Arg parts')
 
 # Itself (stripped of the residual imaginary part)
 subplot(4, 1, 1+1+1+1); plot(t, _x, color = 'darkred'); plot(t, _x - x, 'k')
-title("Slow signal"); xlabel("Time"); ylabel("Amplitude")
+title('Slow signal – again'); xlabel('Time'); ylabel('Amplitude')
 
 show()
