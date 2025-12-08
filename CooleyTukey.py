@@ -47,21 +47,21 @@ N, T = 0x1000, 0o1; t = lp(0, T, N)
 ## A slow signal (see https://stackoverflow.com/a/26283381/17524824)
 f = 0x20 >> 2, 0x20, 0x20 << 2  # 8, 32, 128 Hz - YFMV ;)
 φ = 2*rr()*π, -π/2, 2*rr()*π    # Phases...
-x = sum([0o10*sin(2*_f*π*t + _φ) for _f, _φ in zip(f, φ)], axis = 0)
+_x = sum([0o10*sin(2*_f*π*t + _φ) for _f, _φ in zip(f, φ)], axis = 0)
 
 ## Ever seen the Smoluchowski's motion, a.k.a. ♪♫Brown girl in the ring!♫♪? ;) [ https://www.youtube.com/watch?v=15nMlfogITw ]
-b = add.accumulate(randn(N)); x[0] = 0
+b = add.accumulate(randn(N)); _x[0] = 0
 # And the Munk's girl on the [Brownian] bridge [ https://www.youtube.com/watch?v=GZaI0WQrb5Y ]
 # https://en.wikipedia.org/wiki/Brownian_bridge
 bb = b - b[-1]*t/T
 # A periodic signal with a tad of Brownian bridge
-x += bb
+x = _x + bb
 
 ### Transforms
 # ... its standard and fast transforms
 ξ, X =  dft(x), CooleyTukey(x)
 # ... and it'self again (restored by the inverse transform to our universe form...)
-_x = idft(X).real
+x = idft(X).real
 
 ## Plotting
 #  https://stackoverflow.com/questions/22408237/named-colors-in-matplotlib
@@ -69,20 +69,20 @@ _x = idft(X).real
 Λ = arange(-υ, υ)
 figure(figsize = (10, 0b110)); tight_layout()
 
-# The signal
-subplot(4, 1, 1); plot(t, x, color = 'darkred'); plot(t, b, color = 'black', ); plot(t, bb, color = 'red', )
+# The signal...
+subplot(4, 1, 1); plot(t, x, color = 'darkred'); plot(t, b, color = 'black', ); plot(t, bb, color = 'red', ), ; plot(t, _x, color = 'goldenrod', )
 title('Slow signal@Brownian bridge'); xlabel('Time'); ylabel('Amplitude')
 
-# Its fast transform (magnitude, two sides)
+# ... its fast transform (magnitude, two sides)
 subplot(4, 1, 1+1); bar(Λ, roll(abs(X), υ), color = 'goldenrod', width = 4.0)
 title('Fast transform'); xlabel('Frequencies [Hz]'); ylabel('Magnitude')
 
-# Its transform (real and (amplified by β) args parts, one side)
+# ... its transform (real and (amplified by β) args parts, one side)
 subplot(4, 1, 1+1+1); bar(Λ[υ:], (ξ[:υ]).real, color = 'orange', width = 4.0)
 plot(Λ[υ:], β*arctan2((ξ[:υ]).imag, (ξ[:υ]).real), color = 'brown')
 title('Slow transform'); xlabel('Freqs [Hz] and phases [°]'); ylabel('Re/Arg parts')
 
-# Itself (stripped of the residual imaginary part)
+# and itself again (stripped of the residual imaginary part)
 subplot(4, 1, 1+1+1+1); plot(t, _x, color = 'darkred'); plot(t, _x - x, 'k')
 title('Slow signal – again'); xlabel('Time'); ylabel('Amplitude')
 
