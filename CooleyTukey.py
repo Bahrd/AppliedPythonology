@@ -47,11 +47,12 @@ N, T = 0x1000, 0o1; t = lp(0, T, N)
 ## A slow signal (see https://stackoverflow.com/a/26283381/17524824)
 f = 0x20 >> 2, 0x20, 0x20 << 2  # 8, 32, 128 Hz - YFMV ;)
 φ = 2*rr()*π, -π/2, 2*rr()*π    # Phases...
-_x = sum([0o10*sin(2*_f*π*t + _φ) for _f, _φ in zip(f, φ)], axis = 0)
+_x = sum([0o20*sin(2*_f*π*t + _φ) for _f, _φ in zip(f, φ)], axis = 0)
 
 ## Ever seen the Smoluchowski's motion, a.k.a. ♪♫Brown girl in the ring!♫♪? ;) [ https://www.youtube.com/watch?v=15nMlfogITw ]
+#  One of the most important stochastic processes in nature and engineering?
 b = add.accumulate(randn(N)); _x[0] = 0
-# And the Munk's girl on the [Brownian] bridge [ https://www.youtube.com/watch?v=GZaI0WQrb5Y ]
+# Or the Munk's girl on such a [Brownian]-like bridge [ https://www.youtube.com/watch?v=GZaI0WQrb5Y ]
 # https://en.wikipedia.org/wiki/Brownian_bridge
 bb = b - b[-1]*t/T
 # A periodic signal with a tad of Brownian bridge
@@ -70,7 +71,7 @@ x = idft(X).real
 figure(figsize = (10, 0b110)); tight_layout()
 
 # The signal...
-subplot(4, 1, 1); plot(t, x, color = 'darkred'); plot(t, b, color = 'black', ); plot(t, bb, color = 'red', ), ; plot(t, _x, color = 'goldenrod', )
+subplot(4, 1, 1); plot(t, x, color = 'goldenrod'); plot(t, b, color = 'brown', ); plot(t, bb, color = 'black', ), ; plot(t, _x, color = 'red', )
 title('Slow signal@Brownian bridge'); xlabel('Time'); ylabel('Amplitude')
 
 # ... its fast transform (magnitude, two sides)
@@ -82,8 +83,8 @@ subplot(4, 1, 1+1+1); bar(Λ[υ:], (ξ[:υ]).real, color = 'orange', width = 4.0
 plot(Λ[υ:], β*arctan2((ξ[:υ]).imag, (ξ[:υ]).real), color = 'brown')
 title('Slow transform'); xlabel('Freqs [Hz] and phases [°]'); ylabel('Re/Arg parts')
 
-# and itself again (stripped of the residual imaginary part)
-subplot(4, 1, 1+1+1+1); plot(t, _x, color = 'darkred'); plot(t, _x - x, 'k')
+# and itself again (stripped of the Brownian process)
+subplot(4, 1, 1+1+1+1); plot(t, _x, 'red', t, x - _x, 'black')
 title('Slow signal – again'); xlabel('Time'); ylabel('Amplitude')
 
 show()
