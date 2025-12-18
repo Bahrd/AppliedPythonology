@@ -34,7 +34,8 @@ N = 0x1 << 10; org = openCV.resize(org[..., 0], (N, N))
 
 # Pick your (floating) poison...
 if λ > 0:
-    org = np.clip(poisson(org * λ)/λ, 0x0, 0xff)
+    p = poisson(org * λ)/λ
+    org = np.clip(p, 0x0, 0xff)
 
 #%% Tilin'quantization vs. image quality
 r'''
@@ -49,7 +50,7 @@ r'''
 '''
 blck, bn  = vab(org, (B, B)), range(int(N/B))
 #  Transformation, quantization and...
-qntz = [[quantize(dct2(blck[n, m])) for m in bn] for n in bn]
+qntz = [[quantize(dct2(blck[n, m]), Q) for m in bn] for n in bn]
 #  ... the inverse transformation (via implicit block views...)
 img  = [[idct2(qntz[n][m])          for m in bn] for n in bn]
 
@@ -60,7 +61,7 @@ di([org, qntz, img, org - img],
     [f'original\n{N}×{N} = {N*N} pixels',
      f'DCT 2D\n{N/B:.0f}×{N/B:.0f} = {N**2/B**2:.0f} of {B}×{B} blocks',
      f'Reconstruction\nQ = {Q}',
-     f'Difference\n{nz} ({nz/(N*N):,.1%}) non-zeros'], grid = False)
+     f'Difference\n{nz} ({nz/(N*N):,.1%}) non-zeros'], grid = False, clip = True)
 
 exit()
 #%% Is this a new normal?

@@ -15,10 +15,10 @@ def dft(x, s = 1):
     W = exp(-s*2j * π * ω/N)
 
     ##<didactics>
-    # assert N <= 8, 'The input signal is too long for a didactic Fourier transform.\n'Hanc marginis exiguitas non caperet''
-    # from numpy import set_printoptions
-    # set_printoptions(formatter={'all': lambda x: f'{x:1.1f}'})
-    # print(f'{W = }')
+    #assert N <= 8, 'The input signal is too long for a didactic Fourier transform.\n Hanc marginis exiguitas non caperet'
+    #from numpy import set_printoptions
+    #set_printoptions(formatter={'all': lambda x: f'{x:1.1f}'})
+    #print(f'{W = }')
     ## </didactics>
 
     return W @ x
@@ -42,7 +42,7 @@ def CooleyTukey(x):
     return _CooleyTukey(x)
 
 ## Examples (randomized). Spot some invariances (https://en.wiktionary.org/wiki/vicenarians#Anagrams), will ya?
-N, T = 0x1000, 0o1; t = lp(0, T, N)
+N, T = 0x2000, 0x2//0o2; t = lp(0, T, N)
 
 ## A slow signal (see https://stackoverflow.com/a/26283381/17524824)
 f = 0x20 >> 2, 0x20, 0x20 << 2  # 8, 32, 128 Hz - YFMV ;)
@@ -71,7 +71,7 @@ x = idft(X).real
 figure(figsize = (10, 0b110)); tight_layout()
 
 # The signal...
-subplot(4, 1, 1); plot(t, x, color = 'goldenrod'); plot(t, b, color = 'brown', ); plot(t, bb, color = 'black', ), ; plot(t, _x, color = 'red', )
+subplot(4, 1, 1); plot(t, b, 'brown', t, bb, 'black', t, _x, 'red', lw = .25); plot(t, x, 'goldenrod', lw = 1)
 title('Slow signal@Brownian bridge'); xlabel('Time'); ylabel('Amplitude')
 
 # ... its fast transform (magnitude, two sides)
@@ -84,7 +84,7 @@ plot(Λ[υ:], β*arctan2((ξ[:υ]).imag, (ξ[:υ]).real), color = 'brown')
 title('Slow transform'); xlabel('Freqs [Hz] and phases [°]'); ylabel('Re/Arg parts')
 
 # and itself again (stripped of the Brownian process)
-subplot(4, 1, 1+1+1+1); plot(t, _x, 'red', t, x - _x, 'black')
+subplot(4, 1, 1+1+1+1); plot(t, _x, 'red', t, x - _x, 'black', lw = .25)
 title('Slow signal – again'); xlabel('Time'); ylabel('Amplitude')
 
 show()
