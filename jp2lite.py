@@ -74,3 +74,6 @@ cgh(img, art, 'YCbCr (after)', YCbCr)
 img = img@YCbCr2RGB.T
 di(img, f'{art} {wn}\'ed@level {L} (step size = {2**(-Q)})', grid = False)
 #%% Et finis coronat opus...
+
+#                                 art,                     wn,        λ,    L,     Q 
+# .\pythpath.ps1 312 .\jp2lite.py "'insects/I am awesome', 'bior2.2', 0o11, 0b101, -0b110"
