@@ -3,6 +3,9 @@ from numpy import exp, sin, concatenate as ConcaTenate, arange, abs, pi as π, l
 from numpy.random import randn
 from random import random as rr
 from auxiliary import ITT
+from nvmath import fft
+
+## TO DO: Use the CUDA package for GPU-accelerated FFTs
 
 # https://www.youtube.com/watch?v=nmgFG7PUHfo - 'FFT - The most important algorithm of all time'
 
@@ -41,6 +44,13 @@ def CooleyTukey(x):
             return x
     return _CooleyTukey(x)
 
+@ITT
+def cufft(X):
+    return fft.fft(X, execution = "cuda")
+@ITT
+def cuifft(X, N):
+    return fft.ifft(X/N, execution = "cuda")
+
 ## Examples (randomized). Spot some invariances (https://en.wiktionary.org/wiki/vicenarians#Anagrams), will ya?
 N, T = 0x2000, 0x2//0o2; t = lp(0, T, N)
 
@@ -59,10 +69,11 @@ bb = b - b[-1]*t/T
 x = _x + bb
 
 ### Transforms
-# ... its standard and fast transforms
-ξ, X =  dft(x), CooleyTukey(x)
-# ... and it'self again (restored by the inverse transform to our universe form...)
-x = idft(X).real
+# ... one is super-duper elementary and the other is just fast...
+x = x.astype('float64') + 0j
+ξ, X = dft(x), CooleyTukey(x) # for larger N use: 'cufft(x), CooleyTukey(x)'
+# ... and it'self again (restored by even faster inverse transform to our universe's form...)
+x = cuifft(X, N).real
 
 ## Plotting
 #  https://stackoverflow.com/questions/22408237/named-colors-in-matplotlib
