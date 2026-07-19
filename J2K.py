@@ -69,6 +69,7 @@ tbdac(YCoCg)
 tbcgh(art, 'YCoCg (before)', YCoCg)
 
 #   ... the wavelet transform and quantization...
+#Y = img[..., 0]; Co, Cg = [wtftw(img[..., n], wn, L, Q, qntz, ('Y', 'Co', 'Cg')[n]) for n in range(1, 3)]
 Y, Co, Cg = [wtftw(img[..., n], wn, L, Q, qntz, ('Y', 'Co', 'Cg')[n]) for n in range(3)]
 
 # ... and after

@@ -26,7 +26,6 @@ r''' A few examples of elliptic curves
     https://stackoverflow.com/a/19757132/17524824  
  '''
 
-
 # Create an elliptic curve
 y, x = meshgrid(lp(-3, 3, 0x200), lp(-3, 3, 0x200))
 a, b, c = 0, 0, 0

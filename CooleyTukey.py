@@ -71,10 +71,10 @@ x = _x + bb
 ### Transforms
 # ... one is super-duper elementary and the other is just fast...
 x = x.astype('float64') + 0j
-ξ, X = dft(x), CooleyTukey(x) # for larger N use: 'cufft(x), CooleyTukey(x)'
+ξ, X = cufft(x), CooleyTukey(x)#dft(x), CooleyTukey(x) # for larger N use: 'cufft(x), CooleyTukey(x)'
 # ... and it'self again (restored by even faster inverse transform to our universe's form...)
 x = cuifft(X, N).real
-
+exit(0)  # Comment out to see the plots
 ## Plotting
 #  https://stackoverflow.com/questions/22408237/named-colors-in-matplotlib
 υ, β = N // 2, 0x168/π
