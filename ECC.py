@@ -75,7 +75,7 @@ for q, (a, b), cm in params:
     # Scatter plot data (re)arrangement(s)
     cc, ce = rand(len(ec)), tuple(zip(*ec))
     xy = (eval(f'ce[{_}]') for _ in (0, 1))
-    # Have you already noticed how the plot tickens? ;)
+    # Have you already noticed how the plot thickens? ;)
     cmn = cmps[cm].resampled(0x100)
     _ = scat(*xy, c = cmn(cc), alpha = 0.75), title(f'group order = {len(ec)} + 1 for {q = }'), show()
 
@@ -95,7 +95,7 @@ r'''
  They say finding n given nG is infeasible (and we need to believe them... - or wait for a QC)
 '''
 
-### An example taylored to the following parameters:
+### An example tailored to the following parameters:
 a, b, q = 2, 2, 17
 _1G = (5, 1)        # A primitive element... (incidentally - the first element of the sequence - for educational purposes)
 # Not the elegant solution to the problem of default argument values (in fact, a solution to create problems... ;)

@@ -29,7 +29,7 @@ def Φ(x, f, φ):
 
 # An actual interpolation Φ: Fn ➞ Fx
 def interpolate(fn, N, φ = [Π, Λ, ϕ, ξ]):
-    X = linspace(0, len(fn), N)
+    X = linspace(0, len(fn) - 1, N)
     return [[Φ(x, fn, ψ) for x in X] for ψ in φ] if type(φ) is list else [Φ(x, fn, φ) for x in X]
 
 #  A source image...
