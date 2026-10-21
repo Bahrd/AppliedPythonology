@@ -57,14 +57,18 @@ def bresenhamAAline(x0: int, y0: int, x1: int, y1: int, AA:Iterable):
 
 #                       (1/3, 2/3, 1/1, 2/3, 1/3)   # Symmetric AA filters when L is odd...
 #                       (1/2, 1/1, 2/3, 1/3)        # 'Odd' AAA (asymmetric AA) when L is not...
-X, Y, AA = 0x161, randint(0o161), (1/2, 1/1, 1/2)   # A minimal AA example...
+#                       (1/2, 1/1, 1/2)             # A minimalist AA example...
+X, Y, AA = 0x161, randint(0o161), (0/1, 1/1, 0/1)   # The no-AA example...
 noa, aa = bresenham_line(0, 0, X, Y), bresenhamAAline(0, 0, X, Y, AA)
 
 # A helper...
 def subshow (data:tuple):
     tight_layout()
+
     for n, d in enumerate(data):
-        subplot(len(data), 1, n + 1)
+        _ = subplot(len(data), 1, n + 1)
+        _.axes.set_xticks([]), _.axes.set_yticks([]), _.set_frame_on(False)
+
         imshow(d, cmap = 'gray', interpolation = 'none')
     show()
     
