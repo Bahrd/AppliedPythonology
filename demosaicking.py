@@ -68,7 +68,7 @@ aux.displayChannels((img, rgb), channels)
 images = ('Original', 'Demo\'ed', 'Little diff\'s...') # https://youtu.be/ab7eVVG3I8s?t=43
 aux.displayImages((img, rgb, img - rgb), images, grid = False)
 
-# Here we reuse one of our implementation of interpolation schemes
+# Here we reuse one of our implementations of interpolation schemes
 # in order to demonstrate that our good ol' friend works exactly (if little more majestic) like the one based on OpenCV
 from interpolation import interpolate as Σ, Λ #ϕ, ξ
 from matplotlib.colors import LinearSegmentedColormap as lscm

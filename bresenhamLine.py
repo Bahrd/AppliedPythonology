@@ -25,9 +25,28 @@ def bresenham_line(x0: int, y0: int, x1: int, y1: int):
         D += Δy
     return Λ
 
+# ChatGPT's anti-aliasing version of Bresenham's line algorithm
+def line_aa(x0: int, y0: int, x1: int, y1: int):
+    dx, dy = x1 - x0, y1 - y0
+    # A canvas 0b100 the line, and its center
+    Λ = zeros((dx, dy + 1))
 
+    if not (dx > 0 and 0 <= dy <= dx):
+        raise ValueError("Wymagane: dx > 0 i 0 <= dy <= dx")
 
+    y, r = y0, 0
 
+    for x in range(x0, x1):
+        alfa = r / dx
+        Λ[x, y] = 1 - alfa
+        if r:
+            Λ[x, y] = alfa
+
+        r += dy
+        if r >= dx:
+            y += 1
+            r -= dx
+    return Λ
 
 ## You should rather prefer a more mature approach to anti-aliasing...
 #  https://www.youtube.com/watch?v=f3Rs20k-hcI
@@ -59,7 +78,8 @@ def bresenhamAAline(x0: int, y0: int, x1: int, y1: int, AA:Iterable):
 #                       (1/2, 1/1, 2/3, 1/3)        # 'Odd' AAA (asymmetric AA) when L is not...
 #                       (1/2, 1/1, 1/2)             # A minimalist AA example...
 X, Y, AA = 0x161, randint(0o161), (0/1, 1/1, 0/1)   # The no-AA example...
-noa, aa = bresenham_line(0, 0, X, Y), bresenhamAAline(0, 0, X, Y, AA)
+#noa, aa = bresenham_line(0, 0, X, Y), bresenhamAAline(0, 0, X, Y, AA)
+noa, aa = bresenham_line(0, 0, X, Y), line_aa(0, 0, X, Y)
 
 # A helper...
 def subshow (data:tuple):

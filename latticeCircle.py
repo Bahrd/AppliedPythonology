@@ -15,7 +15,7 @@ $$
 
 def Gauss_circle_area(r: float):
     r_floor = int(floor(r))
-    rs = [floor(sqrt(r*r - i*i)) for i in range(1, r_floor)]
+    rs = [floor(sqrt(r*r - i*i)) for i in range(1, r_floor +1)] # 'r_floor + 1' by ChatGPT
     area = 1 + 4*r_floor + 4*add.reduce(rs)
     return area
 

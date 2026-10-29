@@ -17,6 +17,7 @@ r''' A few examples of elliptic curves
     
     It is not obvious how many integer solutions each of these equations has: 
     see Hasse's theorem: https://en.wikipedia.org/wiki/Hasse%27s_theorem_on_elliptic_curves
+    or https://www.johndcook.com/blog/2026/10/22/the-number-of-points-on-an-elliptic-curve/
         $|N - (q + 1)| \leq 2\sqrt{q}$, 
     where $N$ is the number of points on the curve over a finite field of order $q$.
     
@@ -24,6 +25,9 @@ r''' A few examples of elliptic curves
     see e.g. https://link.springer.com/book/10.1007/978-1-4615-5207-9, p. 13, 
     let's start from drawing them for real(-like) numbers, shall we?
     https://stackoverflow.com/a/19757132/17524824  
+
+    Did you know that: https://x.com/Austen/status/2113256195402424719? If it's true that someone took such a small seeds, then... 
+    I don't know what to think about it...
  '''
 
 # Create an elliptic curve

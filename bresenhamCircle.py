@@ -1,4 +1,5 @@
 ﻿## A Bresenh`am (flooded) circle... a bunch of random edu versions!
+### Doesn't display the fill-in progress in my Python 3.12 setup...
 from numpy import ones, fliplr, flipud, arange
 from matplotlib.pyplot import imshow, show, pause, subplot, figure
 from numpy.random import choice, permutation as rpr
@@ -26,7 +27,12 @@ def bresenham_quadrant_circle(_r: int):
             y += 1; ε += 2*y + 1            
         if r > x or ε > y:                  
             x += 1; ε += 2*x + 1            
-    return Φ                                
+    return Φ            
+
+
+
+
+
 ## A version obscured by debuggin' code (inactive if '-O' option is on)
 def dbresenham_quadrant_circle(_r: int):
     Φ = ones((2*_r + 1, 2*_r + 1))
@@ -146,4 +152,11 @@ def flood_fill(x: int, y: int):
     Φ(x, y - 1) # ←
     Φ(x + 1, y) # ↓
     Φ(x - 1, y) # ↑
- '''
+ 
+GPT's anti-aliasing idea
+from skimage.draw import circle_perimeter_aa
+
+canvas = ones((2*r + 3, 2*r + 3))
+rows, cols, alpha = circle_perimeter_aa(r + 1, r + 1, r, shape=canvas.shape)
+canvas[rows, cols] = 1 - alpha
+'''
