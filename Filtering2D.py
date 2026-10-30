@@ -1,3 +1,4 @@
+## https://youtu.be/8unEo4tdVVQ - hardly a pumpkin field, but still...
 from scipy.ndimage import convolve, correlate
 from numpy.random import poisson
 from random import randint
@@ -5,9 +6,9 @@ from random import randint
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Load an example image
+## Create an empty pumpkin field (a.k.a. a 2D image) and a pumpkin twin template (a.k.a. 2D filters)
 image = np.zeros((128, 128))
-_eddie = lambda δ, ζ: np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+pumpkin = lambda δ, ζ: np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                 [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
                                 [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
                                 [0, δ, 1, 0, 0, 1, δ, δ, 1, 0, 0],
@@ -19,46 +20,51 @@ _eddie = lambda δ, ζ: np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                 [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 
-ri = lambda x: randint(0, x)
+ri = lambda n: randint(0, n)
 
-δ, ζ = 0, 1 # δ = 0, ζ = 1 for the smiling Freddy and scared Eddie(s)
-eddie, freddy = _eddie(δ, ζ), _eddie(ζ, δ)
+δ, ζ = 0, 1 # δ = 0, ζ = 1 for the grinning Freddy and the flabbergasted Eddie(s)
+eddie, freddy = pumpkin(δ, ζ), pumpkin(ζ, δ)
 
 w, u = eddie.shape; v, z = image.shape
 
-## Eddies' random settlement locations
+## Eddies' random settlement locations...
 for _ in range(0x10):
    x, y = ri(v - w), ri(z - u)
    image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + eddie, 0, 1)
 
-## Freddy's random location
+# ... and a Freddy's random location
 x, y = ri(v - w), ri(z - u)
 image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + freddy, 0, 1)
 
-## Make the image a bit more 'realistic' by incurring some noise
-λ = 0xffff # The more the merrier (try λ = 0x1 if you really feel lucky... But "do you feel lucky, punk?")
-           # If not (I don't!), set λ = 0xffff
+## Make the image a bit more 'realistic' by inserting some "photon noise"
+λ = 0x10 # The more the merrier (try λ = 0x1 if you really feel lucky... But "do you feel lucky, punk?").
+        # If not (I don't!), set λ = 0x100 (or more) to rescue these guys from drowning in the sea of noise...
 image = poisson(image * λ)/λ
 
-## Applying the filter to the image (a.k.a. finding the smiling Freddy!)
-#  Observe that we have:
-#  1. Changed the range of the image and of the filter (from [0, 1] to [-1, 1])
-#  2. Normalized the filter (but not the image - that would've made the example even less realistic!)
-#  These two tricks are known in all image processing kindergartens
-image = 2*image - 1; freddy = (2*freddy - 1)/freddy.size
+## Finding the smiling Freddy! (a.k.a. filtering the image)
+#  Observe that in the passing we have:
+#  1. changed the range of the image and of the filter (from [0, 1] to [-1, 1]), and
+#  2. normalized the filter (but not the image - that would've made the example even less realistic!)
+#  These two tricks are known in any image processing kindergarten I have ever been to...
+image  =  2*image  - 1
+freddy = (2*freddy - 1)/freddy.size
 
-filtered_image = correlate(image, freddy, mode = 'constant', cval = -1) # 'convolve' or 'correlate' - that's the question!
-freddy_location = np.unravel_index(np.argmax(filtered_image, axis = None), filtered_image.shape)
-# Pinpoint Freddy's location
-# It doesn't work all the time - even in the noise-free conditions... D'ya know why?
-filtered_image[freddy_location] = 0o4 # Try 0o2 to see a few poltergeists (and 0o20 to "Copperfield" them all)
-# Display the original and filtered images
+filtered_image = correlate(image, freddy, mode = 'constant', cval = -1) # 'correlate' or 'convolve' - pick your poison!
+## Pinpointing Freddy's location
+pumpkin_location = np.unravel_index(np.argmax(filtered_image, axis = None), filtered_image.shape)
+#  It can fail from time to time - even in the noise-free conditions (D'ya know why?).
+#  Thus, we are only kinda sure we have found a pumpkin(ish blot)...
+gt_location = (x + w//2, y + u//2) # Ground truth location (the center of the pumpkin template)
+filtered_image[gt_location] = 0o4
+
+filtered_image[pumpkin_location] = 0o10 # Try 0o2 to face a few poltergeists (and 0o20 to "Copperfield" them all)
+
+## Display both images, the original and the filtered one
 fig, axes = plt.subplots(1, 2, figsize = (10, 5))
-
-for a, t, im in zip(axes.ravel(), ('Where\'s Freddy?', f'There he is {freddy_location}!'), (image, filtered_image)):
+fig.set_facecolor('black')
+for a, t, im in zip(axes.ravel(), ('Where\'s Freddy?', f'There he is! [@{pumpkin_location} vs. @{gt_location}]'), (image, filtered_image)):
    a.axis('off')
-   a.set_title(t)
+   a.set_title(t, color = 'xkcd:pumpkin', fontsize = 0o10, loc = 'center', pad = 0b10)
    a.imshow(im, cmap = plt.cm.copper)
-
 plt.tight_layout()
 plt.show()
