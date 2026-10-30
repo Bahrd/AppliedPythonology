@@ -42,22 +42,19 @@ image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + freddy, 0, 1)
 image = poisson(image * λ)/λ
 
 ## Finding the smiling Freddy! (a.k.a. filtering the image)
-#  Observe that in the passing we have:
+#  Observe that in the passing (the parameters) we have:
 #  1. changed the range of the image and of the filter (from [0, 1] to [-1, 1]), and
 #  2. normalized the filter (but not the image - that would've made the example even less realistic!)
 #  These two tricks are known in any image processing kindergarten I have ever been to...
-image  =  2*image  - 1
-freddy = (2*freddy - 1)/freddy.size
+filtered_image = correlate(2*image - 1, (2*freddy - 1)/freddy.size, mode = 'constant', cval = -1) # 'correlate' or 'convolve' - pick your poison!
+## Pinpointing Freddy's location & the Ground truth location (the center of the pumpkin template)
+pumpkin_location, gt_location = np.unravel_index(np.argmax(filtered_image, axis = None), filtered_image.shape), (x + w//2, y + u//2)
 
-filtered_image = correlate(image, freddy, mode = 'constant', cval = -1) # 'correlate' or 'convolve' - pick your poison!
-## Pinpointing Freddy's location
-pumpkin_location = np.unravel_index(np.argmax(filtered_image, axis = None), filtered_image.shape)
-#  It can fail from time to time - even in the noise-free conditions (D'ya know why?).
+#  The scheme can fail from time to time - even in the noise-free conditions (D'ya know why?).
 #  Thus, we are only kinda sure we have found a pumpkin(ish blot)...
-gt_location = (x + w//2, y + u//2) # Ground truth location (the center of the pumpkin template)
-filtered_image[gt_location] = 0o4
 
-filtered_image[pumpkin_location] = 0o10 # Try 0o2 to face a few poltergeists (and 0o20 to "Copperfield" them all)
+# Pick (0o2, 0o4) to face a few poltergeists or (0o20, 0o40) to "Copperfield" them all
+filtered_image[pumpkin_location], filtered_image[gt_location]  = 0o10, 0o20
 
 ## Display both images, the original and the filtered one
 fig, axes = plt.subplots(1, 2, figsize = (10, 5))
