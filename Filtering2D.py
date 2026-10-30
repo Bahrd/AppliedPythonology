@@ -21,7 +21,7 @@ _eddie = lambda δ, ζ: np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 
 ri = lambda x: randint(0, x)
 
-δ, ζ = 1, 0
+δ, ζ = 0, 1 # δ = 0, ζ = 1 for the smiling Freddy and scared Eddie(s)
 eddie, freddy = _eddie(δ, ζ), _eddie(ζ, δ)
 
 w, u = eddie.shape; v, z = image.shape
@@ -29,14 +29,15 @@ w, u = eddie.shape; v, z = image.shape
 ## Eddies' random settlement locations
 for _ in range(0x10):
    x, y = ri(v - w), ri(z - u)
-   image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + freddy, 0, 1)
+   image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + eddie, 0, 1)
 
 ## Freddy's random location
 x, y = ri(v - w), ri(z - u)
-image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + eddie, 0, 1)
+image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + freddy, 0, 1)
 
 ## Make the image a bit more 'realistic' by incurring some noise
-λ = 0xff # The more the merrier (try λ = 0x1 if really you feel lucky... And "do you feel lucky, punk?") If not, set λ = 0xffff
+λ = 0xffff # The more the merrier (try λ = 0x1 if you really feel lucky... But "do you feel lucky, punk?")
+           # If not (I don't!), set λ = 0xffff
 image = poisson(image * λ)/λ
 
 ## Applying the filter to the image (a.k.a. finding the smiling Freddy!)
