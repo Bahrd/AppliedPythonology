@@ -47,11 +47,11 @@ image = poisson(image * λ)/λ
 #  These two tricks are known in all image processing kindergartens
 image = 2*image - 1; freddy = (2*freddy - 1)/freddy.size
 
-filtered_image = convolve(image, freddy, mode = 'constant', cval = -1) # 'convolve' or 'correlate' - that's the question!
+filtered_image = correlate(image, freddy, mode = 'constant', cval = -1) # 'convolve' or 'correlate' - that's the question!
 freddy_location = np.unravel_index(np.argmax(filtered_image, axis = None), filtered_image.shape)
 # Pinpoint Freddy's location
 # It doesn't work all the time - even in the noise-free conditions... D'ya know why?
-filtered_image[freddy_location] = 0o2 # Try 0o2 to see a few poltergeists (and 0o20 to hide them all)
+filtered_image[freddy_location] = 0o4 # Try 0o2 to see a few poltergeists (and 0o20 to "Copperfield" them all)
 # Display the original and filtered images
 fig, axes = plt.subplots(1, 2, figsize = (10, 5))
 
