@@ -1,4 +1,4 @@
-from scipy.ndimage import convolve
+from scipy.ndimage import convolve, correlate
 from numpy.random import poisson
 from random import randint
 
@@ -26,12 +26,12 @@ eddie, freddy = _eddie(δ, ζ), _eddie(ζ, δ)
 
 w, u = eddie.shape; v, z = image.shape
 
-## Freddys' random settlement locations
+## Eddies' random settlement locations
 for _ in range(0x10):
    x, y = ri(v - w), ri(z - u)
    image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + freddy, 0, 1)
 
-## Eddie's random location
+## Freddy's random location
 x, y = ri(v - w), ri(z - u)
 image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + eddie, 0, 1)
 
@@ -39,22 +39,22 @@ image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + eddie, 0, 1)
 λ = 0xffff # The more the merrier (try λ = 0x1 if really you feel lucky... And "do you feel lucky, punk?")
 image = poisson(image * λ)/λ
 
-# Apply the filter to the image (a.k.a. find the smiling Eddie!)
-filtered_image = convolve(2*image - 1, 2*freddy - 1)/freddy.size
+# Apply the filter to the image (a.k.a. find the smiling Freddy!)
+filtered_image = convolve(2*image - 1, 2*freddy - 1, mode='constant', cval = 0.0)/freddy.size # 'convolve' or 'correlate'?
 
-# Observe that we have done:
-# 1. Changed the range of the image and of the filter to [-1, 1]
-# 2. Normalized the result by dividing by the size of the filter
+# Observe that we have:
+# 1. Changed the range of the image and of the filter from [0, 1] to [-1, 1]
+# 2. Normalized the filter (but not the image - that would've been even less realistic!)
 # These two tricks are known in all image processing kindergartens
 
-skull_location = np.unravel_index(np.argmax(filtered_image, axis = None), filtered_image.shape)
-# Pinpoint Eddie's location
+freddy_location = np.unravel_index(np.argmax(filtered_image, axis = None), filtered_image.shape)
+# Pinpoint Freddy's location
 # It doesn't work all the time - even in the noise-free conditions... D'ya know why?
-filtered_image[skull_location] = 0o20 # Try 0o2 to see a few poltergeists (and 0o20 to hide them all)
+filtered_image[freddy_location] = 0o20 # Try 0o2 to see a few poltergeists (and 0o20 to hide them all)
 # Display the original and filtered images
 fig, axes = plt.subplots(1, 2, figsize = (10, 5))
 
-for a, t, im in zip(axes.ravel(), ('Where\'s Eddie?', f'There he is {skull_location}!'), (image, filtered_image)):
+for a, t, im in zip(axes.ravel(), ('Where\'s Freddy?', f'There he is {freddy_location}!'), (image, filtered_image)):
    a.axis('off')
    a.set_title(t)
    a.imshow(im, cmap = plt.cm.copper)
