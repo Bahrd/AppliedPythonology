@@ -46,7 +46,9 @@ image = poisson(image * λ)/λ
 #  1. changed the range of the image and of the filter (from [0, 1] to [-1, 1]), and
 #  2. normalized the filter (but not the image - that would've made the example even less realistic!)
 #  These two tricks are known in any image processing kindergarten I have ever been to...
-filtered_image = correlate(2*image - 1, (2*freddy - 1)/freddy.size, mode = 'constant', cval = -1) # 'correlate' or 'convolve' - pick your poison!
+
+## To 'correlate' or to 'convolve' - pick your poison!
+filtered_image = correlate(2*image - 1, (2*freddy - 1)/freddy.size, mode = 'constant', cval = -1)
 ## Pinpointing Freddy's location & the Ground truth location (the center of the pumpkin template)
 pumpkin_location, gt_location = np.unravel_index(np.argmax(filtered_image, axis = None), filtered_image.shape), (x + w//2, y + u//2)
 
