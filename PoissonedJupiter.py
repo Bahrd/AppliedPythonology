@@ -2,7 +2,7 @@ from cv2 import imread, cvtColor, COLOR_BGR2RGB as RGB, COLOR_BGR2GRAY as GRAY, 
 from matplotlib.widgets import Slider, RadioButtons
 from matplotlib import pyplot as plt, animation
 from numpy.random import poisson
-from numpy import clip
+from numpy import clip, array
 from exif import Image as exifImage
 '''
 A simple animation demonstrating Poisson distribution of the faint images...
@@ -17,11 +17,11 @@ def animate(_):
     global intensity, photo, image, brightness
 
     λ = 2**(intensity - 8.0)
-    imp = clip(2**brightness * poisson(image * λ)/λ, 0x0, 0xff)
-    photo.set_array(imp.astype(int))
-    #fig.suptitle(f' Ganymede, Callisto, Io, or Europa: {imp[100, 70]:.0f}', color='white')
-    fig.suptitle(f'Jovi @[100, 0x100] = {imp[100, 0x100]:.0f}', color='white')
+    imp = 2**brightness * poisson(image * λ)/λ
+    photo.set_array(clip(imp, 0, 255).astype(int))
 
+    fig.suptitle(f'Sub Jovi @[100, 0x100] = {imp[100, 0x100].astype(int)}', color = 'white')
+    
 ## A GUI part
 #  A couple of event handlers
 def image_in_poisson(_):
@@ -40,7 +40,7 @@ People vs frogs (vs machines) - the world-famous single-photon detection contest
 4. https://www.youtube.com/watch?v=o5qXCzknxn8 [PG]
 '''
 def photomesoscotopic(_):
-    global image, yuppie
+    global image, yuppie, mode
     image = cvtColor(yuppie, RGB if _ == 'RGB' else GRAY)
 
 ## The main content: Jupiter and Io, Europa, Ganymede & Callisto...
