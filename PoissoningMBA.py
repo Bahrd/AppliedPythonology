@@ -33,7 +33,8 @@ def poissonimg(val):
     ah.hist(data, 0x100 - 0b10, (0x1, 0x100 - 0b10), color = colors, stacked = True, histtype = 'bar', alpha = 1/0b11)
     oh.imshow(imp, cmap = 'gray' if rgbw == BW else None)
     # https://stackabuse.com/how-to-change-plot-background-in-matplotlib/
-    show()
+    fig.canvas.draw()
+    fig.canvas.flush_events()
 
 def scotophotopic(label):
     global slev, rgbw
@@ -64,3 +65,4 @@ imrgb, imbw = (cvtColor(imread(mb), _) for _ in (RGB, BW))
 
 # Image re/de-generation
 poissonimg(0o10)
+show()

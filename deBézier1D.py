@@ -2,7 +2,7 @@
 # https://en.wikipedia.org/wiki/B%C3%A9zier_curve
 
 import matplotlib.pyplot as plt
-from numpy import linspace as lp, outer as op, tensordot as tp
+from numpy import linspace as lp, outer as op, tensordot as tp, sin, cos, pi as π
 from matplotlib.widgets import Button, Slider
 from sys import argv as controlPoints
 
@@ -12,7 +12,10 @@ from sys import argv as controlPoints
 def bézier(P, p = 128):
     # A couple of secretly anonymous functions
     binomial = lambda n, k: 1 if k == 0 or n == k else binomial(n - 1, k - 1) + binomial(n - 1, k)
-    BernsteinPoly = lambda u = lp(0, 1, p), P = P, n = len(P): zip(*((binomial(n - 1, i), op(P[i], (1 - u)**(n - i - 1) * u**i)) for i in range(n)))
+    #BernsteinPoly = lambda u = lp(0, 1, p), P = P, n = len(P): zip(*((binomial(n - 1, i), op(P[i], (1 - (u))**(n - i - 1) * (u)**i)) for i in range(n)))
+    # A non-standard (yet still regular!) parametrization of a Bézier curve (will it work? Let's look around and find out... ;)
+    t = lambda u: (1 - cos(π*u))/2 # e.g. sin(π*u) is not regular (why?!) - https://math.stackexchange.com/questions/1100806/why-is-sinx-not-regular-at-x-0
+    BernsteinPoly = lambda u = lp(0, 1, p), P = P, n = len(P): zip(*((binomial(n - 1, i), op(P[i], (1 - t(u))**(n - i - 1) * t(u)**i)) for i in range(n)))
 
     c, b = BernsteinPoly()
     return tp(c, b, 1)

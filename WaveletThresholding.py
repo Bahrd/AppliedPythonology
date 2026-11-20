@@ -26,7 +26,7 @@ s = list(flatten(repeat(S, rpt)))
 # A chirp-like signal (https://www.youtube.com/watch?v=TWqhUANNFXw [LIGO] ;)
 # https://www.youtube.com/watch?v=iphcyNWFD10 - Veritasium's take on it
 # https://www.youtube.com/watch?v=B4XzLDM3Py8 - MIT
-from numpy import sin
+from numpy import sin # ♪♫ It's a sin ♫♪ (1987) - https://www.youtube.com/watch?v=dRHetRTOD1Q
 X = lp(0.05, 1.0, L * rpt)
 s, ε = sin(1/X), rng.standard_normal(L * rpt)/0b100
 #'''
@@ -35,14 +35,12 @@ S = s + ε
 
 # ... and a real drama: Wavelet Thresholding!
 # An FWT wrapper (transform → operation on coefficients → inverse transform)
-def wc_op(c, wn, lvl, h, op = lambda x, h: x, dsply = False):
+def wc_op(c, wn, lvl, h, op = lambda x, h: x):
     # Applying a wavelet transform
     C = fwt(c, wn, level = lvl)
 
     # Thresholding I
     C, S = c2a(C); C = op(C, h)
-    # Presentation
-    if(dsply): plt.plot(C); plt.show()
     # Re-tupling the wavelet coefficients
     C = a2c(C, S, output_format = 'wavedec')
     # Inversing the wavelet transform
@@ -64,8 +62,10 @@ def ValSUREThresh(X):
 ''' Levels of transform, L, is arbitrary here. In general,
     L ≤ floor(log₂(len(X))
     or even less should a boundary effect be taken into account.
-    Insert your own threshold values should you know it better, as well'''
-L, sh = 10, ValSUREThresh(S); h = sh
+'''
+L, h_0 = 10, ValSUREThresh(S)
+# Insert your own threshold values should you know it better, as well
+h = h_0
 Th = lambda x, h: thrsd(x, h, mode = 'hard')
 
 ''' A selection of wavelet filter names
@@ -75,19 +75,21 @@ wns, modes = (['sym8 [symlet]', 'coif8 [coiflet]', 'db8 [Daubechies]', 'bior4.4 
               ['hard', 'soft', 'garrote'])
 wn, mode = wns[0].split()[0], modes[0]
 
+
 # Shrinkage... Live!
 def refresh():
-    global S, wn, L, h, Th
+    global S, wn, L, h, Th, fig
     dft = wc_op(S, wn, L, h, Th)
-    
+
     # Extravaganza... ;)
-    for f, a in zip(('subplot', 'cla', 'xticks', 'yticks', 'title'), 
-                    ('1, 1, 1', '', '[]', '[]', "f'{wn} @ λ = {h:,.2f}'")):
-        eval(f'plt.{f}({a})')    
-    
+    for f, a in zip(('subplot', 'cla', 'xticks', 'yticks', 'title'), ('1, 1, 1', '', '[]', '[]', "f'{wn} @ λ = {h:,.2f}'")):
+        eval(f'plt.{f}({a})')
+
     plt.plot(dft, 'xkcd:black', s, 'xkcd:red', s - dft, 'xkcd:gray')
     plt.plot(S, color ='xkcd:light gray', marker = '.', markersize = 1, lw = 0)
-    plt.show()
+
+    fig.canvas.draw()
+    fig.canvas.flush_events()
 
 def threshold(_):
     global h; h = _
@@ -102,12 +104,16 @@ def method(_):
     mode = _; Th = lambda x, h: thrsd(x, h, mode = mode)
     refresh()
 
-# Presentation arrangement...
-plt.subplots(num = 'Wavelets in their niche (natural habitat...?)'); plt.subplots_adjust(left = .2, bottom = .16)
+
+fig, _ = plt.subplots(num = 'Wavelets in their niche (natural habitat...?)');
+plt.subplots_adjust(left = .2, bottom = .16)
 plt.tight_layout()
+
 axTh, axWn, axM  = plt.axes([.01, .15, .03, .7]), plt.axes([.1, .01, .3, .12]), plt.axes([.31, .01, .15, .12])
-slTh = Slider(axTh, 'λ', 0.0, 2*ceil(sh), valinit = sh, valstep = 0.03125 * sh, orientation = 'vertical')
+slTh = Slider(axTh, 'λ', 0.0, 2*ceil(h_0), valinit = h_0, valstep = 0.03125 * h_0, orientation = 'vertical')
 rbWn = RadioButtons(axWn, wns, active = 0); rbM = RadioButtons(axM, modes, active = 0)
 slTh.on_changed(threshold); rbWn.on_clicked(wavelets); rbM.on_clicked(method)
 
+
 threshold(h)
+plt.show()

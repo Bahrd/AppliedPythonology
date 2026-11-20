@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 ## Create an empty pumpkin field (a.k.a. a 2D image) and a pumpkin twin template (a.k.a. 2D filters)
-image = np.zeros((128, 128))
+image = np.zeros((0x100, 0x100))
 pumpkin = lambda δ, ζ: np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                  [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
                                  [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
@@ -33,7 +33,7 @@ eddie, freddy = pumpkin(δ, ζ), pumpkin(ζ, δ)
          # If not (I don't!), set λ = 0x100 (or more) to rescue these guys from drowning in the sea of noise...
 
 # Eddies' random settlement locations...
-for _ in range(0x10):
+for _ in range(0o100):
    x, y = ri(v - w), ri(z - u)
    image[x:x + w, y:y + u] = np.clip(image[x:x + w, y:y + u] + poisson(eddie * λ)/λ, 0, 1)
 

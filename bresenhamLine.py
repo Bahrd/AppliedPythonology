@@ -51,7 +51,8 @@ def line_aa(x0: int, y0: int, x1: int, y1: int):
 ## You should rather prefer a more mature approach to anti-aliasing...
 #  https://www.youtube.com/watch?v=f3Rs20k-hcI
 #  which is, however, not that downsampling-proof
-def bresenhamAAline(x0: int, y0: int, x1: int, y1: int, AA:Iterable):
+def bresenhamAAline(x0: int, y0: int, x1: int, y1: int, AA):
+    AA = list(AA) if isinstance(AA, Iterable) else [AA]
     def Γ(y: int):
         return clip(y, y0, y1)
     
@@ -74,12 +75,13 @@ def bresenhamAAline(x0: int, y0: int, x1: int, y1: int, AA:Iterable):
         D += Δy << 1
     return Λ
 
-#                       (1/3, 2/3, 1/1, 2/3, 1/3)   # Symmetric AA filters when L is odd...
-#                       (1/2, 1/1, 2/3, 1/3)        # 'Odd' AAA (asymmetric AA) when L is not...
-#                       (1/2, 1/1, 1/2)             # A minimalist AA example...
-X, Y, AA = 0x161, randint(0o161), (0/1, 1/1, 0/1)   # The no-AA example...
-#noa, aa = bresenham_line(0, 0, X, Y), bresenhamAAline(0, 0, X, Y, AA)
-noa, aa = bresenham_line(0, 0, X, Y), line_aa(0, 0, X, Y)
+#                       (1/3, 2/3, 1/1, 2/3, 1/3)   - Symmetric AA filters when L is odd...
+#                       (1/2, 1/1, 2/3, 1/3)        - 'Odd' AAA (asymmetric AA) when L is not...
+#                       (1/2, 1/1, 1/2)             - A minimalist AA example...
+#                       1                           - The no-AA example...
+X, Y, AA = 0x161, randint(0o161), (1/3, 2/3, 1/1, 2/3, 1/3)
+#noa, oaa = bresenham_line(0, 0, X, Y), bresenhamAAline(0, 0, X, Y, AA)
+noa, oaa = bresenham_line(0, 0, X, Y), line_aa(0, 0, X, Y)
 
 # A helper...
 def subshow (data:tuple):
@@ -92,5 +94,5 @@ def subshow (data:tuple):
         imshow(d, cmap = 'gray', interpolation = 'none')
     show()
     
-bresenhams = maximum.reduce((flipud(aa), noa))
+bresenhams = maximum.reduce((flipud(oaa), noa))
 subshow((1 - bresenhams.T, fliplr(bresenhams.T)))          # ... must go on and gone!

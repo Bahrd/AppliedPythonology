@@ -9,14 +9,16 @@ Source(s):
 2. https://youtu.be/AoOv6bWg9lk?t=151 - "Polar Equations of Polygons" 
 '''
 
-# A square on a pole ♪♫...and the byenary 100 all!♫♪
-θ, ρ = lsp(0, π/0b100, 0b10), U(π/0o10, π*0o1) # ... or for octoplus!
+# A square (or any other dyadic polygon (4, 8, 16, 32, ...)) on a pole 
+# ♪♫...and the byenary 100 all!♫♪
+dy_gon = 0o10 # ... or 4 octoplus!
+θ, ρ = lsp(0, π/dy_gon, 0b10), π/dy_gon 
 # https://en.wikipedia.org/wiki/Trigonometric_functions#Etymology
 secant = rp(cos(θ))   # Secant stems from Latin secans — "cutting" — since the line cuts the circle
-for θ in (θ + n*π/0b10 for n in range(0b100)): 
-    _ = polar(θ + ρ, secant, θ + (π/0b100 + ρ), secant[::-1]) 
-_ = title('A square on a pole...'), show()
 
+for θ in (θ + 2*n*π/dy_gon for n in range(dy_gon + 1)): 
+    _ = polar(θ + ρ, secant, θ + (π/dy_gon + ρ), secant[::-1]) 
+_ = title(f'A {dy_gon}-gon on a pole...'), show()
 
 ## Lp circles are real weirdos... https://youtu.be/n8lYKa8YGKw?t=514
 #  like "a square peg in a round hole..."
