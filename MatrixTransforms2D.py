@@ -6,7 +6,7 @@ SO(2) is a commutative (abelian) group though...
 An eagle eye will surely notice that this script is a 2D version of the 3D virtual window... ;)
 Let's call it a "virtual glimmer-gap" (ThnX Copilot for that term... ;)
 '''
-from numpy import array, identity as I
+from numpy import array as A, identity as I
 from numpy.linalg import inv
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
@@ -14,86 +14,88 @@ from math import pi as π, cos, sin
 
 from sys import argv as eye
 
-# Transform all polygon vertices
-文 = lambda P, points: array([P @ p for p in points])
-# Homogeneous to Euclidean coordinates
+# Transform a polygon, that is, apply a transformation matrix to all its vertices
+文 = lambda P, vertices: A([P@V for V in vertices])
+# Homogeneous to Euclidean coordinates conversion (a.k.a. "casting a shadow" or "projecting a 3D object onto a 2D plane")
 # See e.g. videos: https://youtu.be/MQdm0Z_gNcw and https://youtu.be/PvEl63t-opM by Cyrill Stachniss
-ζ2ε = lambda X: array([(x/x[-1])[:-1] for x in X])
+ζ2ε = lambda X: A([(x/x[-1])[:-1] for x in X])
 
 # Set the stage!
 # https://www.geeksforgeeks.org/how-to-draw-shapes-in-matplotlib-with-python/
 fig, ax = plt.subplots()
-ax.set_xlim(-1, 9); ax.set_ylim(-2, 8); ax.set_aspect('equal'); plt.grid(True)
+ax.set_xlim(-2, 6); ax.set_ylim(-1, 4); ax.set_aspect('equal'); plt.grid(True)
 
 # The original square (with a kink) at the origin (notice the homogeneous coordinates)
-sqwk = array([[0, 0, 1], [1, 0, 1], [1, 1, 1], [.25, .75, 1], [0, 1, 1]])
+sqwk = A([[0, 0, 1], [1, 0, 1], [1, 1, 1], [.25, .75, 1], [0, 1, 1]])
 
 # The ♪♫ eye of the beholder https://youtu.be/LbvdqjL-hJ0 ♫♪ (a.k.a. the observer)
 # is at (ex, ey) in Euclidean coordinates
-# e.g. Start-Process PowerShell -WindowStyle Hidden -ArgumentList ".\pythpath.ps1 312 -O .\MatrixTransforms2D.py '(2*π, -1/π)'"
-ex, ey = (π, -1) if len(eye) < 2 else eval(eye[1])
-E = array([[1, 0, ex],
-           [0, 1, ey],
-           [0, 0, 1]])
+# e.g. Start-Process PowerShell -WindowStyle Hidden -ArgumentList "<python path> .\MatrixTransforms2D.py '(π, -1/π)'"
+ex, ey = (π, -1/π) if len(eye) < 2 else eval(eye[1])
+E = A([[1, 0, ex],
+       [0, 1, ey],
+       [0, 0, 1]])
 
 # Identity transformation (a.k.a. "do nothing but with great style!") - just to stretch the Python's cache legs... :D
 sqwk = 文(I(3), sqwk); vertices = ζ2ε(sqwk)
-polygon = Polygon(vertices, ec = 'xkcd:navy blue', fc = 'xkcd:true blue', alpha = 0.75)
+polygon = Polygon(vertices, ec = 'xkcd:navy blue', fc = 'xkcd:true blue', alpha = 0.25)
 # https://stackoverflow.com/questions/44526364/fill-matplotlib-polygon-with-a-gradient-between-vertices
-ax.add_patch(polygon); ax.scatter(vertices[:, 0], vertices[:, 1], color = 'xkcd:blue', s = 25)
+ax.add_patch(polygon); ax.scatter(vertices[:, 0], vertices[:, 1], color = 'xkcd:blue', s = 25, alpha = 0.25)
 
-# Our kinked square after translation by a vector [K L]...
-K, L = 3, 4
-T = array([[1, 0, K],
-           [0, 1, L],
-           [0, 0, 1]])
+# Translation by a vector [K L]...
+K, L = π, π/3
+T = I(3); T[:2, 2] = [K, L]
 
-# ... and after rotation by α degrees... https://en.wikipedia.org/wiki/Rotations_and_reflections_in_two_dimensions
+# ... and rotation by α degrees... https://en.wikipedia.org/wiki/Rotations_and_reflections_in_two_dimensions
 # And don't bother about quaternions here, as they are merely for rotations in 3D...
 # https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation
-# But remember that by definition i² = j² = k² = ijk = -1
+# i² = j² = k² = ijk = -1 ← ad perpetuam rei memoriam... ;)
+# https://en.wikipedia.org/wiki/Rotation_matrix#Decomposition_into_shears - if you think about it, a rotation
+# is just a shear in disguise... ;)
 α = 75*π/180
-R = I(3); _R = array([[cos(α), -sin(α)],
-                      [sin(α),  cos(α)]])
+R = I(3); _R = A([[cos(α), -sin(α)],
+                  [sin(α),  cos(α)]])
 R[:2, :2] = _R
 
 # ... and scaling...
-s = 1.5
-S = I(3); _S = array([[s, 0],
-                      [0, s]])
+s = π/2
+S = I(3); _S = A([[s, 0],
+                  [0, s]])
 S[:2, :2] = _S
 
 ## And so on... Procrustes would've been proud of us!
 #  See https://en.wikipedia.org/wiki/Transformation_matrix#/media/File:2D_affine_transformation_matrix.svg
 #  and https://en.wikipedia.org/wiki/Transformation_matrix#/media/File:Perspective_transformation_matrix_2D.svg
-# Stretching:
-k, κ = 3, 2
-S1 = array([[k, 0, 0],
-            [0, κ, 0],
-            [0, 0, 1]])
-# Squeezing:
-S2 = array([[1/κ, 0, 0],
-            [0,   κ, 0],
-            [0,   0, 1]])
-# Shearing: (try κ = -k some day (why so?!))
-S3 = array([[1, k, 0],
-            [κ, 1, 0],
-            [0, 0, 1]])
 
-# Reflection: https://en.wikipedia.org/wiki/Householder_transformation#Householder_matrix
-#             https://upload.wikimedia.org/wikipedia/commons/f/f9/Householdertransformation.png
-lx, ly = 1, 2   # ... about the line from the origin (0, 0) through (lx, ly)
-M = I(3)
-_M = array([[lx**2 - ly**2,     2*lx*ly  ],
-            [    2*lx*ly  , ly**2 - lx**2]])
-_M = _M/(lx**2 + ly**2)
-M[:2, :2] = _M
+# ... then stretching
+k, κ = π/2, π/3
+S1 = A([[k, 0, 0],
+        [0, κ, 0],
+        [0, 0, 1]])
+# ... and squeezing
 
-# Feel free to further squeeze, stretch, shear the shape (and mix the order too)...
+S2 = A([[1/k, 0, 0],
+        [0,   κ, 0],
+        [0,   0, 1]])
+# ... and shearing (try κ = -k some day (why so?!))
+S3 = A([[1, κ, 0],
+        [k, 1, 0],
+        [0, 0, 1]])
+
+# ... and reflection: https://en.wikipedia.org/wiki/Householder_transformation#Householder_matrix
+#                     https://upload.wikimedia.org/wikipedia/commons/f/f9/Householdertransformation.png
+lx, ly = π/3, 2  # ... about the line from the origin (0, 0) through (lx, ly)
+D, AD, DD = lx**2 - ly**2, 2*lx*ly, lx**2 + ly**2
+
+M = I(3); _M = A([[ D, AD],
+                  [AD, -D]])
+M[:2, :2] = _M/DD
+
+# Feel free to further squeeze, stretch, shear the shape (and mix their order too)...
 # as the ability to put all these transformations into a single matrix
 # should blow you away out of the blue...
 
-TM = M@T@S@R@S3
+TM = M@T@R@S@S2@S3@S1
 sqwk = 文(TM, sqwk); vertices = ζ2ε(sqwk)
 
 polygon = Polygon(vertices, ec = 'xkcd:very dark blue', fc = 'xkcd:sky blue', alpha = 0.75)
@@ -104,14 +106,16 @@ ax.add_patch(polygon); ax.scatter(vertices[:, 0], vertices[:, 1], color = 'xkcd:
 # which is a linear operation too and can be represented by a matrix as well:
 # https://wrfranklin.org/pmwiki/Main/HomogeneousCoords
 # The shadow (a.k.a. the projection ;) of the final shape on the line Ax + By = 1
-A, B = 0.5, -1.0
-# ... altered when an observer is not at the origin (0, 0) but at somewhere else at (ex, ey) instead.
-D = 1 - A*ex - B*ey
-A /= D; B /= D
-P = array([[1, 0, 0],
-           [0, 1, 0],
-           [A, B, 0]])
-shdw = 文(E@P@inv(E), sqwk); vertices = ζ2ε(shdw)
+a, b = 0.5, -1.0
+# ... altered when an observer is not at the origin (0, 0) but somewhere else...
+D = 1 - a*ex - b*ey
+a /= D; b /= D
+P = A([[1, 0, 0],
+       [0, 1, 0],
+       [a, b, 0]])
+
+TM = E@P@inv(E)
+shdw = 文(TM, sqwk); vertices = ζ2ε(shdw)
 polygon = Polygon(vertices, ec = 'xkcd:dark navy blue', fc = 'xkcd:denim', alpha = 0.75)
 ax.add_patch(polygon); ax.scatter(vertices[:, 0], vertices[:, 1], color = 'xkcd:dark blue', s = 25)
 
