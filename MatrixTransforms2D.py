@@ -30,7 +30,7 @@ sqwk = array([[0, 0, 1], [1, 0, 1], [1, 1, 1], [.25, .75, 1], [0, 1, 1]])
 
 # The ♪♫ eye of the beholder https://youtu.be/LbvdqjL-hJ0 ♫♪ (a.k.a. the observer)
 # is at (ex, ey) in Euclidean coordinates
-# e.g. python .\MatrixTransforms2D.py '(2*π, -1/π)'
+# e.g. Start-Process PowerShell -WindowStyle Hidden -ArgumentList ".\pythpath.ps1 312 -O .\MatrixTransforms2D.py '(2*π, -1/π)'"
 ex, ey = (π, -1) if len(eye) < 2 else eval(eye[1])
 E = array([[1, 0, ex],
            [0, 1, ey],
