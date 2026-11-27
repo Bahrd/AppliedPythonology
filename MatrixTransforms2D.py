@@ -10,7 +10,6 @@ from numpy import array as A, identity as I
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 from math import pi as π, cos, sin
-
 from sys import argv as eye
 
 # Transform a polygon, that is, apply a transformation matrix to all its vertices
@@ -26,6 +25,7 @@ ax.set_xlim(-2, 6); ax.set_ylim(-1, 4); ax.set_aspect('equal'); plt.grid(True)
 
 # The original square (with a kink) at the origin (notice the homogeneous coordinates)
 sqwk = A([[0, 0, 1], [.75, .25, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]])
+origins = sqwk # Save the original vertices for later use
 
 # The ♪♫ eye of the beholder https://youtu.be/LbvdqjL-hJ0 ♫♪ (a.k.a. the observer)
 # is at (ξ, θ) in Euclidean coordinates
@@ -37,8 +37,10 @@ E = A([[1, 0, ξ],
        [0, 1, θ],
        [0, 0, 1]]) # It should be easy to create the inverse of E by hand
 
-## The rigid transformation section (where the shape is preserved, i.e. no scaling, stretching, squeezing or shearing)
-# Identity transformation (a.k.a. "do nothing but with great style!") - just to stretch the Python's cache legs... :D
+## The rigid transformation section (where the shape is preserved, i.e. no contortionist tricks like
+#  scaling, stretching, squeezing or shearing)
+
+#  Identity transformation (a.k.a. "do nothing but with great style!") - just to stretch the Python's legs (so to speak... :)
 sqwk = 文(I(3), sqwk); vertices = ζ2ε(sqwk)
 polygon = Polygon(vertices, ec = 'xkcd:navy blue', fc = 'xkcd:true blue', alpha = 0.25)
 # https://stackoverflow.com/questions/44526364/fill-matplotlib-polygon-with-a-gradient-between-vertices
@@ -108,33 +110,37 @@ ax.add_patch(polygon); ax.scatter(vertices[:, 0], vertices[:, 1], color = 'xkcd:
 # https://youtu.be/27vT-NWuw0M, https://youtu.be/JK-8XNIoAkI and https://youtu.be/cTyNpXB92bQ
 # which is a linear operation too and can be represented by a matrix as well:
 # https://wrfranklin.org/pmwiki/Main/HomogeneousCoords
+
 # The shadow (a.k.a. the projection ;) of the final shape on the line Ax + By = 1
 a, b = 0.5, -1.0
 # ... altered when an observer is not at the origin (0, 0) but somewhere else (ThnX, GPT Astra 6.2..;)
-D = 1 - a*ξ - b*θ
+D = 1 - a*ξ - b*θ # or, in an overkill version, D = 1 - A([a, b])@A([ξ, θ])
 a /= D; b /= D
 P = A([[1, 0, 0],
        [0, 1, 0],
        [a, b, 0]])
 
-# Note that we can invoke the numpy.linalg.inv() function to compute the inverse of a matrix:
-# from numpy.linalg import inv
-# invE = inv(E)
-# but here we can do it in a pure napkin and envelope math way:
+# Note that we can invoke the numpy's function to compute the inverse of a matrix:
+# from numpy.linalg import inv; invE = inv(E)
+# but we can also find it in a pure napkin&envelope calculus way:
 invE = I(3); invE[:2, 2] = [-ξ, -θ]
 
 TM = E@P@invE
 shdw = 文(TM, sqwk); vertices = ζ2ε(shdw)
-polygon = Polygon(vertices, ec = 'xkcd:dark navy blue', fc = 'xkcd:denim', alpha = 0.75)
+polygon = Polygon(vertices, ec = 'xkcd:dark navy blue', fc = 'xkcd:denim', alpha = 0.75, lw = 2)
 ax.add_patch(polygon); ax.scatter(vertices[:, 0], vertices[:, 1], color = 'xkcd:dark blue', s = 25)
 
 # And the ♪♫Moonlight shadows♫♪... https://youtu.be/ixExC-Zgyzc and https://youtu.be/e80qhyovOnA of the vertices.
-# Is that song about Évariste Galois https://en.wikipedia.org/wiki/%C3%89variste_Galois#Final_days?
-for v, w in zip(sqwk, shdw):
-    # Homogeneous to Euclidean coordinates
-    (x, y), (u, r) = v[:-1]/v[-1], w[:-1]/w[-1]
-    ax.plot((ξ, x), (θ, y), c = 'xkcd:deep blue', lw = .5, ls = 'dashed')
-    ax.plot((ξ, u), (θ, r), c = 'xkcd:navy blue', lw = .5, ls = 'dotted')
+# Is that song about Évariste Galois's https://en.wikipedia.org/wiki/%C3%89variste_Galois#Final_days?
+for (x, y), (u, r), (p, q) in zip(ζ2ε(sqwk), ζ2ε(shdw), ζ2ε(origins)):
+    # Draw the lines from:
+    # the original vertices to the transformed ones '-∙',
+    ax.plot((x, p), (y, q), c = 'xkcd:royal blue', lw = .5, ls = 'dashdot', alpha = 0.1)
+    # the observer to the transformed ones, and '∙∙'
+    ax.plot((ξ, x), (θ, y), c = 'xkcd:deep blue', lw = .5, ls = 'dotted')
+    # the observer to the projected ones. '--'
+    ax.plot((ξ, u), (θ, r), c = 'xkcd:navy blue', lw = 1, ls = 'dashed')
+
 plt.title('Virtual glimmer-gap\n2D affine (incl. rigid & projective) transformations'); plt.show() #... must go on!
 
 # See also https://en.wikipedia.org/wiki/Affine_transformation#/media/File:2D_affine_transformation_matrix.svg
